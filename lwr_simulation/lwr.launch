@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find gazebo_worlds)/launch/empty_world_throttled.launch"/>
+  <include file="$(find lwr_simulation)/robots/kuka_lwr.launch"/>
+  <include file="$(find lwr_simulation)/controllers/lwr_arms_trajectory_controllers.launch" />
+</launch>

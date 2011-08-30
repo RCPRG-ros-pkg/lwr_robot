@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+	 name="2arms">
+
+  <include filename="$(find lwr_defs)/calibration/default_cal.xml"/>
+  <include filename="$(find lwr_defs)/defs/kuka_lwr_arm_defs.xml"/>
+  <include filename="$(find lwr_defs)/defs/gazebo_defs.xml"/>
+  <include filename="$(find lwr_defs)/defs/materials.xml"/>
+
+  <!-- cob sdh-->
+ <!-- <include filename="$(find cob_description)/ros/urdf/sdh_v0/sdh.urdf.xacro" />
+-->
+  <link name="world" />
+
+  <joint name="arm_world_joint" type="fixed">
+    <origin xyz="0 0 0.3" rpy="0 0 0"/>
+    <parent link="world"/>
+    <child link="world_link"/>
+  </joint>
+
+  <link name="world_link">
+    <inertial>
+      <mass value="50.0"/>
+      <com xyz="0 0 0"/>
+      <inertia  ixx="0.01" ixy="0.00"  ixz="0.00"
+                iyy="0.01" iyz="0.00"
+                izz="0.01" />
+    </inertial>
+
+    <visual>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <geometry>
+        <box size="1 1 1.0"/>
+      </geometry>
+    </visual>
+
+    <collision>
+      <origin xyz="0 0 0.5" rpy="0 0 0"/>
+      <geometry>
+        <box size="1 1 1.0"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <kuka_lwr_arm parent="world" name="left" right="-1">
+    <origin xyz="${cal_base_to_left_arm_x} ${cal_base_to_left_arm_y} ${cal_base_to_left_arm_z}"
+            rpy="${cal_base_to_left_arm_roll} ${cal_base_to_left_arm_pitch} ${cal_base_to_left_arm_yaw}"/>
+  </kuka_lwr_arm>
+
+  <kuka_lwr_arm parent="world" name="right" right="1">
+    <origin xyz="${cal_base_to_right_arm_x} ${cal_base_to_right_arm_y} ${cal_base_to_right_arm_z}"
+            rpy="${cal_base_to_right_arm_roll} ${cal_base_to_right_arm_pitch} ${cal_base_to_right_arm_yaw}"/>
+  </kuka_lwr_arm>
+<!--
+  <xacro:cob_sdh_v0 name="sdhr" parent="right_arm_7_link">
+    <origin xyz="0 0 0.02" rpy="0 0 1.5708" />
+  </xacro:cob_sdh_v0>
+
+  <xacro:cob_sdh_v0 name="sdhl" parent="left_arm_7_link">
+    <origin xyz="0 0 0.02" rpy="0 0 1.5708" />
+  </xacro:cob_sdh_v0>
+-->
+<!--
+  <dlr_hit_right_hand name = "right_hand" parent = "right_arm_7_link">
+    <origin xyz="0.075 0.075 -0.094" rpy="${0.5*M_PI} 0 ${(0.5 + 0.25)*M_PI}"/>
+  </dlr_hit_right_hand>
+  
+  <dlr_hit_left_hand name = "left_hand" parent = "left_arm_7_link">
+    <origin xyz="-0.075 0.075 -0.094"  rpy="${-0.5*M_PI} 0 ${(0.5 - 0.25)*M_PI}"/>
+  </dlr_hit_left_hand>
+-->
+</robot>

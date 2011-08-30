@@ -1,0 +1,13 @@
+<launch>
+  <param name="/use_sim_time" value="true" />
+
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find lwr_defs)/robots/kuka_lwr_arm.urdf.xml'"/>
+
+  <node name="robot_loader" pkg="gazebo_tools" type="gazebo_model" args="-p robot_description -x 1.4 -y 2.4 spawn kuka_lwr_arm" respawn="false" output="screen" />
+ 
+  <!-- Robot state publisher -->
+  <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="50.0" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+</launch>

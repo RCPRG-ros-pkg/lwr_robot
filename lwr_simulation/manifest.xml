@@ -1,0 +1,15 @@
+<package>
+  <description brief="lwr_simulation">
+
+     simulation
+
+  </description>
+  <author>Konrad Banachowicz</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/simulation</url>
+  <depend package="gazebo"/>
+
+</package>
+
+

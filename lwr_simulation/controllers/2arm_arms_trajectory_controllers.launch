@@ -1,0 +1,8 @@
+<launch>
+
+  <rosparam file="$(find lwr_simulation)/controllers/2arm_trajectory_arm_controller.yaml" command="load" />
+  <node name="arms_spawner" pkg="pr2_controller_manager" type="spawner"
+        args="l_arm_trajectory_controller r_arm_trajectory_controller"
+        output="screen"/>  
+
+</launch>

@@ -1,0 +1,91 @@
+r_arm_trajectory_controller:
+  type: "robot_mechanism_controllers/JointTrajectoryActionController"
+  joints:
+    - right_arm_0_joint
+    - right_arm_1_joint
+    - right_arm_2_joint
+    - right_arm_3_joint
+    - right_arm_4_joint
+    - right_arm_5_joint
+    - right_arm_6_joint
+  gains:
+    right_arm_0_joint: {p: 800.0, d: 0.0}
+    right_arm_1_joint: {p: 800.0, d: 0.0}
+    right_arm_2_joint: {p: 200.0, d: .0}
+    right_arm_3_joint: {p: 100.0, d: .0}
+    right_arm_4_joint: {p: 500.0, d: .0}
+    right_arm_5_joint: {p: 400.0, d: .0}
+    right_arm_6_joint: {p: 400.0, d: .0}
+  joint_trajectory_action_node:
+    joints:
+      - right_arm_0_joint
+      - right_arm_1_joint
+      - right_arm_2_joint
+      - right_arm_3_joint
+      - right_arm_4_joint
+      - right_arm_5_joint
+      - right_arm_6_joint
+    constraints:
+      goal_time: 0.6
+      right_arm_0_joint:
+        goal: 0.02
+      right_arm_0_joint:
+        goal: 0.02
+      right_arm_0_joint:
+        goal: 0.02
+      right_arm_0_joint:
+        goal: 0.02
+      right_arm_0_joint:
+        goal: 0.02
+      right_arm_0_joint:
+        goal: 0.02
+      right_arm_0_joint:
+        goal: 0.02
+  
+
+
+
+l_arm_trajectory_controller:
+  type: "robot_mechanism_controllers/JointTrajectoryActionController"
+  joints:
+    - left_arm_0_joint
+    - left_arm_1_joint
+    - left_arm_2_joint
+    - left_arm_3_joint
+    - left_arm_4_joint
+    - left_arm_5_joint
+    - left_arm_6_joint
+  gains:
+    left_arm_0_joint: {p: 800.0, d: 10.0}
+    left_arm_1_joint: {p: 800.0, d: 10.0}
+    left_arm_2_joint: {p: 200.0, d: 3.0}
+    left_arm_3_joint: {p: 100.0, d: 3.0}
+    left_arm_4_joint: {p: 500.0, d: 6.0}
+    left_arm_5_joint: {p: 400.0, d: 4.0}
+    left_arm_6_joint: {p: 400.0, d: 4.0}
+
+  joint_trajectory_action_node:
+    joints:
+      - left_arm_0_joint
+      - left_arm_1_joint
+      - left_arm_2_joint
+      - left_arm_3_joint
+      - left_arm_4_joint
+      - left_arm_5_joint
+      - left_arm_6_joint
+    constraints:
+      goal_time: 0.6
+      left_arm_0_joint:
+        goal: 0.02
+      left_arm_0_joint:
+        goal: 0.02
+      left_arm_0_joint:
+        goal: 0.02
+      left_arm_0_joint:
+        goal: 0.02
+      left_arm_0_joint:
+        goal: 0.02
+      left_arm_0_joint:
+        goal: 0.02
+      left_arm_0_joint:
+        goal: 0.02

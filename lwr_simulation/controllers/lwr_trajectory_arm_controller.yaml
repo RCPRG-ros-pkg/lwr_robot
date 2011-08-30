@@ -1,0 +1,44 @@
+arm_trajectory_controller:
+  type: "robot_mechanism_controllers/JointTrajectoryActionController"
+  joints:
+    - lwr_arm_0_joint
+    - lwr_arm_1_joint
+    - lwr_arm_2_joint
+    - lwr_arm_3_joint
+    - lwr_arm_4_joint
+    - lwr_arm_5_joint
+    - lwr_arm_6_joint
+  gains:
+    lwr_arm_0_joint: {p: 800.0, d: 0.0}
+    lwr_arm_1_joint: {p: 800.0, d: 0.0}
+    lwr_arm_2_joint: {p: 200.0, d: .0}
+    lwr_arm_3_joint: {p: 100.0, d: .0}
+    lwr_arm_4_joint: {p: 500.0, d: .0}
+    lwr_arm_5_joint: {p: 400.0, d: .0}
+    lwr_arm_6_joint: {p: 400.0, d: .0}
+  joint_trajectory_action_node:
+    joints:
+      - lwr_arm_0_joint
+      - lwr_arm_1_joint
+      - lwr_arm_2_joint
+      - lwr_arm_3_joint
+      - lwr_arm_4_joint
+      - lwr_arm_5_joint
+      - lwr_arm_6_joint
+    constraints:
+      goal_time: 0.6
+      lwr_arm_0_joint:
+        goal: 0.02
+      lwr_arm_0_joint:
+        goal: 0.02
+      lwr_arm_0_joint:
+        goal: 0.02
+      lwr_arm_0_joint:
+        goal: 0.02
+      lwr_arm_0_joint:
+        goal: 0.02
+      lwr_arm_0_joint:
+        goal: 0.02
+      lwr_arm_0_joint:
+        goal: 0.02
+  

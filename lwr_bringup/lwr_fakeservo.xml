@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "cpf.dtd">
+<properties>
+<simple name="Import" type="string"><value>rtt_ros_integration</value></simple>
+<simple name="Import" type="string"><value>rtt_ros_integration_std_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_ros_integration_sensor_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_ros_integration_actionlib_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_ros_integration_pr2_controllers_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_ros_integration_trajectory_msgs</value></simple>
+<simple name="Import" type="string"><value>fake_servo</value></simple>
+<simple name="Import" type="string"><value>oro_joint_state_publisher</value></simple>
+<simple name="Import" type="string"><value>oro_joint_trajectory_action</value></simple>
+<simple name="Import" type="string"><value>joint_spline_trajectory_generator</value></simple>
+<simple name="Import" type="string"><value>lwr_fri</value></simple>
+
+<struct name="joints_state" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/joint_states</value></simple>
+</struct>
+
+<struct name="goal" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/lwr_arm_controller/joint_trajectory_action/goal</value></simple>
+</struct>
+
+<struct name="cancel" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/lwr_arm_controller/joint_trajectory_action/cancel</value></simple>
+</struct>
+
+<struct name="status" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/lwr_arm_controller/joint_trajectory_action/status</value></simple>
+</struct>
+
+<struct name="feedback" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/lwr_arm_controller/joint_trajectory_action/feedback</value></simple>
+</struct>
+
+<struct name="result" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/lwr_arm_controller/joint_trajectory_action/result</value></simple>
+</struct>
+
+<struct name="command" type="ConnPolicy">
+  <simple name="type" type="short"><value>0</value></simple>
+  <simple name="size" type="short"><value>1</value></simple>
+  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="name_id" type="string"><value>/lwr_arm_controller/command</value></simple>
+</struct>
+
+<struct name="JointStatePublisher" type="JointStatePublisher">
+  <struct name="Activity" type="PeriodicActivity">
+    <simple name="Period" type="double"><value>0.01</value></simple>
+    <simple name="Priority" type="short"><value>2</value></simple>
+    <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
+  </struct>
+  
+  <simple name="AutoConf" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+  
+  <struct name="Properties" type="PropertyBag">
+    <simple name="number_of_joints" type="long"><value>7</value></simple>
+    <simple name="joint0_name" type="string"><value>lwr_arm_0_joint</value></simple>
+    <simple name="joint1_name" type="string"><value>lwr_arm_1_joint</value></simple>
+    <simple name="joint2_name" type="string"><value>lwr_arm_2_joint</value></simple>
+    <simple name="joint3_name" type="string"><value>lwr_arm_3_joint</value></simple>
+    <simple name="joint4_name" type="string"><value>lwr_arm_4_joint</value></simple>
+    <simple name="joint5_name" type="string"><value>lwr_arm_5_joint</value></simple>
+    <simple name="joint6_name" type="string"><value>lwr_arm_6_joint</value></simple>
+  </struct>
+  
+  <struct name="Ports" type="PropertyBag">
+    <simple name="msrJntPos" type="string"><value>msrJntPos</value></simple>
+    <simple name="joints_state" type="string"><value>joints_state</value></simple>
+  </struct>
+</struct>
+
+<struct name="Servo" type="lwr_fri::FRIComponent">
+  <struct name="Activity" type="NonPeriodicActivity">
+    <simple name="Priority" type="short"><value>5</value></simple>
+    <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
+  </struct>
+
+  <simple name="AutoConf" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+
+  <struct name="Properties" type="PropertyBag">
+  	<simple name="local_port" type="long"><description>local port</description><value>49938</value></simple>
+  	<simple name="control_mode" type="long"><description>selected control mode, (1 : position control,2 : velocity control, 3 : torque control, 4 : cartesian position control, 5 : cartesian TCP wrench control</description><value>1</value></simple>
+  </struct>
+
+  <struct name="Ports" type="PropertyBag">
+    <simple name="msrJntPos" type="string"><value>msrJntPos</value></simple>
+    <simple name="cmdJntPos" type="string"><value>cmdJntPos</value></simple>
+    <simple name="desJntPos" type="string"><value>desJntPos</value></simple>
+  </struct>
+</struct>
+
+<struct name="JointSplineTrajectoryGenerator" type="JointSplineTrajectoryGenerator">
+  <struct name="Activity" type="PeriodicActivity">
+    <simple name="Period" type="double"><value>0.002</value></simple>
+    <simple name="Priority" type="short"><value>5</value></simple>
+    <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
+  </struct>
+  <simple name="AutoConf" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+  
+  <struct name="Properties" type="PropertyBag">
+ 		<simple name="number_of_joints" type="long"><value>7</value></simple>
+  </struct>
+  
+  <struct name="Ports" type="PropertyBag">
+    <simple name="trajectory_point" type="string"><value>trajectory</value></simple>
+    <simple name="desJntPos" type="string"><value>desJntPos</value></simple>
+    <simple name="cmdJntPos" type="string"><value>cmdJntPos</value></simple>
+    <simple name="buffer_ready" type="string"><value>buf</value></simple>
+    <simple name="trajectory_compleat" type="string"><value>comp</value></simple>
+  </struct>
+</struct>
+
+<struct name="JointTrajectoryAction" type="JointTrajectoryAction">
+  <struct name="Activity" type="NonPeriodicActivity">
+    <simple name="Priority" type="short"><value>2</value></simple>
+    <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
+  </struct>
+  
+  <simple name="AutoConf" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+  
+  <struct name="Properties" type="PropertyBag">
+    <simple name="number_of_joints" type="short"><value>7</value></simple>
+    <simple name="joint0_name" type="string"><value>lwr_arm_0_joint</value></simple>
+    <simple name="joint1_name" type="string"><value>lwr_arm_1_joint</value></simple>
+    <simple name="joint2_name" type="string"><value>lwr_arm_2_joint</value></simple>
+    <simple name="joint3_name" type="string"><value>lwr_arm_3_joint</value></simple>
+    <simple name="joint4_name" type="string"><value>lwr_arm_4_joint</value></simple>
+    <simple name="joint5_name" type="string"><value>lwr_arm_5_joint</value></simple>
+    <simple name="joint6_name" type="string"><value>lwr_arm_6_joint</value></simple>
+  </struct>
+  
+  <struct name="Ports" type="PropertyBag">
+  	<simple name="trajectory_point" type="string"><value>trajectory</value></simple>
+    <simple name="buffer_ready" type="string"><value>buf</value></simple>
+    <simple name="trajectory_compleat" type="string"><value>comp</value></simple>
+    
+        <simple name="command" type="string"><value>command</value></simple>
+
+	<simple name="goal" type="string"><value>goal</value></simple>
+  	<simple name="cancel" type="string"><value>cancel</value></simple>
+  	<simple name="result" type="string"><value>result</value></simple>
+  	<simple name="feedback" type="string"><value>feedback</value></simple>
+  	<simple name="status" type="string"><value>status</value></simple>
+  </struct>
+</struct>
+
+
+</properties>

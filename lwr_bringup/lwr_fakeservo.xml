@@ -11,7 +11,6 @@
 <simple name="Import" type="string"><value>oro_joint_state_publisher</value></simple>
 <simple name="Import" type="string"><value>oro_joint_trajectory_action</value></simple>
 <simple name="Import" type="string"><value>joint_spline_trajectory_generator</value></simple>
-<simple name="Import" type="string"><value>lwr_fri</value></simple>
 
 <struct name="joints_state" type="ConnPolicy">
   <simple name="type" type="short"><value>0</value></simple>
@@ -89,8 +88,9 @@
   </struct>
 </struct>
 
-<struct name="Servo" type="lwr_fri::FRIComponent">
-  <struct name="Activity" type="NonPeriodicActivity">
+<struct name="Servo" type="FakeServo">
+  <struct name="Activity" type="PeriodicActivity">
+    <simple name="Period" type="double"><value>0.002</value></simple>
     <simple name="Priority" type="short"><value>5</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
@@ -99,8 +99,14 @@
   <simple name="AutoStart" type="boolean"><value>1</value></simple>
 
   <struct name="Properties" type="PropertyBag">
-  	<simple name="local_port" type="long"><description>local port</description><value>49938</value></simple>
-  	<simple name="control_mode" type="long"><description>selected control mode, (1 : position control,2 : velocity control, 3 : torque control, 4 : cartesian position control, 5 : cartesian TCP wrench control</description><value>1</value></simple>
+    <simple name="number_of_joints" type="long"><value>7</value></simple>
+    <simple name="joint0_position" type="double"><value>0.0</value></simple>
+    <simple name="joint1_position" type="double"><value>0.0</value></simple>
+    <simple name="joint2_position" type="double"><value>0.0</value></simple>
+    <simple name="joint3_position" type="double"><value>0.0</value></simple>
+    <simple name="joint4_position" type="double"><value>0.0</value></simple>
+    <simple name="joint5_position" type="double"><value>0.0</value></simple>
+    <simple name="joint6_position" type="double"><value>0.0</value></simple>
   </struct>
 
   <struct name="Ports" type="PropertyBag">

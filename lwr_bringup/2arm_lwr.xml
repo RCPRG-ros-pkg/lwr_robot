@@ -18,7 +18,7 @@
   <simple name="type" type="short"><value>0</value></simple>
   <simple name="size" type="short"><value>1</value></simple>
   <simple name="transport" type="short"><value>3</value></simple>
-  <simple name="name_id" type="string"><value>/left_arm/diagnostic</value></simple>
+  <simple name="name_id" type="string"><value>/diagnostic</value></simple>
 </struct>
 
 <struct name="left_CartesianWrench" type="ConnPolicy">
@@ -141,6 +141,10 @@
   <simple name="AutoConf" type="boolean"><value>1</value></simple>
   <simple name="AutoStart" type="boolean"><value>1</value></simple>
 
+  <struct name="Properties" type="PropertyBag">
+  	<simple name="diagnostic_prefix" type="string"><value>left arm </value></simple>
+  </struct>
+
   <struct name="Ports" type="PropertyBag">
     <simple name="RobotState" type="string"><value>left_RobotState</value></simple>
     <simple name="FriState" type="string"><value>left_FriState</value></simple>
@@ -218,7 +222,7 @@
   <simple name="type" type="short"><value>0</value></simple>
   <simple name="size" type="short"><value>1</value></simple>
   <simple name="transport" type="short"><value>3</value></simple>
-  <simple name="name_id" type="string"><value>/right_arm/diagnostic</value></simple>
+  <simple name="name_id" type="string"><value>/diagnostic</value></simple>
 </struct>
 
 <struct name="right_CartesianWrench" type="ConnPolicy">
@@ -264,6 +268,10 @@
   <simple name="AutoConf" type="boolean"><value>1</value></simple>
   <simple name="AutoStart" type="boolean"><value>1</value></simple>
 
+  <struct name="Properties" type="PropertyBag">
+  	<simple name="diagnostic_prefix" type="string"><value>right arm </value></simple>
+  </struct>
+  
   <struct name="Ports" type="PropertyBag">
     <simple name="RobotState" type="string"><value>right_RobotState</value></simple>
     <simple name="FriState" type="string"><value>right_FriState</value></simple>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE properties SYSTEM "cpf.dtd">
 <properties>
-<simple name="Import" type="string"><value>rtt_ros_integration</value></simple>
-<simple name="Import" type="string"><value>rtt_ros_integration_std_msgs</value></simple>
-<simple name="Import" type="string"><value>rtt_ros_integration_sensor_msgs</value></simple>
-<simple name="Import" type="string"><value>rtt_ros_integration_actionlib_msgs</value></simple>
-<simple name="Import" type="string"><value>rtt_ros_integration_pr2_controllers_msgs</value></simple>
-<simple name="Import" type="string"><value>rtt_ros_integration_trajectory_msgs</value></simple>
-<simple name="Import" type="string"><value>rtt_ros_integration_diagnostic_msgs</value></simple>
-<simple name="Import" type="string"><value>fake_servo</value></simple>
+<simple name="Import" type="string"><value>rtt_rosnode</value></simple>
+<simple name="Import" type="string"><value>rtt_std_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_sensor_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_actionlib_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_pr2_controllers_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_trajectory_msgs</value></simple>
+<simple name="Import" type="string"><value>rtt_diagnostic_msgs</value></simple>
 <simple name="Import" type="string"><value>oro_joint_state_publisher</value></simple>
 <simple name="Import" type="string"><value>oro_joint_trajectory_action</value></simple>
 <simple name="Import" type="string"><value>joint_spline_trajectory_generator</value></simple>

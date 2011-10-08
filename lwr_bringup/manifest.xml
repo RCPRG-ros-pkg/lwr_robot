@@ -8,11 +8,22 @@
   <license>BSD</license>
   <review status="unreviewed" notes=""/>
   <url>http://ros.org/wiki/lwr_bringup</url>
+
+  <depend package="rtt"/>
+  <deprnd package="rtt_rosnode"/>
+
+	<depend package="rtt_std_msgs"/>
+  <depend package="rtt_sensor_msgs"/>
+  <depend package="rtt_actionlib_msgs"/>
+  <depend package="rtt_trajectory_msgs"/>
+  <depend package="rtt_diagnostics_msgs"/>
+  <depend package="rtt_pr2_controllers_msgs"/>
+
   <depend package="fake_servo"/>
   <depend package="lwr_fri"/>
-  <depend package="rtt"/>
-  <depend package="ocl"/>
   <depend package="oro_joint_state_publisher"/>
+  <depend package="oro_joint_trajectory_action"/>
+  <depend package="joint_spline_trajectory_generator"/>
 
 </package>
 

@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="kimp">
+<robot name="lwr">
 
   <include filename="$(find lwr_defs)/defs/kuka_lwr_arm_defs.xml"/>
   <include filename="$(find lwr_defs)/defs/gazebo_defs.xml"/>

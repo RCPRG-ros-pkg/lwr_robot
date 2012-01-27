@@ -376,13 +376,13 @@
           <mesh filename="package://ias_robot_defs/meshes/kimp/arm_flanche.dae"/>
         </geometry>
         <material name="Grey"/>
-      </visual>
+      </visual> -->
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
         <geometry>
-          <mesh filename="package://ias_robot_defs/meshes/kimp/convex/arm_flanche_convex.stl"/>
+          <cylinder radius="0.04" length="0.05"/>
         </geometry>
-      </collision> -->
+      </collision>
     </link>
 
     <gazebo reference="${name}_arm_7_link">

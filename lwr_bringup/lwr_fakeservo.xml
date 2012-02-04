@@ -64,7 +64,7 @@
 <struct name="JointStatePublisher" type="JointStatePublisher">
   <struct name="Activity" type="PeriodicActivity">
     <simple name="Period" type="double"><value>0.01</value></simple>
-    <simple name="Priority" type="short"><value>2</value></simple>
+    <simple name="Priority" type="short"><value>1</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
   
@@ -90,7 +90,7 @@
 
 <struct name="Servo" type="FakeServo">
   <struct name="Activity" type="PeriodicActivity">
-    <simple name="Period" type="double"><value>0.002</value></simple>
+    <simple name="Period" type="double"><value>0.001</value></simple>
     <simple name="Priority" type="short"><value>5</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
@@ -110,20 +110,21 @@
   </struct>
 
   <struct name="Ports" type="PropertyBag">
-    <simple name="msrJntPos" type="string"><value>msrJntPos</value></simple>
-    <simple name="cmdJntPos" type="string"><value>cmdJntPos</value></simple>
-    <simple name="desJntPos" type="string"><value>desJntPos</value></simple>
+    <simple name="JointPosition" type="string"><value>msrJntPos</value></simple>
+    <simple name="JointPositionCommand" type="string"><value>cmdJntPos</value></simple>
+    <simple name="DesiredJointPosition" type="string"><value>desJntPos</value></simple>
+    <simple name="CommandPeriod" type="string"><value>CommandPeriod</value></simple>
   </struct>
 </struct>
 
 <struct name="JointSplineTrajectoryGenerator" type="JointSplineTrajectoryGenerator">
-  <struct name="Activity" type="PeriodicActivity">
-    <simple name="Period" type="double"><value>0.002</value></simple>
+  <struct name="Activity" type="Activity">
     <simple name="Priority" type="short"><value>5</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
+  
   <simple name="AutoConf" type="boolean"><value>1</value></simple>
-  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>0</value></simple>
   
   <struct name="Properties" type="PropertyBag">
  		<simple name="number_of_joints" type="long"><value>7</value></simple>
@@ -131,21 +132,28 @@
   
   <struct name="Ports" type="PropertyBag">
     <simple name="trajectory_point" type="string"><value>trajectory</value></simple>
-    <simple name="desJntPos" type="string"><value>desJntPos</value></simple>
-    <simple name="cmdJntPos" type="string"><value>cmdJntPos</value></simple>
+    <simple name="DesiredJointPosition" type="string"><value>desJntPos</value></simple>
+    <simple name="JointPositionCommand" type="string"><value>cmdJntPos</value></simple>
     <simple name="buffer_ready" type="string"><value>buf</value></simple>
     <simple name="trajectory_compleat" type="string"><value>comp</value></simple>
+    
+    <simple name="CommandPeriod" type="string"><value>CommandPeriod</value></simple>
   </struct>
 </struct>
 
 <struct name="JointTrajectoryAction" type="JointTrajectoryAction">
-  <struct name="Activity" type="NonPeriodicActivity">
+  <struct name="Activity" type="PeriodicActivity">
+    <simple name="Period" type="double"><value>0.1</value></simple>
     <simple name="Priority" type="short"><value>2</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
   
   <simple name="AutoConf" type="boolean"><value>1</value></simple>
   <simple name="AutoStart" type="boolean"><value>1</value></simple>
+  
+  <struct name="Peers" type="PropertyBag">
+    <simple type="string"><value>JointSplineTrajectoryGenerator</value></simple>
+  </struct>
   
   <struct name="Properties" type="PropertyBag">
     <simple name="number_of_joints" type="short"><value>7</value></simple>
@@ -163,9 +171,9 @@
     <simple name="buffer_ready" type="string"><value>buf</value></simple>
     <simple name="trajectory_compleat" type="string"><value>comp</value></simple>
     
-        <simple name="command" type="string"><value>command</value></simple>
+    <simple name="command" type="string"><value>command</value></simple>
 
-	<simple name="goal" type="string"><value>goal</value></simple>
+	  <simple name="goal" type="string"><value>goal</value></simple>
   	<simple name="cancel" type="string"><value>cancel</value></simple>
   	<simple name="result" type="string"><value>result</value></simple>
   	<simple name="feedback" type="string"><value>feedback</value></simple>
@@ -175,3 +183,4 @@
 
 
 </properties>
+

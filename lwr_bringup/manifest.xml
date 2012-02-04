@@ -12,12 +12,12 @@
   <depend package="rtt"/>
   <deprnd package="rtt_rosnode"/>
 
-	<depend package="rtt_std_msgs"/>
+  <depend package="rtt_std_msgs"/>
   <depend package="rtt_sensor_msgs"/>
   <depend package="rtt_actionlib_msgs"/>
   <depend package="rtt_trajectory_msgs"/>
-  <depend package="rtt_diagnostics_msgs"/>
-  <depend package="rtt_pr2_controllers_msgs"/>
+  <depend package="rtt_diagnostic_msgs"/>
+  <depend package="rtt_control_msgs"/>
 
   <depend package="fake_servo"/>
   <depend package="lwr_fri"/>

@@ -1,0 +1,205 @@
+&ACCESS RVP
+&REL 41
+&PARAM TEMPLATE = C:\KRC\Roboter\Template\vorgabe
+&PARAM EDITMASK = *
+DEF fri_start( )
+;FOLD INI
+
+DECL FRISTATE ret
+DECL FRAME t
+DECL REAL force
+DECL REAL torque
+DECL STIFFNESS USERSTIFF
+DECL INT AX
+DECL INT IP[4]
+DECL E6AXIS START_POSE
+
+  ;FOLD BASISTECH INI
+    GLOBAL INTERRUPT DECL 3 WHEN $STOPMESS==TRUE DO IR_STOPM ( )
+    INTERRUPT ON 3 
+    BAS (#INITMOV,0 )
+  ;ENDFOLD (BASISTECH INI)
+  ;FOLD USER INI
+    ;Make your modifications here
+
+  ;ENDFOLD (USER INI)
+;ENDFOLD (INI)
+
+;stop FRI in case it's running
+ret=FRISTOP()
+ret=FRICLOSE()
+
+;;; set tool no. 1
+bas(#tool,1)
+
+;FOLD SETUP
+
+  ;;; not needed if configured correctly
+  ;IP[1]=192
+  ;IP[2]=168
+  ;IP[3]=0
+  ;IP[4]=10
+
+  ;; set IP address and port of remote controller
+  ret=FRISETUP("no",49948,49948)
+
+  ;Set control strategy and initial parameters
+  USERSTIFF = $STIFFNESS
+  USERSTIFF.STRATEGY = 30
+  USERSTIFF.FRAMETYPE=#TOOL
+  USERSTIFF.AXISSTIFFNESS = {A1 40, A2 40, A3 40, A4 40, A5 40, A6 40, E1 40}
+  USERSTIFF.AXISDAMPING = {A1 0.7, A2 0.7, A3 0.7, A4 0.7, A5 0.7, A6 0.7, E1 0.7}
+
+  ;Limits
+  USERSTIFF.AXISMAXDELTA = {A1 340, A2 340, A3 340, A4 340, A5 340, A6 340, E1 340}
+  USERSTIFF.AXISMAXDELTATRQ = {A1 400, A2 400, A3 400, A4 400, A5 400, A6 400, E1 400}
+  USERSTIFF.CPMAXDELTA = {X 2000, Y 2000, Z 2000, A 180, B 180, C 180}
+  USERSTIFF.MAXFORCE = {X 900, Y 900, Z 900, A 900, B 900, C 900}
+
+  ;commit new settings
+  $STIFFNESS=USERSTIFF
+
+  FOR AX=1 TO $NUM_AX STEP 1
+    $VEL_AXIS[AX]= 100
+    $ACC_AXIS[AX]= 50
+  ENDFOR
+  FOR AX=1 TO $EX_AX_NUM STEP 1
+    $VEL_EXTAX[AX]= 100
+    $ACC_EXTAX[AX]= 50
+  ENDFOR
+
+  ; set base
+  $base = $robroot
+
+;ENDFOLD (SETUP)
+
+WAIT SEC 0.2
+
+;; check if torques are within limits
+t = $torque_tcp_est.ft
+force  = SQRT(t.x*t.x + t.y*t.y + t.z*t.z)
+torque = SQRT(t.a*t.a + t.b*t.b + t.c*t.c)
+
+IF (force > 8) OR (torque > 8) THEN
+  ; experiencing too much force. refusing to start!
+  WHILE TRUE
+    HALT
+  ENDWHILE
+ENDIF
+
+; switch on motors
+start_pose = TOUCH_AXES($AXIS_ACT)
+PTP start_pose
+
+;set up timer
+$TIMER[1] = -3000
+$TIMER_STOP[1] = FALSE
+
+; open with data rate 2 msec
+ret=friopen(2)
+
+;wait sec 2.5
+
+;ret=FRISTART(1.0)
+
+while true
+  ;;; here we command from remote
+  wait for $fri_frm_bool[1] or $TIMER_FLAG[1]
+
+  ; check if we got a command
+  if $fri_frm_bool[1] then
+    ;acknowledge command
+    $fri_to_bool[1] = true
+
+    ; start control mode
+    if ($fri_frm_int[1] == 1) then
+      ret=FRISTART(1.0)
+      wait sec 0.2
+    endif
+
+    ; stop control mode
+    if $FRI_FRM_INT[1]==2 then
+      PTP CLAMP_AXES($AXIS_ACT)
+      wait sec 0.2
+      ret=FRISTOP()
+      wait sec 0.2
+    endif
+ 
+    ; restart interface
+    if $FRI_FRM_INT[1]==3 then
+      ret=FRISTOP()
+      ret=FRICLOSE()
+      ret=FRIOPEN($FRI_FRM_INT[2])
+    endif
+  endif
+
+  ;clear processing flag
+  $fri_to_bool[1] = false
+
+  IF $FRI_FRM_BOOL[8] THEN
+    PTP CLAMP_AXES($AXIS_ACT_MES)
+  ELSE
+    PTP CLAMP_AXES($AXIS_ACT_CMD)
+  ENDIF
+
+  $TIMER[1] = -3000
+endwhile
+
+ret=FRISTOP()
+ret=FRICLOSE()
+
+halt
+
+END
+;FOLD AXIS HELPER FUNCTIONS
+
+DEFFCT E6AXIS TOUCH_AXES(ax)
+E6AXIS ax
+DECL E6AXIS an
+
+an = CLAMP_AXES(ax)
+
+IF an.A6 < 0 THEN
+  an.A6 = an.A6 + 0.01
+ELSE
+  an.A6 = an.A6 - 0.01
+ENDIF
+
+RETURN an
+ENDFCT
+
+
+DEFFCT E6AXIS CLAMP_AXES(ax:IN)
+E6AXIS ax
+DECL E6AXIS an
+
+an.A1 = CLAMP(ax.A1, -169., 169.)
+an.A2 = CLAMP(ax.A2,  -29., 209.)
+an.E1 = CLAMP(ax.E1, -169., 169.)
+an.A3 = CLAMP(ax.A3, -119., 119.)
+an.A4 = CLAMP(ax.A4, -169., 169.)
+an.A5 = CLAMP(ax.A5, -119., 119.)
+an.A6 = CLAMP(ax.A6, -169., 169.)
+
+RETURN an
+ENDFCT
+
+
+DEFFCT REAL CLAMP(v:IN, minval:IN, maxval:IN)
+REAL v, minval, maxval
+DECL REAL r
+
+r = v
+
+IF v > maxval THEN
+  r = maxval
+ENDIF
+
+IF v < minval THEN
+    r = minval
+ENDIF
+
+RETURN r
+ENDFCT
+
+;ENDFOLD (AXIS HELPER FUNCTIONS)

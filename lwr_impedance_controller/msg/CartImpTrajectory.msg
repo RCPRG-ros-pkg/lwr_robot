@@ -1,0 +1,3 @@
+Header header
+geometry_msgs/Pose force_tool
+lwr_impedance_controller/CartImpTrajectoryPoint[] trajectory

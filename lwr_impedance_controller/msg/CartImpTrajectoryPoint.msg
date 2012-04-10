@@ -1,0 +1,5 @@
+geometry_msgs/Pose pose
+lwr_impedance_controller/CartesianImpedance impedance
+geometry_msgs/Wrench wrench
+geometry_msgs/Twist velocity
+duration time_from_start

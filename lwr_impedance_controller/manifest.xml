@@ -1,0 +1,20 @@
+<package>
+  <description brief="lwr_impedance_controller">
+
+     lwr_impedance_controller
+
+  </description>
+  <author>Konrad Banachowicz</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/lwr_impedance_controller</url>
+
+  <depend package="rtt"/>
+  <depend package="kdl"/>
+  <depend package="lwr_fri"/>
+  <depend package="geometry_msgs"/>
+  <depend package="rtt_geometry_msgs"/>
+  
+</package>
+
+

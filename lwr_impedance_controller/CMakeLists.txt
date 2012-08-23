@@ -7,7 +7,7 @@ include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
 #  Release        : w/o debug symbols, w/ optimization
 #  RelWithDebInfo : w/ debug symbols, w/ optimization
 #  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+set(ROS_BUILD_TYPE RelWithDebInfo)
 
 rosbuild_init()
 rosbuild_include(rtt_rosnode GenerateRTTtypekit )
@@ -33,3 +33,4 @@ orocos_component(cart_wrench src/CartWrench.cpp)
 orocos_component(cart_imp_trajectory src/CartImpTrajectory.cpp)
 orocos_component(impedance_projection src/ImpedanceProjection.cpp)
 orocos_component(velocity_projection src/VelocityProjection.cpp)
+orocos_component(Force_controller src/ForceController.cpp)

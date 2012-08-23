@@ -23,7 +23,7 @@ VelocityProjector::VelocityProjector(const std::string& name) : TaskContext(name
   this->addEventPort("CommandPeriod", port_command_period);
   // meansurment inputs
   this->addPort("Jacobian", port_jacobian);
-  this->addPort("JointPositionDesired", port_jnt_pos_des);
+  this->addPort("DesiredJointPosition", port_jnt_pos_des);
   // commands outputs
   this->addPort("JointPositionCommand", port_joint_position_command);
 }
@@ -42,6 +42,8 @@ void VelocityProjector::cleanupHook() {
 
 bool VelocityProjector::startHook() {
 
+  jnt_pos_cmd.resize(7);
+
 	if(port_command_period.read(dt) == RTT::NoData) {
 	  RTT::Logger::log(RTT::Logger::Error) << "No comand period data " << RTT::endlog();
 		return false;
@@ -51,10 +53,10 @@ bool VelocityProjector::startHook() {
 	
 	if(port_tool_frame.read(tool_frame_msg) == RTT::NoData) {
 	  RTT::Logger::log(RTT::Logger::Error) << "No tool data " << RTT::endlog();
-	  return false;
+	 // return false;
 	}
 	
-	tf::PoseMsgToKDL(tool_frame_msg, tool_frame);
+	//tf::PoseMsgToKDL(tool_frame_msg, tool_frame);
 
 	return true;
 }
@@ -91,10 +93,13 @@ void VelocityProjector::updateHook() {
         q0_dot(i) = null_vel_cmd[i];
       }
   }
-  
+
   port_mass_matrix.read(M);
   
   port_jnt_pos_des.read(jnt_pos_des);
+
+  for(size_t i = 0; i < 7; i++)
+    q0_dot(i) = -(jnt_pos_des[i]/17.0);
 
   Mi = M.inverse();
   Ji = Mi * jacobian.data.transpose() * (jacobian.data * Mi * jacobian.data.transpose()).inverse();

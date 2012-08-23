@@ -21,6 +21,11 @@
 #include <geometry_msgs/typekit/Types.h>
 #include <lwr_impedance_controller/CartesianImpedance.h>
 
+typedef Eigen::Matrix<double, 7, 6> Matrix76d;
+typedef Eigen::Matrix<double, 7, 7> Matrix77d;
+typedef Eigen::Matrix<double, 7, 1> Vector7d;
+typedef Eigen::Matrix<double, 6, 1> Vector6d;
+
 namespace lwr {
 
 using namespace RTT;
@@ -52,10 +57,13 @@ private:
 	InputPort<geometry_msgs::Wrench> port_cartesian_wrench_command;
   InputPort<double> port_command_period;
   InputPort<std::vector<double> > port_jnt_pos_msr;
+  InputPort<std::vector<double> > port_nullspace_torque_command;
+  InputPort<Matrix77d> port_mass_matrix;
   
   double dt;
 	std::vector<double> jnt_trq_cmd;
 	std::vector<double> jnt_pos;
+	std::vector<double> null_trq_cmd;
 	lwr_fri::FriJointImpedance imp;
 	KDL::Jacobian jacobian;
 	KDL::Frame tool_frame;

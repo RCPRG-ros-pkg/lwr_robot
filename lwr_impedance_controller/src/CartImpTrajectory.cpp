@@ -39,13 +39,13 @@ void CartImpTrajectory::cleanupHook() {
 
 bool CartImpTrajectory::startHook() {
 
-  setpoint_.impedance.stiffness.force.x = 500;
-  setpoint_.impedance.stiffness.force.y = 500;
-  setpoint_.impedance.stiffness.force.z = 500;
+  setpoint_.impedance.stiffness.force.x = 0;
+  setpoint_.impedance.stiffness.force.y = 0;
+  setpoint_.impedance.stiffness.force.z = 0;
 
-  setpoint_.impedance.stiffness.torque.x = 20;
-  setpoint_.impedance.stiffness.torque.y = 20;
-  setpoint_.impedance.stiffness.torque.z = 20;
+  setpoint_.impedance.stiffness.torque.x = 0;
+  setpoint_.impedance.stiffness.torque.y = 0;
+  setpoint_.impedance.stiffness.torque.z = 0;
 
   setpoint_.impedance.damping.force.x = 40.0;
 	setpoint_.impedance.damping.force.y = 40.0;

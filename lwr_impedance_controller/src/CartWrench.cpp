@@ -9,6 +9,10 @@
 
 #include "CartWrench.h"
 #include <tf_conversions/tf_kdl.h>
+#include <Eigen/Dense>
+typedef Eigen::Matrix<double, 6, 1> Vector6d;
+typedef Eigen::Matrix<double, 7, 1> Vector7d;
+typedef Eigen::Matrix<double, 7, 7> Matrix7d;
 
 namespace lwr {
 
@@ -27,10 +31,13 @@ CartWrench::CartWrench(const std::string& name) : TaskContext(name, PreOperation
   this->addPort("Jacobian", port_jacobian);
   this->addPort("CartesianPosition", port_cart_pos_msr);
   this->addPort("JointPosition", port_jnt_pos_msr);
+  this->addPort("MassMatrix", port_mass_matrix);
+  
   // commands outputs
   this->addPort("JointEffortCommand", port_jnt_trq_cmd);
   this->addPort("FriJointImpedance", port_joint_impedance_command);
   this->addPort("JointPositionCommand", port_joint_position_command);
+  this->addPort("NullspaceEffortCommand", port_nullspace_torque_command);
 
 }
 
@@ -49,6 +56,8 @@ void CartWrench::cleanupHook() {
 bool CartWrench::startHook() {
 
 	jnt_trq_cmd.resize(7);
+  jnt_pos.resize(7);
+  null_trq_cmd.resize(7);
 
 	//set detault stiffness and damping
 	cartesian_impedance_command.stiffness.force.x = 500.0;
@@ -100,9 +109,10 @@ bool CartWrench::startHook() {
 	for(size_t i = 0; i < 7; i++) {
 	  imp.stiffness[i] = 0.0;
 	  imp.damping[i] = 0.0;
+	  null_trq_cmd[i] = 0;
 	}
    
-	port_joint_impedance_command.write(imp);
+//	port_joint_impedance_command.write(imp);
 
 	return true;
 }
@@ -122,19 +132,33 @@ void CartWrench::stopHook() {
 
 void CartWrench::updateHook() {
 
+  Matrix7d Kj, Dj;
+  Vector6d Kc, Dc;
+  Matrix77d M, Mi;
+  Matrix76d Ji;
+  Vector7d r0;
+
+
   port_joint_impedance_command.write(imp);
-
   port_command_period.read(dt);
-
   port_jacobian.read(jacobian);
   port_cartesian_impedance_command.read(cartesian_impedance_command);
   port_cartesian_wrench_command.read(cartesian_wrench_command);
+  port_jnt_pos_msr.read(jnt_pos);
+  port_mass_matrix.read(M);
   
   if(port_cartesian_position_command.read(cart_pos_cmd) == RTT::NewData){
     tf::PoseMsgToKDL(cart_pos_cmd, cart_pos_ref);
   }
   
+  if(port_nullspace_torque_command.read(null_trq_cmd) == RTT::NewData) {
+    for(size_t i = 0; i<7; i++)
+      r0(i) = null_trq_cmd[i];
+  }
+  
   port_cart_pos_msr.read(cart_pos_msr);
+
+  jacobian.changeRefFrame(tool_frame.Inverse());
 
   KDL::Frame pos_msr, spring;
 
@@ -181,18 +205,63 @@ void CartWrench::updateHook() {
   wrench(4) += cartesian_wrench_command.torque.y;
   wrench(5) += cartesian_wrench_command.torque.z;
 
-  wrench = tool_frame * wrench;
+  //wrench = tool_frame * wrench;
 
   for(size_t i = 0; i < 6; i++)
     wrench2(i) = wrench(i);
 
-  trq = jacobian.data.transpose() * wrench2;
+  Mi = M.inverse();
+  Ji = Mi * jacobian.data.transpose() * (jacobian.data * Mi * jacobian.data.transpose()).inverse();
 
+  
+  r0(0) = -(2.0*jnt_pos[0]);
+  r0(1) = (2.0*(-1.5 - jnt_pos[1]));
+  r0(2) = (2.0*(1.5 - jnt_pos[2]));
+  r0(3) = (2.0*(1.5 - jnt_pos[3]));
+  r0(4) = -(2.0*jnt_pos[4]);
+  r0(5) = -(2.0*jnt_pos[5]);
+  r0(6) = -(2.0*jnt_pos[6]);
+
+  trq = jacobian.data.transpose() * wrench2 + (Matrix77d::Identity() - Ji * jacobian.data) * r0;
+
+  //std::cout << (Matrix77d::Identity() - Ji * jacobian.data) << std::endl << std::endl;
+  //std::cout << (jacobian.data*jacobian.data.transpose()).determinant() << std::endl;
+  
+  
   for(size_t i = 0; i < 7; i++)
     jnt_trq_cmd[i] = trq(i);
 
-//  RTT::Logger::log(RTT::Logger::Error) << "wrench : " << wrench[0] << " : " << wrench[1] << " : " << wrench[2] << " : " << wrench[3] << " : " << wrench[4] << " : " << wrench[5] << RTT::endlog();
+  // transform stiffness and damping to joint space
 
+  Kc(0) = cartesian_impedance_command.stiffness.force.x;
+  Kc(1) = cartesian_impedance_command.stiffness.force.y;
+  Kc(2) = cartesian_impedance_command.stiffness.force.z;
+  
+  Kc(3) = cartesian_impedance_command.stiffness.torque.x;
+  Kc(4) = cartesian_impedance_command.stiffness.torque.y;
+  Kc(5) = cartesian_impedance_command.stiffness.torque.z;
+
+  Kj = jacobian.data.transpose() * Kc.asDiagonal() * jacobian.data;
+
+  Dc(0) = cartesian_impedance_command.damping.force.x;
+  Dc(1) = cartesian_impedance_command.damping.force.y;
+  Dc(2) = cartesian_impedance_command.damping.force.z;
+  
+  Dc(3) = cartesian_impedance_command.damping.torque.x;
+  Dc(4) = cartesian_impedance_command.damping.torque.y;
+  Dc(5) = cartesian_impedance_command.damping.torque.z;
+
+  Dj = jacobian.data.transpose() * Dc.asDiagonal() * jacobian.data;
+
+//  std::cout << Kj << std::endl << std::endl;
+
+  for(size_t i = 0; i < 7; i++) {
+    imp.stiffness[i] = Kj(i, i);
+    imp.damping[i] = 0.0; //Dj(i, i);
+  }
+
+  port_joint_position_command.write(jnt_pos);
+  port_joint_impedance_command.write(imp);
   port_jnt_trq_cmd.write(jnt_trq_cmd);
   
   geometry_msgs::Pose desired_pos;

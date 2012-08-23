@@ -41,9 +41,7 @@ private:
 	OutputPort<std::vector<double> >  port_jnt_trq_cmd;
 	OutputPort<lwr_fri::FriJointImpedance> port_joint_impedance_command;
 	InputPort<std::vector<double> > port_joint_position_command;
-	
-	OutputPort<geometry_msgs::Pose> port_desired_cartesian_position;
-	
+
 	InputPort<KDL::Jacobian>  port_jacobian;
 	InputPort<geometry_msgs::Pose> port_cart_pos_msr;
   InputPort<geometry_msgs::Pose> port_tool_frame;

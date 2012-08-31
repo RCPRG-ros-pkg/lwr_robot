@@ -9,10 +9,6 @@
 
 #include "CartWrench.h"
 #include <tf_conversions/tf_kdl.h>
-#include <Eigen/Dense>
-typedef Eigen::Matrix<double, 6, 1> Vector6d;
-typedef Eigen::Matrix<double, 7, 1> Vector7d;
-typedef Eigen::Matrix<double, 7, 7> Matrix7d;
 
 namespace lwr {
 
@@ -46,7 +42,7 @@ CartWrench::~CartWrench() {
 }
 
 bool CartWrench::configureHook() {
-	return true;
+  return true;
 }
 
 void CartWrench::cleanupHook() {
@@ -55,66 +51,65 @@ void CartWrench::cleanupHook() {
 
 bool CartWrench::startHook() {
 
-	jnt_trq_cmd.resize(7);
+  jnt_trq_cmd.resize(7);
   jnt_pos.resize(7);
   null_trq_cmd.resize(7);
 
-	//set detault stiffness and damping
-	cartesian_impedance_command.stiffness.force.x = 500.0;
-	cartesian_impedance_command.stiffness.force.y = 500.0;
-	cartesian_impedance_command.stiffness.force.z = 500.0;
+  //set detault stiffness and damping
+  cartesian_impedance_command.stiffness.force.x = 1000.0;
+  cartesian_impedance_command.stiffness.force.y = 1000.0;
+  cartesian_impedance_command.stiffness.force.z = 1000.0;
 
-	cartesian_impedance_command.stiffness.torque.x = 20.0;
-	cartesian_impedance_command.stiffness.torque.y = 20.0;
-	cartesian_impedance_command.stiffness.torque.z = 20.0;
+  cartesian_impedance_command.stiffness.torque.x = 100.0;
+  cartesian_impedance_command.stiffness.torque.y = 100.0;
+  cartesian_impedance_command.stiffness.torque.z = 100.0;
 
-	cartesian_impedance_command.damping.force.x = 40.0;
-	cartesian_impedance_command.damping.force.y = 40.0;
-	cartesian_impedance_command.damping.force.z = 40.0;
+  cartesian_impedance_command.damping.force.x = 0.7;
+  cartesian_impedance_command.damping.force.y = 0.7;
+  cartesian_impedance_command.damping.force.z = 0.7;
 
-	cartesian_impedance_command.damping.torque.x = 0.80;
-	cartesian_impedance_command.damping.torque.y = 0.80;
-	cartesian_impedance_command.damping.torque.z = 0.80;
+  cartesian_impedance_command.damping.torque.x = 0.70;
+  cartesian_impedance_command.damping.torque.y = 0.70;
+  cartesian_impedance_command.damping.torque.z = 0.70;
 
-	//set commanded force to zero
-	cartesian_wrench_command.force.x = 0.0;
-	cartesian_wrench_command.force.y = 0.0;
-	cartesian_wrench_command.force.z = 0.0;
-	cartesian_wrench_command.torque.x = 0.0;
-	cartesian_wrench_command.torque.y = 0.0;
-	cartesian_wrench_command.torque.z = 0.0;
+  //set commanded force to zero
+  cartesian_wrench_command.force.x = 0.0;
+  cartesian_wrench_command.force.y = 0.0;
+  cartesian_wrench_command.force.z = 0.0;
+  cartesian_wrench_command.torque.x = 0.0;
+  cartesian_wrench_command.torque.y = 0.0;
+  cartesian_wrench_command.torque.z = 0.0;
   
-	if(port_cart_pos_msr.read(cart_pos_msr) == RTT::NoData) {
-	  RTT::Logger::log(RTT::Logger::Error) << "No position data " << RTT::endlog();
-		return false;
-	}
-	
-	if(port_command_period.read(dt) == RTT::NoData) {
-	  RTT::Logger::log(RTT::Logger::Error) << "No comand period data " << RTT::endlog();
-		return false;
-	}
-	
-	geometry_msgs::Pose tool_frame_msg;
-	
-	if(port_tool_frame.read(tool_frame_msg) == RTT::NoData) {
-	  RTT::Logger::log(RTT::Logger::Error) << "No tool data " << RTT::endlog();
-	  return false;
-	}
-	
-	tf::PoseMsgToKDL(tool_frame_msg, tool_frame);
-	tf::PoseMsgToKDL(cart_pos_msr, cart_pos_ref);
-  cart_pos_ref = cart_pos_ref * tool_frame;
-	cart_pos_old = cart_pos_ref;
+  if(port_cart_pos_msr.read(cart_pos_msr) == RTT::NoData) {
+    RTT::Logger::log(RTT::Logger::Error) << "No position data " << RTT::endlog();
+    return false;
+  }
 
-	for(size_t i = 0; i < 7; i++) {
-	  imp.stiffness[i] = 0.0;
-	  imp.damping[i] = 0.0;
-	  null_trq_cmd[i] = 0;
-	}
+  if(port_command_period.read(dt) == RTT::NoData) {
+    RTT::Logger::log(RTT::Logger::Error) << "No comand period data " << RTT::endlog();
+    return false;
+  }
+  geometry_msgs::Pose tool_frame_msg;
+
+  if(port_tool_frame.read(tool_frame_msg) == RTT::NoData) {
+    RTT::Logger::log(RTT::Logger::Error) << "No tool data " << RTT::endlog();
+    tool_frame = KDL::Frame::Identity();
+  } else {
+    tf::PoseMsgToKDL(tool_frame_msg, tool_frame);
+  }
+  tf::PoseMsgToKDL(cart_pos_msr, cart_pos_ref);
+//  cart_pos_ref = cart_pos_ref * tool_frame;
+  cart_pos_old = cart_pos_ref;
+
+  for(size_t i = 0; i < 7; i++) {
+    imp.stiffness[i] = 0.0;
+    imp.damping[i] = 0.0;
+    null_trq_cmd[i] = 0;
+  }
    
 //	port_joint_impedance_command.write(imp);
 
-	return true;
+  return true;
 }
 
 void CartWrench::stopHook() {
@@ -122,22 +117,34 @@ void CartWrench::stopHook() {
   port_jnt_pos_msr.read(jnt_pos);
   port_joint_position_command.write(jnt_pos);
 
-	for(size_t i = 0; i < 7; i++) {
-	  imp.stiffness[i] = 200.0;
-	  imp.damping[i] = 0.8;
-	}
-	
-	port_joint_impedance_command.write(imp);
+  for(size_t i = 0; i < 7; i++) {
+    imp.stiffness[i] = 200.0;
+    imp.damping[i] = 0.8;
+  }
+
+  port_joint_impedance_command.write(imp);
+}
+
+double jointLimitTrq(double hl, double ll, double ls, double r_max, double q) {
+
+  if(q > (hl - ls)) {
+    return -1 * ((q - hl + ls)/ls) * ((q - hl + ls)/ls) * r_max;
+  } else if(q < (ll + ls)) {
+    return ((ll + ls - q)/ls) * ((ll + ls - q)/ls) * r_max;
+  } else {
+    return 0.0;
+  }
+  
 }
 
 void CartWrench::updateHook() {
 
-  Matrix7d Kj, Dj;
-  Vector6d Kc, Dc;
-  Matrix77d M, Mi;
-  Matrix76d Ji;
+  Matrix77d Kj, Dj;
+  Vector6d Kc, Dxi, v, K0;
+  Matrix77d M, Mi, N, N3;
+  Matrix76d Ji, jT;
   Vector7d r0;
-
+  Matrix66d A ,A1, Kc1, Dc, Q;
 
   port_joint_impedance_command.write(imp);
   port_command_period.read(dt);
@@ -158,14 +165,55 @@ void CartWrench::updateHook() {
   
   port_cart_pos_msr.read(cart_pos_msr);
 
-  jacobian.changeRefFrame(tool_frame.Inverse());
+//  jacobian.changeRefFrame(tool_frame.Inverse());
 
   KDL::Frame pos_msr, spring;
 
   tf::PoseMsgToKDL(cart_pos_msr, pos_msr);
 
-  pos_msr = pos_msr * tool_frame;
+//  pos_msr = pos_msr * tool_frame;
 
+  Kc(0) = cartesian_impedance_command.stiffness.force.x;
+  Kc(1) = cartesian_impedance_command.stiffness.force.y;
+  Kc(2) = cartesian_impedance_command.stiffness.force.z;
+  
+  Kc(3) = cartesian_impedance_command.stiffness.torque.x;
+  Kc(4) = cartesian_impedance_command.stiffness.torque.y;
+  Kc(5) = cartesian_impedance_command.stiffness.torque.z;
+  
+  Dxi(0) = cartesian_impedance_command.damping.force.x;
+  Dxi(1) = cartesian_impedance_command.damping.force.y;
+  Dxi(2) = cartesian_impedance_command.damping.force.z;
+  
+  Dxi(3) = cartesian_impedance_command.damping.torque.x;
+  Dxi(4) = cartesian_impedance_command.damping.torque.y;
+  Dxi(5) = cartesian_impedance_command.damping.torque.z;
+  
+  jT = jacobian.data.transpose();
+  
+  Mi = M.inverse();
+//  Ji = Mi * jacobian.data.transpose() * (jacobian.data * Mi * jacobian.data.transpose()).inverse();
+//  N = (Matrix77d::Identity() - Ji * jacobian.data);
+  
+  A = (jacobian.data * Mi * jT).inverse();
+  N3 = (Matrix77d::Identity() - jT * A * jacobian.data * Mi);
+  
+  /*
+  Eigen::SelfAdjointEigenSolver<Matrix66d> esA(A);
+  A1= esA.operatorSqrt();
+
+  Eigen::SelfAdjointEigenSolver<Matrix66d> esK(Kc.asDiagonal());
+  Kc1= esK.operatorSqrt();
+  
+  Dc = A1*Dxi.asDiagonal()*Kc1 + Kc1*Dxi.asDiagonal()*A1;
+  */
+  
+  es.compute(Kc.asDiagonal(), A);
+  K0 = es.eigenvalues();
+  Q = es.eigenvectors().inverse();
+
+  Dc = 2 * Q.transpose() * Dxi.asDiagonal() * K0.cwiseSqrt().asDiagonal() * Q;
+  
   // calculate stiffness component
 
   spring = pos_msr.Inverse() * cart_pos_ref;
@@ -177,12 +225,12 @@ void CartWrench::updateHook() {
 
   KDL::Wrench wrench;
 
-  wrench(0) = tw.vel.x() * cartesian_impedance_command.stiffness.force.x;
-  wrench(1) = tw.vel.y() * cartesian_impedance_command.stiffness.force.y;
-  wrench(2) = tw.vel.z() * cartesian_impedance_command.stiffness.force.z;
-  wrench(3) = tw.rot.x() * cartesian_impedance_command.stiffness.torque.x;
-  wrench(4) = tw.rot.y() * cartesian_impedance_command.stiffness.torque.y;
-  wrench(5) = tw.rot.z() * cartesian_impedance_command.stiffness.torque.z;
+  wrench2(0) = tw.vel.x() * cartesian_impedance_command.stiffness.force.x;
+  wrench2(1) = tw.vel.y() * cartesian_impedance_command.stiffness.force.y;
+  wrench2(2) = tw.vel.z() * cartesian_impedance_command.stiffness.force.z;
+  wrench2(3) = tw.rot.x() * cartesian_impedance_command.stiffness.torque.x;
+  wrench2(4) = tw.rot.y() * cartesian_impedance_command.stiffness.torque.y;
+  wrench2(5) = tw.rot.z() * cartesian_impedance_command.stiffness.torque.z;
 
   // calculate damping component
   KDL::Frame cart_pos_diff = cart_pos_old.Inverse() * pos_msr;
@@ -190,71 +238,46 @@ void CartWrench::updateHook() {
 
   KDL::Twist vel = KDL::diff(KDL::Frame::Identity(), cart_pos_diff);
 
-  wrench(0) -= ((vel.vel.x() / dt)) * cartesian_impedance_command.damping.force.x;
-  wrench(1) -= ((vel.vel.y() / dt)) * cartesian_impedance_command.damping.force.y;
-  wrench(2) -= ((vel.vel.z() / dt)) * cartesian_impedance_command.damping.force.z;
-  wrench(3) -= ((vel.rot.x() / dt)) * cartesian_impedance_command.damping.torque.x;
-  wrench(4) -= ((vel.rot.y() / dt)) * cartesian_impedance_command.damping.torque.y;
-  wrench(5) -= ((vel.rot.z() / dt)) * cartesian_impedance_command.damping.torque.z;
+  v(0) = ((vel.vel.x() / dt));
+  v(1) = ((vel.vel.y() / dt));
+  v(2) = ((vel.vel.z() / dt));
+  v(3) = ((vel.rot.x() / dt));
+  v(4) = ((vel.rot.y() / dt));
+  v(5) = ((vel.rot.z() / dt));
 
-	//add additional force/torque
-  wrench(0) += cartesian_wrench_command.force.x;
-  wrench(1) += cartesian_wrench_command.force.y;
-  wrench(2) += cartesian_wrench_command.force.z;
-  wrench(3) += cartesian_wrench_command.torque.x;
-  wrench(4) += cartesian_wrench_command.torque.y;
-  wrench(5) += cartesian_wrench_command.torque.z;
-
-  //wrench = tool_frame * wrench;
-
-  for(size_t i = 0; i < 6; i++)
-    wrench2(i) = wrench(i);
-
-  Mi = M.inverse();
-  Ji = Mi * jacobian.data.transpose() * (jacobian.data * Mi * jacobian.data.transpose()).inverse();
-
+  wrench2 -= Dc.diagonal().asDiagonal() * v;
+  //add additional force/torque
+  wrench2(0) += cartesian_wrench_command.force.x;
+  wrench2(1) += cartesian_wrench_command.force.y;
+  wrench2(2) += cartesian_wrench_command.force.z;
+  wrench2(3) += cartesian_wrench_command.torque.x;
+  wrench2(4) += cartesian_wrench_command.torque.y;
+  wrench2(5) += cartesian_wrench_command.torque.z;
   
-  r0(0) = -(2.0*jnt_pos[0]);
-  r0(1) = (2.0*(-1.5 - jnt_pos[1]));
-  r0(2) = (2.0*(1.5 - jnt_pos[2]));
-  r0(3) = (2.0*(1.5 - jnt_pos[3]));
-  r0(4) = -(2.0*jnt_pos[4]);
-  r0(5) = -(2.0*jnt_pos[5]);
-  r0(6) = -(2.0*jnt_pos[6]);
+  r0(0) = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos[0]);
+  r0(1) = jointLimitTrq(2.09, -2.09, 0.26, 10.0, jnt_pos[1]);
+  r0(2) = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos[2]);
+  r0(3) = jointLimitTrq(2.09, -2.09, 0.26, 10.0, jnt_pos[3]);
+  r0(4) = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos[4]);
+  r0(5) = jointLimitTrq(2.09, -2.09, 0.26, 10.0, jnt_pos[5]);
+  r0(6) = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos[6]);
 
-  trq = jacobian.data.transpose() * wrench2 + (Matrix77d::Identity() - Ji * jacobian.data) * r0;
+  trq = jT * wrench2 + N3 * r0;
 
-  //std::cout << (Matrix77d::Identity() - Ji * jacobian.data) << std::endl << std::endl;
-  //std::cout << (jacobian.data*jacobian.data.transpose()).determinant() << std::endl;
-  
-  
   for(size_t i = 0; i < 7; i++)
     jnt_trq_cmd[i] = trq(i);
 
   // transform stiffness and damping to joint space
+  Kj = jT * Kc.asDiagonal() * jacobian.data;
 
-  Kc(0) = cartesian_impedance_command.stiffness.force.x;
-  Kc(1) = cartesian_impedance_command.stiffness.force.y;
-  Kc(2) = cartesian_impedance_command.stiffness.force.z;
+//  Dj = jacobian.data.transpose() * Dc * jacobian.data;
+
+//  Matrix66d tmp1 = (Q * Q.transpose());
+//  Matrix66d tmp2 = Kc.asDiagonal();
+//  Matrix66d tmp3 = Q*K0.asDiagonal()*Q.transpose();
   
-  Kc(3) = cartesian_impedance_command.stiffness.torque.x;
-  Kc(4) = cartesian_impedance_command.stiffness.torque.y;
-  Kc(5) = cartesian_impedance_command.stiffness.torque.z;
-
-  Kj = jacobian.data.transpose() * Kc.asDiagonal() * jacobian.data;
-
-  Dc(0) = cartesian_impedance_command.damping.force.x;
-  Dc(1) = cartesian_impedance_command.damping.force.y;
-  Dc(2) = cartesian_impedance_command.damping.force.z;
+//  std::cout << A << std::endl << "A" << std::endl << tmp1 << std::endl << "QQT" << std::endl << tmp2 << std::endl << "Kc" << std::endl << tmp3 << std::endl << "Q*K0*QT" << std::endl;
   
-  Dc(3) = cartesian_impedance_command.damping.torque.x;
-  Dc(4) = cartesian_impedance_command.damping.torque.y;
-  Dc(5) = cartesian_impedance_command.damping.torque.z;
-
-  Dj = jacobian.data.transpose() * Dc.asDiagonal() * jacobian.data;
-
-//  std::cout << Kj << std::endl << std::endl;
-
   for(size_t i = 0; i < 7; i++) {
     imp.stiffness[i] = Kj(i, i);
     imp.damping[i] = 0.0; //Dj(i, i);

@@ -39,21 +39,21 @@ void CartImpTrajectory::cleanupHook() {
 
 bool CartImpTrajectory::startHook() {
 
-  setpoint_.impedance.stiffness.force.x = 0;
-  setpoint_.impedance.stiffness.force.y = 0;
-  setpoint_.impedance.stiffness.force.z = 0;
+  setpoint_.impedance.stiffness.force.x = 1000;
+  setpoint_.impedance.stiffness.force.y = 1000;
+  setpoint_.impedance.stiffness.force.z = 1000;
 
-  setpoint_.impedance.stiffness.torque.x = 0;
-  setpoint_.impedance.stiffness.torque.y = 0;
-  setpoint_.impedance.stiffness.torque.z = 0;
+  setpoint_.impedance.stiffness.torque.x = 100;
+  setpoint_.impedance.stiffness.torque.y = 100;
+  setpoint_.impedance.stiffness.torque.z = 100;
 
-  setpoint_.impedance.damping.force.x = 40.0;
-	setpoint_.impedance.damping.force.y = 40.0;
-	setpoint_.impedance.damping.force.z = 40.0;
+  setpoint_.impedance.damping.force.x = 0.7;
+  setpoint_.impedance.damping.force.y = 0.7;
+  setpoint_.impedance.damping.force.z = 0.7;
 
-	setpoint_.impedance.damping.torque.x = 0.80;
-	setpoint_.impedance.damping.torque.y = 0.80;
-	setpoint_.impedance.damping.torque.z = 0.80;
+  setpoint_.impedance.damping.torque.x = 0.70;
+  setpoint_.impedance.damping.torque.y = 0.70;
+  setpoint_.impedance.damping.torque.z = 0.70;
 
   setpoint_.wrench.force.x = 0.0;
   setpoint_.wrench.force.y = 0.0;
@@ -71,12 +71,14 @@ bool CartImpTrajectory::startHook() {
   setpoint_.velocity.angular.y = 0.0;
   setpoint_.velocity.angular.z = 0.0;
 
-  tool_frame.M = KDL::Rotation::RPY(0.0, -1.57079633, 0.0);
-  tool_frame.p = KDL::Vector(-0.115, 0.0, -0.055);
+  tool_frame.M = KDL::Rotation::RPY(0.0, 0.0, 0.0);
+  tool_frame.p = KDL::Vector(-0.0, 0.0, -0.0);
   
   if(port_cart_pos_msr.read(setpoint_.pose) == RTT::NoData) {
 	  return false;
 	}
+
+  std::cout << "initial pose : [ " << setpoint_.pose.position.x << " " << setpoint_.pose.position.y << " " << setpoint_.pose.position.z << " ]  [ " << setpoint_.pose.orientation.x << " " << setpoint_.pose.orientation.y << " " << setpoint_.pose.orientation.z << " " << setpoint_.pose.orientation.w << " ]" << std::endl;
   
   geometry_msgs::Pose tool_frame_msg;
   
@@ -95,7 +97,7 @@ bool CartImpTrajectory::startHook() {
   valid_trajectory_ = false;
   dt_ = 0.001;
 
-	return true;
+  return true;
 }
 
 void CartImpTrajectory::stopHook() {
@@ -114,7 +116,7 @@ void CartImpTrajectory::updateHook() {
       last_point_ = setpoint_;
       last_point_.time_from_start = ros::Duration(0);
       time_ = 0;
-      
+        std::cout << "initial pose : [ " << setpoint_.pose.position.x << " " << setpoint_.pose.position.y << " " << setpoint_.pose.position.z << " ]  [ " << setpoint_.pose.orientation.x << " " << setpoint_.pose.orientation.y << " " << setpoint_.pose.orientation.z << " " << setpoint_.pose.orientation.w << " ]" << std::endl;
       valid_trajectory_ = true;
     }
   }
@@ -137,7 +139,7 @@ void CartImpTrajectory::updateHook() {
     
     ++time_;
   }
-
+  
   port_cart_position_cmd.write(setpoint_.pose);
   port_cartesian_impedance_cmd.write(setpoint_.impedance);
   port_cart_wrench_cmd.write(setpoint_.wrench);
@@ -161,8 +163,10 @@ CartImpTrajectory::sampleInterpolation() {
     double segStartTime = last_point_.time_from_start.toSec();
     double segEndTime = trajectory_.trajectory[trajectory_index_].time_from_start.toSec();
     
- //   RTT::Logger::log(RTT::Logger::Error) << "trj " << trajectory_index_ << " : " << trajectory_.trajectory[trajectory_index_].pose.position.x << " y " << trajectory_.trajectory[trajectory_index_].pose.position.x << " z " << trajectory_.trajectory[trajectory_index_].pose.position.x << RTT::endlog();
-    
+ //std::cout << "initial pose : [ " << trajectory_.trajectory[trajectory_index_].pose.position.x << " " << trajectory_.trajectory[trajectory_index_].pose.position.y << " " << trajectory_.trajectory[trajectory_index_].pose.position.z << " ]  [ " << trajectory_.trajectory[trajectory_index_].pose.orientation.x << " " << trajectory_.trajectory[trajectory_index_].pose.orientation.y << " " << trajectory_.trajectory[trajectory_index_].pose.orientation.z << " " << trajectory_.trajectory[trajectory_index_].pose.orientation.w << " ]" << std::endl;
+
+    next_point = setpoint_;
+ 
     // interpolate position
     // x
     next_point.pose.position.x = linearlyInterpolate
@@ -220,11 +224,13 @@ CartImpTrajectory::sampleInterpolation() {
     next_point.impedance.stiffness.torque.z = linearlyInterpolate
       (timeFromStart, segStartTime, segEndTime, 
        last_point_.impedance.stiffness.torque.z, trajectory_.trajectory[trajectory_index_].impedance.stiffness.torque.z);  
-
+/*
+    next_point.impedance.damping = trajectory_.trajectory[trajectory_index_].impedance.damping;
     next_point.wrench = trajectory_.trajectory[trajectory_index_].wrench;
-
-//  RTT::Logger::log(RTT::Logger::Error) << "msr : " << next_point.pose.position.x << " y " << next_point.pose.position.y << " z " << next_point.pose.position.z << RTT::endlog();
-  
+*/
+ // RTT::Logger::log(RTT::Logger::Error) << "pos : " << next_point.pose.position.x << " y " << next_point.pose.position.y << " z " << next_point.pose.position.z << RTT::endlog();
+//  RTT::Logger::log(RTT::Logger::Error) << "stf : " << next_point.impedance.stiffness.force.x << " y " << next_point.impedance.stiffness.force.x << " z " << next_point.impedance.stiffness.force.x << " rx " << next_point.impedance.stiffness.torque.x << " rz " << next_point.impedance.stiffness.torque.x << " rz " << next_point.impedance.stiffness.torque.z << RTT::endlog();
+//  RTT::Logger::log(RTT::Logger::Error) << "dmp : " << next_point.impedance.damping.force.x << " y " << next_point.impedance.damping.force.x << " z " << next_point.impedance.damping.force.x << " rx " << next_point.impedance.damping.torque.x << " rz " << next_point.impedance.damping.torque.x << " rz " << next_point.impedance.damping.torque.z << RTT::endlog();
   return next_point;
 }
 

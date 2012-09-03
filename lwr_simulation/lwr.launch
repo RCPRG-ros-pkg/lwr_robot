@@ -1,5 +1,9 @@
 <launch>
-  <include file="$(find gazebo_worlds)/launch/empty_world_throttled.launch"/>
-  <include file="$(find lwr_simulation)/robots/kuka_lwr.launch"/>
-  <include file="$(find lwr_simulation)/controllers/lwr_arms_trajectory_controllers.launch" />
+  <!-- load world -->
+  <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find lwr_simulation)/worlds/empty_throttled.world" output="screen" respawn="false" />
+  <!-- load robot -->
+  <param name="/use_sim_time" value="true"/>
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find lwr_defs)/robots/kuka_lwr_arm.urdf.xml'" /> 
+  <node name="spawn_lwr" pkg="gazebo" type="spawn_model" args="-urdf -param robot_description -model kuka-lwr-arm -paused=true" respawn="false" output="screen" />
+
 </launch>

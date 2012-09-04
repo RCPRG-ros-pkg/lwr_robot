@@ -41,10 +41,6 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
       boost::bind(&LWRController::UpdateChild, this));
   gzdbg << "plugin model name: " << modelName << "\n";
 
-  if (_sdf->HasElement("base")){
-    this->base_frame_ = _sdf->GetElement("base")->GetValueString();
-  }
-  
   // get parameter name
   this->robotPrefix = "";
   if (_sdf->HasElement("robotPrefix"))
@@ -130,11 +126,8 @@ void LWRController::GetRobotChain()
     ROS_ERROR("Failed to construct kdl tree");
   }
 
-  if(base_frame_.size() != 0){
-    chain_start = base_frame_;
-  } else {
-    chain_start = std::string("calib_") + this->robotPrefix + "_arm_base_link";
-  }
+  chain_start = std::string("calib_") + this->robotPrefix + "_arm_base_link";
+  
   chain_end = this->robotPrefix + "_arm_7_link";
   my_tree.getChain(chain_start, chain_end, chain_);
   
@@ -244,7 +237,8 @@ void LWRController::UpdateChild()
     }
     
   } else {
-    cnt = 0;
+    if(cnt > 0)
+      --cnt;
   }
 }
 

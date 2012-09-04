@@ -1,9 +1,17 @@
 <launch>
+
+  <arg name="gui" default="true"/>
+  
   <!-- load world -->
   <node name="gazebo" pkg="gazebo" type="gazebo" args="$(find lwr_simulation)/worlds/empty_throttled.world" output="screen" respawn="false" />
+  
   <!-- load robot -->
   <param name="/use_sim_time" value="true"/>
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find lwr_defs)/robots/kuka_lwr_arm.urdf.xml'" /> 
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find lwr_defs)/robots/kuka_lwr_arm.urdf.xml'" />   
   <node name="spawn_lwr" pkg="gazebo" type="spawn_model" args="-urdf -param robot_description -model kuka-lwr-arm -paused=true" respawn="false" output="screen" />
 
+  <!-- start gui -->
+  <group if="$(arg gui)">
+    <node name="gazebo_gui" pkg="gazebo" type="gui" respawn="false" output="screen"/>
+  </group>
 </launch>

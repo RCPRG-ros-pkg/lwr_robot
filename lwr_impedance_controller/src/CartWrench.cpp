@@ -68,9 +68,9 @@ bool CartWrench::startHook() {
   cartesian_impedance_command.damping.force.y = 0.7;
   cartesian_impedance_command.damping.force.z = 0.7;
 
-  cartesian_impedance_command.damping.torque.x = 0.70;
-  cartesian_impedance_command.damping.torque.y = 0.70;
-  cartesian_impedance_command.damping.torque.z = 0.70;
+  cartesian_impedance_command.damping.torque.x = 0.7;
+  cartesian_impedance_command.damping.torque.y = 0.7;
+  cartesian_impedance_command.damping.torque.z = 0.7;
 
   //set commanded force to zero
   cartesian_wrench_command.force.x = 0.0;
@@ -106,9 +106,7 @@ bool CartWrench::startHook() {
     imp.damping[i] = 0.0;
     null_trq_cmd[i] = 0;
   }
-   
-//	port_joint_impedance_command.write(imp);
-
+  
   return true;
 }
 
@@ -198,21 +196,11 @@ void CartWrench::updateHook() {
   A = (jacobian.data * Mi * jT).inverse();
   N3 = (Matrix77d::Identity() - jT * A * jacobian.data * Mi);
   
-  /*
-  Eigen::SelfAdjointEigenSolver<Matrix66d> esA(A);
-  A1= esA.operatorSqrt();
-
-  Eigen::SelfAdjointEigenSolver<Matrix66d> esK(Kc.asDiagonal());
-  Kc1= esK.operatorSqrt();
-  
-  Dc = A1*Dxi.asDiagonal()*Kc1 + Kc1*Dxi.asDiagonal()*A1;
-  */
-  
   es.compute(Kc.asDiagonal(), A);
   K0 = es.eigenvalues();
   Q = es.eigenvectors().inverse();
 
-  Dc = 2 * Q.transpose() * Dxi.asDiagonal() * K0.cwiseSqrt().asDiagonal() * Q;
+  Dc = Q.transpose() * Dxi.asDiagonal() * K0.cwiseSqrt().asDiagonal() * Q;
   
   // calculate stiffness component
 
@@ -245,7 +233,13 @@ void CartWrench::updateHook() {
   v(4) = ((vel.rot.y() / dt));
   v(5) = ((vel.rot.z() / dt));
 
-  wrench2 -= Dc.diagonal().asDiagonal() * v;
+  wrench2(0) -= Dc.diagonal()(0) * v(0);
+  wrench2(1) -= Dc.diagonal()(1) * v(1);
+  wrench2(2) -= Dc.diagonal()(2) * v(2);
+  wrench2(3) -= Dc.diagonal()(3) * v(3);
+  wrench2(4) -= Dc.diagonal()(4) * v(4);
+  wrench2(5) -= Dc.diagonal()(5) * v(5);
+  
   //add additional force/torque
   wrench2(0) += cartesian_wrench_command.force.x;
   wrench2(1) += cartesian_wrench_command.force.y;
@@ -272,12 +266,6 @@ void CartWrench::updateHook() {
 
 //  Dj = jacobian.data.transpose() * Dc * jacobian.data;
 
-//  Matrix66d tmp1 = (Q * Q.transpose());
-//  Matrix66d tmp2 = Kc.asDiagonal();
-//  Matrix66d tmp3 = Q*K0.asDiagonal()*Q.transpose();
-  
-//  std::cout << A << std::endl << "A" << std::endl << tmp1 << std::endl << "QQT" << std::endl << tmp2 << std::endl << "Kc" << std::endl << tmp3 << std::endl << "Q*K0*QT" << std::endl;
-  
   for(size_t i = 0; i < 7; i++) {
     imp.stiffness[i] = Kj(i, i);
     imp.damping[i] = 0.0; //Dj(i, i);

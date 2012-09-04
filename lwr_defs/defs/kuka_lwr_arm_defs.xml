@@ -47,7 +47,7 @@
 
     <gazebo reference="calib_${name}_arm_base_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
 
     <!-- Second segment of the arm. Joint along z-axis -->
@@ -91,7 +91,7 @@
 
     <gazebo reference="${name}_arm_1_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -102,8 +102,8 @@
 
     <!-- Third segment of the arm. Joint along y-axis -->
     <joint name="${name}_arm_1_joint" type="revolute">
-      <origin xyz="0 0 0.20" rpy="${-0.5 * M_PI} 0 0"/>
-      <axis xyz="0 0 1"/>
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
       <safety_controller soft_lower_limit="${-118 * M_PI / 180}"
@@ -124,7 +124,7 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 -0.2 0" rpy="${-0.5 * M_PI} 0 0"/>
+        <origin xyz="0 0 0.2" rpy="${M_PI} 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_b.dae"/>
         </geometry>
@@ -132,7 +132,7 @@
       </visual>
 
       <collision>
-        <origin xyz="0 -0.2 0" rpy="${-0.5 * M_PI} 0 0"/>
+        <origin xyz="0 0 0.2" rpy="${M_PI} 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
@@ -141,7 +141,7 @@
 
     <gazebo reference="${name}_arm_2_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
@@ -152,7 +152,7 @@
 
     <!-- Fourth element of the arm. z-axis -->
     <joint name="${name}_arm_2_joint" type="revolute">
-      <origin xyz="0 -0.20 0" rpy="${0.5 * M_PI} 0 0"/>
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
@@ -191,7 +191,7 @@
 
     <gazebo reference="${name}_arm_3_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -202,8 +202,8 @@
 
     <!-- fifth element of the arm. x-axis -->
     <joint name="${name}_arm_3_joint" type="revolute">
-      <origin xyz="0 0 0.20" rpy="${0.5 * M_PI} 0 0"/>
-      <axis xyz="0 0 1"/>
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
+      <axis xyz="0 -1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
       <safety_controller soft_lower_limit="${-118 * M_PI / 180}"
@@ -224,7 +224,7 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0.2 0" rpy="${0.5 * M_PI} ${M_PI} 0"/>
+        <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_b.dae"/>
         </geometry>
@@ -232,7 +232,7 @@
       </visual>
 
       <collision>
-        <origin xyz="0 0.2 0" rpy="${0.5 * M_PI} ${M_PI} 0"/>
+        <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
@@ -241,7 +241,7 @@
 
     <gazebo reference="${name}_arm_4_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_3_trans" type="SimpleTransmission">
@@ -252,7 +252,7 @@
 
     <!-- Sixth element of the arm. z-axis -->
     <joint name="${name}_arm_4_joint" type="revolute">
-      <origin xyz="0 0.2 0.0" rpy="${-0.5 * M_PI} 0 0"/>
+      <origin xyz="0 0 0.20" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
@@ -291,7 +291,7 @@
 
     <gazebo reference="${name}_arm_5_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
@@ -301,8 +301,8 @@
     </transmission>
 
     <joint name="${name}_arm_5_joint" type="revolute">
-      <origin xyz="0 0 0.19" rpy="${-0.5 * M_PI} 0 0"/>
-      <axis xyz="0 0 1"/>
+      <origin xyz="0 0 0.19" rpy="0 0 0"/>
+      <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
       <safety_controller soft_lower_limit="${-118 * M_PI / 180}"
@@ -323,7 +323,7 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0" rpy="${0.5 * M_PI} 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/arm_wrist.dae"/>
         </geometry>
@@ -331,7 +331,7 @@
       </visual>
 
       <collision>
-        <origin xyz="0 0 0" rpy="${0.5 * M_PI} 0 0"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>
         </geometry>
@@ -340,7 +340,7 @@
 
     <gazebo reference="${name}_arm_6_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -350,7 +350,7 @@
     </transmission>
 
     <joint name="${name}_arm_6_joint" type="revolute">
-      <origin xyz="0 -0.078 0" rpy="${0.5 * M_PI} 0 0"/>
+      <origin xyz="0 0 0.078" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
@@ -370,13 +370,13 @@
         <cuboid_inertia_def length="1" width="1" height="1"
                             mass="0.2"/>
       </inertial>
-<!--      <visual>
+      <visual>
         <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
         <geometry>
-          <mesh filename="package://ias_robot_defs/meshes/kimp/arm_flanche.dae"/>
+          <cylinder radius="0.04" length="0.05"/>
         </geometry>
         <material name="Grey"/>
-      </visual> -->
+      </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
         <geometry>
@@ -387,7 +387,7 @@
 
     <gazebo reference="${name}_arm_7_link">
       <material value="kuka-lwr.material"/>
-	  <turnGravityOff>true</turnGravityOff>
+<turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">

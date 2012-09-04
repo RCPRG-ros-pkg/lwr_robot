@@ -3,12 +3,11 @@
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
 
   <gazebo>
-    <controller:gazebo_ros_controller_manager name="gazebo_controller_manager" plugin="libgazebo_ros_controller_manager.so">
+    <controller:lwr_controller name="lwr_controller" plugin="liblwr_controller.so">
       <alwaysOn>true</alwaysOn>
-      <robotParam>robot_description</robotParam>
-      <updateRate>1000.0</updateRate>
-      <interface:audio name="gazebo_mechanism_control_dummy_iface" />
-    </controller:gazebo_ros_controller_manager>
+      <robotPrefix>lwr</robotPrefix>
+      <remotePort>49938</remotePort>
+    </controller:lwr_controller>
   </gazebo>
 
 </robot>

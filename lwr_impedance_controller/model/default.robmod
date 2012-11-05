@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dwds:Component xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dwds="http://dupa.org/robmod.ecore" type2="Library">
+  <composition type="CartesianImpedance"/>
+  <composition type="NullSpaceProjection">
+    <handlers name="Projection" trigeredBy="//@composition.1/@inputPorts.0 //@composition.1/@inputPorts.1 //@composition.1/@inputPorts.2" generates="//@composition.1/@outputPorts.0"/>
+    <inputPorts dataType="KDL::Jacobian" name="Jacobian" trigger="//@composition.1/@handlers.0"/>
+    <inputPorts dataType="Matrix77d" name="MassMatrix" trigger="//@composition.1/@handlers.0"/>
+    <inputPorts dataType="std::vector&lt;double>" name="NullSpaceTorque" trigger="//@composition.1/@handlers.0"/>
+    <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
+  </composition>
+  <composition type="JointLimitsAvoidance">
+    <handlers name="Avoidance" trigeredBy="//@composition.2/@inputPorts.0" generates="//@composition.2/@outputPorts.0"/>
+    <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.2/@handlers.0"/>
+    <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
+  </composition>
+  <composition type="SingularityAvoidance">
+    <handlers name="Avoidance" trigeredBy="//@composition.3/@inputPorts.0" generates="//@composition.3/@outputPorts.0"/>
+    <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.3/@handlers.0"/>
+    <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
+    <properties name="threshold" type="double" value="0.4"/>
+    <properties name="gain" type="double" value="10.0"/>
+  </composition>
+</dwds:Component>

@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dwds:Component xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dwds="http://dupa.org/robmod.ecore" type2="Library">
-  <composition type="CartesianImpedance"/>
+  <composition type="CartesianImpedance">
+    <handlers name="ImpedanceControl" trigeredBy="//@composition.0/@inputPorts.2 //@composition.0/@inputPorts.3 //@composition.0/@inputPorts.1 //@composition.0/@inputPorts.0 //@composition.0/@inputPorts.4" generates="//@composition.0/@outputPorts.2 //@composition.0/@outputPorts.1 //@composition.0/@outputPorts.0"/>
+    <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.0/@handlers.0"/>
+    <inputPorts dataType="geometry_msgs::Pose" name="CartesianPosition" trigger="//@composition.0/@handlers.0"/>
+    <inputPorts dataType="KDL::Jacobian" name="Jacobian" trigger="//@composition.0/@handlers.0"/>
+    <inputPorts dataType="Matrix77d" name="MassMatrix" trigger="//@composition.0/@handlers.0"/>
+    <inputPorts dataType="geometry_msgs::Pose" name="CartesianPositionCommand" trigger="//@composition.0/@handlers.0"/>
+    <inputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand"/>
+    <inputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand"/>
+    <inputPorts dataType="geometry_msgs::Pose" name="Tool"/>
+    <inputPorts dataType="std::vector&lt;double>" name="JointVelocity" description=""/>
+    <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
+    <outputPorts dataType="lwr_fri::FriJointImpedance" name="JointImpedanceCommand"/>
+    <outputPorts dataType="std::vector&lt;double>" name="JointPositionCommand"/>
+  </composition>
   <composition type="NullSpaceProjection">
     <handlers name="Projection" trigeredBy="//@composition.1/@inputPorts.0 //@composition.1/@inputPorts.1 //@composition.1/@inputPorts.2" generates="//@composition.1/@outputPorts.0"/>
     <inputPorts dataType="KDL::Jacobian" name="Jacobian" trigger="//@composition.1/@handlers.0"/>
@@ -19,5 +33,14 @@
     <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
     <properties name="threshold" type="double" value="0.4"/>
     <properties name="gain" type="double" value="10.0"/>
+  </composition>
+  <composition type="ImpedanceTrajectoryGenerator">
+    <handlers name="Generate" trigeredBy="//@composition.4/@inputPorts.0" generates="//@composition.4/@outputPorts.0 //@composition.4/@outputPorts.1 //@composition.4/@outputPorts.2"/>
+    <handlers name="NewTrajectory" trigeredBy="//@composition.4/@inputPorts.1"/>
+    <inputPorts dataType="geometry_msgs::Pose" name="CartesianPosition" description="" trigger="//@composition.4/@handlers.0"/>
+    <inputPorts dataType="lwr_impedance_controller::CartImpTrajectory" name="ImpedanceTrajectory" trigger="//@composition.4/@handlers.1"/>
+    <outputPorts dataType="geometry_msgs::Pose" name="CartesianPositionCommand"/>
+    <outputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand"/>
+    <outputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand"/>
   </composition>
 </dwds:Component>

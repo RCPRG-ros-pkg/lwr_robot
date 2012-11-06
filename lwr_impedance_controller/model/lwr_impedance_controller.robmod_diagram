@@ -4,9 +4,78 @@
     <children xmi:type="notation:Shape" xmi:id="_fWwoICXYEeKMqvZ0RI1ECg" type="2003" fontName="Ubuntu">
       <children xmi:type="notation:DecorationNode" xmi:id="_fWxPMCXYEeKMqvZ0RI1ECg" type="5003"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_fWxPMSXYEeKMqvZ0RI1ECg" type="5007"/>
-      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_fWwoISXYEeKMqvZ0RI1ECg" hint="Robmod"/>
+      <children xmi:type="notation:Shape" xmi:id="_ac5rMCdiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac5rMidiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac5rMSdiEeKTXdH5jZKJ8A" x="-8" y="74"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac5rMydiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac6SQCdiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac5rNCdiEeKTXdH5jZKJ8A" x="-8" y="102"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac6SQSdiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac6SQydiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac6SQidiEeKTXdH5jZKJ8A" x="-8" y="130"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac6SRCdiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac6SRidiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.3"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac6SRSdiEeKTXdH5jZKJ8A" x="-8" y="158"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac65UCdiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac65UidiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.4"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac65USdiEeKTXdH5jZKJ8A" x="-8" y="186"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac65UydiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac65VSdiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.5"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac65VCdiEeKTXdH5jZKJ8A" x="-8" y="214"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac65VidiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac7gYCdiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.6"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac65VydiEeKTXdH5jZKJ8A" x="-8" y="242"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_ac7gYSdiEeKTXdH5jZKJ8A" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac7gYydiEeKTXdH5jZKJ8A" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.7"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac7gYidiEeKTXdH5jZKJ8A" x="-8" y="270"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_ac7gZCdiEeKTXdH5jZKJ8A" type="3002">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac7gaSdiEeKTXdH5jZKJ8A" type="5006"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_ac7gZSdiEeKTXdH5jZKJ8A"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_ac7gZidiEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_ac7gZydiEeKTXdH5jZKJ8A"/>
+        <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.0/@outputPorts.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac7gaCdiEeKTXdH5jZKJ8A" x="257" y="120"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_ac8HcCdiEeKTXdH5jZKJ8A" type="3002">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac8HdSdiEeKTXdH5jZKJ8A" type="5006"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_ac8HcSdiEeKTXdH5jZKJ8A"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_ac8HcidiEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_ac8HcydiEeKTXdH5jZKJ8A"/>
+        <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.0/@outputPorts.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac8HdCdiEeKTXdH5jZKJ8A" x="236" y="145"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_ac8HdidiEeKTXdH5jZKJ8A" type="3002">
+        <children xmi:type="notation:DecorationNode" xmi:id="_ac8HeydiEeKTXdH5jZKJ8A" type="5006"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_ac8HdydiEeKTXdH5jZKJ8A"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_ac8HeCdiEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_ac8HeSdiEeKTXdH5jZKJ8A"/>
+        <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.0/@outputPorts.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_ac8HeidiEeKTXdH5jZKJ8A" x="252" y="170"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_Pj35oCgGEeKHJMrXXpEK_w" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_Pj4gsCgGEeKHJMrXXpEK_w" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.8"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Pj35oSgGEeKHJMrXXpEK_w"/>
+      </children>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_fWwoISXYEeKMqvZ0RI1ECg" diagramLink="_YbdfQCdfEeKTXdH5jZKJ8A" hint="Robmod"/>
       <element xmi:type="dwds:Component" href="default.robmod#//@composition.0"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fWwoIiXYEeKMqvZ0RI1ECg" x="90" y="85" width="237" height="281"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_fWwoIiXYEeKMqvZ0RI1ECg" x="115" y="85" width="366" height="311"/>
     </children>
     <children xmi:type="notation:Shape" xmi:id="_ky-ZMCXYEeKMqvZ0RI1ECg" type="2003" fontName="Ubuntu">
       <children xmi:type="notation:DecorationNode" xmi:id="_ky_AQCXYEeKMqvZ0RI1ECg" type="5003"/>
@@ -77,6 +146,47 @@
       <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_qSvYESXZEeKMqvZ0RI1ECg" diagramLink="_q5EYQCXZEeKMqvZ0RI1ECg" hint="Robmod"/>
       <element xmi:type="dwds:Component" href="default.robmod#//@composition.3"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_qSvYEiXZEeKMqvZ0RI1ECg" x="525" y="325" width="266" height="66"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_hQ2JUCgUEeKHJMrXXpEK_w" type="2003" fontName="Ubuntu">
+      <children xmi:type="notation:DecorationNode" xmi:id="_hQ2wYCgUEeKHJMrXXpEK_w" type="5003"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_hQ2wYSgUEeKHJMrXXpEK_w" type="5007"/>
+      <children xmi:type="notation:Node" xmi:id="_m58f0CgUEeKHJMrXXpEK_w" type="3002">
+        <children xmi:type="notation:DecorationNode" xmi:id="_m59G4CgUEeKHJMrXXpEK_w" type="5006"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_m58f0SgUEeKHJMrXXpEK_w"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_m58f0igUEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_m58f0ygUEeKHJMrXXpEK_w"/>
+        <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.4/@outputPorts.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_m58f1CgUEeKHJMrXXpEK_w" x="229" y="55"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_pW2AECgUEeKHJMrXXpEK_w" type="3002">
+        <children xmi:type="notation:DecorationNode" xmi:id="_pW3OMCgUEeKHJMrXXpEK_w" type="5006"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_pW2nICgUEeKHJMrXXpEK_w"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_pW2nISgUEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_pW2nIigUEeKHJMrXXpEK_w"/>
+        <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.4/@outputPorts.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_pW2nIygUEeKHJMrXXpEK_w" x="230" y="57"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_rlKRwCgUEeKHJMrXXpEK_w" type="3002">
+        <children xmi:type="notation:DecorationNode" xmi:id="_rlK40CgUEeKHJMrXXpEK_w" type="5006"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_rlKRwSgUEeKHJMrXXpEK_w"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_rlKRwigUEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_rlKRwygUEeKHJMrXXpEK_w"/>
+        <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.4/@outputPorts.2"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_rlKRxCgUEeKHJMrXXpEK_w" x="213" y="57"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_tUux8CgUEeKHJMrXXpEK_w" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_tUux8igUEeKHJMrXXpEK_w" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.4/@inputPorts.0"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_tUux8SgUEeKHJMrXXpEK_w"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_0kHJwCgUEeKHJMrXXpEK_w" type="3001" fontName="Ubuntu">
+        <children xmi:type="notation:DecorationNode" xmi:id="_0kHJwigUEeKHJMrXXpEK_w" type="5005"/>
+        <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.4/@inputPorts.1"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0kHJwSgUEeKHJMrXXpEK_w"/>
+      </children>
+      <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_hQ2JUSgUEeKHJMrXXpEK_w" diagramLink="_I1n7ICgVEeKHJMrXXpEK_w" hint="Robmod"/>
+      <element xmi:type="dwds:Component" href="default.robmod#//@composition.4"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_hQ2JUigUEeKHJMrXXpEK_w" x="115" y="410" width="366" height="146"/>
     </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_eYBvASXYEeKMqvZ0RI1ECg"/>
     <element xmi:type="dwds:Component" href="default.robmod#/"/>
@@ -230,6 +340,235 @@
       <element xsi:nil="true"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_R-VjkiXaEeKMqvZ0RI1ECg" points="[-37, -5, 47, 0]$[-76, -5, 8, 0]"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_R-XYwCXaEeKMqvZ0RI1ECg" id="(0.9207920792079208,0.5)"/>
+    </edges>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_YbdfQCdfEeKTXdH5jZKJ8A" type="Robmod" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_de4V0CdfEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_de484CdfEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_de4V0SdfEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_de4V0idfEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_de4V0ydfEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_de4V1CdfEeKTXdH5jZKJ8A" x="164" y="152"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_iM3H4CdfEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_iM4WACdfEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_iM3u8CdfEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_iM3u8SdfEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_iM3u8idfEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_iM3u8ydfEeKTXdH5jZKJ8A" x="140" y="185"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_msSgkCdfEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_msTusCdfEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_msSgkSdfEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_msTHoCdfEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_msTHoSdfEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.2"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_msTHoidfEeKTXdH5jZKJ8A" x="185" y="215"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_rCN_ACdfEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_rCOmECdfEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_rCN_ASdfEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_rCN_AidfEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_rCN_AydfEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.3"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_rCN_BCdfEeKTXdH5jZKJ8A" x="175" y="240"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_5bysoCdfEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_5bz6wCdfEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_5bysoSdfEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_5bysoidfEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_5bysoydfEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.4"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_5byspCdfEeKTXdH5jZKJ8A" x="90" y="305"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_CxG2MCdgEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_CxIEUCdgEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_CxG2MSdgEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_CxG2MidgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_CxG2MydgEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.5"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CxG2NCdgEeKTXdH5jZKJ8A" x="90" y="335"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_FVQN8CdgEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_FVRcECdgEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_FVQ1ACdgEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_FVQ1ASdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_FVQ1AidgEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.6"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FVQ1AydgEeKTXdH5jZKJ8A" x="70" y="365"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_IxAjICdgEeKTXdH5jZKJ8A" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_IxBKMCdgEeKTXdH5jZKJ8A" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_IxAjISdgEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_IxAjIidgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_IxAjIydgEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.0/@inputPorts.7"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IxAjJCdgEeKTXdH5jZKJ8A" x="205" y="415"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_YcrKwCdgEeKTXdH5jZKJ8A" type="2001">
+      <children xmi:type="notation:DecorationNode" xmi:id="_YcrKxSdgEeKTXdH5jZKJ8A" type="5001"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_YcrKwSdgEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_YcrKwidgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_YcrKwydgEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.0/@outputPorts.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_YcrKxCdgEeKTXdH5jZKJ8A" x="517" y="151"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_aClYoCdgEeKTXdH5jZKJ8A" type="2001">
+      <children xmi:type="notation:DecorationNode" xmi:id="_aCl_sCdgEeKTXdH5jZKJ8A" type="5001"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_aClYoSdgEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_aClYoidgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_aClYoydgEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.0/@outputPorts.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_aClYpCdgEeKTXdH5jZKJ8A" x="522" y="191"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_izIBMCdgEeKTXdH5jZKJ8A" type="2001">
+      <children xmi:type="notation:DecorationNode" xmi:id="_izJPUCdgEeKTXdH5jZKJ8A" type="5001"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_izIBMSdgEeKTXdH5jZKJ8A"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_izIBMidgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_izIBMydgEeKTXdH5jZKJ8A"/>
+      <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.0/@outputPorts.2"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_izIBNCdgEeKTXdH5jZKJ8A" x="527" y="233"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_0do7ICdgEeKTXdH5jZKJ8A" type="2002" fontName="Ubuntu">
+      <children xmi:type="notation:DecorationNode" xmi:id="_0do7IidgEeKTXdH5jZKJ8A" type="5002"/>
+      <element xmi:type="dwds:Handler" href="default.robmod#//@composition.0/@handlers.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_0do7ISdgEeKTXdH5jZKJ8A" x="386" y="294"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_YbeGUCdfEeKTXdH5jZKJ8A"/>
+    <element xmi:type="dwds:Component" href="default.robmod#//@composition.0"/>
+    <edges xmi:type="notation:Connector" xmi:id="_2rn1oCdgEeKTXdH5jZKJ8A" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_msSgkCdfEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_2rn1oSdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_2rn1oidgEeKTXdH5jZKJ8A" points="[-21, -12, 133, 75]$[-148, -87, 6, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_2r3GMCdgEeKTXdH5jZKJ8A" id="(0.918918918918919,0.6)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_3ilS0CdgEeKTXdH5jZKJ8A" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_rCN_ACdfEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_3ilS0SdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_3ilS0idgEeKTXdH5jZKJ8A" points="[-21, -9, 134, 54]$[-145, -63, 10, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_3inIACdgEeKTXdH5jZKJ8A" id="(0.8850574712643678,0.55)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_4W1aQCdgEeKTXdH5jZKJ8A" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_iM3H4CdfEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_4W1aQSdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_4W1aQidgEeKTXdH5jZKJ8A" points="[-21, -17, 128, 98]$[-146, -115, 3, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_4W5EoCdgEeKTXdH5jZKJ8A" id="(0.9752066115702479,0.7)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_5Fq2MCdgEeKTXdH5jZKJ8A" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_de4V0CdfEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_5Fq2MSdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_5Fq2MidgEeKTXdH5jZKJ8A" points="[-21, -20, 131, 131]$[-145, -151, 7, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_5FtScCdgEeKTXdH5jZKJ8A" id="(0.9285714285714286,0.55)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_6L43YCdgEeKTXdH5jZKJ8A" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_5bysoCdfEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_6L43YSdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_6L43YidgEeKTXdH5jZKJ8A" points="[-21, 0, 129, 0]$[-142, -1, 8, -1]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_6L9I0CdgEeKTXdH5jZKJ8A" id="(0.9542857142857143,0.45)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_6uJP4CdgEeKTXdH5jZKJ8A" type="4008" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_izIBMCdgEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_6uJP4SdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_6uJP4idgEeKTXdH5jZKJ8A" points="[21, -12, -103, 55]$[120, -67, -4, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_6uMTMCdgEeKTXdH5jZKJ8A" id="(0.02631578947368421,0.7)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_7O7owCdgEeKTXdH5jZKJ8A" type="4008" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_aClYoCdgEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_7O7owSdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_7O7owidgEeKTXdH5jZKJ8A" points="[21, -19, -106, 95]$[115, -115, -12, -1]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_7O9d8CdgEeKTXdH5jZKJ8A" id="(0.07142857142857142,0.45)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_72di0CdgEeKTXdH5jZKJ8A" type="4008" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_YcrKwCdgEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_72di0SdgEeKTXdH5jZKJ8A" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_72di0idgEeKTXdH5jZKJ8A" points="[15, -20, -101, 132]$[110, -152, -6, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_72f_ECdgEeKTXdH5jZKJ8A" id="(0.04081632653061224,0.55)"/>
+    </edges>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_I1n7ICgVEeKHJMrXXpEK_w" type="Robmod" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_I3zFYCgVEeKHJMrXXpEK_w" type="2001">
+      <children xmi:type="notation:DecorationNode" xmi:id="_I3zFZSgVEeKHJMrXXpEK_w" type="5001"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_I3zFYSgVEeKHJMrXXpEK_w"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_I3zFYigVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_I3zFYygVEeKHJMrXXpEK_w"/>
+      <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.4/@outputPorts.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I3zFZCgVEeKHJMrXXpEK_w" x="460" y="170"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_I3zFZigVEeKHJMrXXpEK_w" type="2001">
+      <children xmi:type="notation:DecorationNode" xmi:id="_I3zscCgVEeKHJMrXXpEK_w" type="5001"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_I3zFZygVEeKHJMrXXpEK_w"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_I3zFaCgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_I3zFaSgVEeKHJMrXXpEK_w"/>
+      <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.4/@outputPorts.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I3zFaigVEeKHJMrXXpEK_w" x="460" y="200"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_I3zscSgVEeKHJMrXXpEK_w" type="2001">
+      <children xmi:type="notation:DecorationNode" xmi:id="_I3zsdigVEeKHJMrXXpEK_w" type="5001"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_I3zscigVEeKHJMrXXpEK_w"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_I3zscygVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_I3zsdCgVEeKHJMrXXpEK_w"/>
+      <element xmi:type="dwds:OutputPort" href="default.robmod#//@composition.4/@outputPorts.2"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I3zsdSgVEeKHJMrXXpEK_w" x="460" y="230"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_I3zsdygVEeKHJMrXXpEK_w" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_I30TgCgVEeKHJMrXXpEK_w" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_I3zseCgVEeKHJMrXXpEK_w"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_I3zseSgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_I3zseigVEeKHJMrXXpEK_w"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.4/@inputPorts.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I3zseygVEeKHJMrXXpEK_w" x="110" y="195"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_I30TgSgVEeKHJMrXXpEK_w" type="2004">
+      <children xmi:type="notation:DecorationNode" xmi:id="_I30ThigVEeKHJMrXXpEK_w" type="5004"/>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_I30TgigVEeKHJMrXXpEK_w"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_I30TgygVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <styles xmi:type="notation:LineStyle" xmi:id="_I30ThCgVEeKHJMrXXpEK_w"/>
+      <element xmi:type="dwds:InputPort" href="default.robmod#//@composition.4/@inputPorts.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I30ThSgVEeKHJMrXXpEK_w" x="95" y="335"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_NLV-MCgVEeKHJMrXXpEK_w" type="2002" fontName="Ubuntu">
+      <children xmi:type="notation:DecorationNode" xmi:id="_NLWlQCgVEeKHJMrXXpEK_w" type="5002"/>
+      <element xmi:type="dwds:Handler" href="default.robmod#//@composition.4/@handlers.0"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_NLV-MSgVEeKHJMrXXpEK_w" x="313" y="209"/>
+    </children>
+    <children xmi:type="notation:Shape" xmi:id="_Ock8kCgVEeKHJMrXXpEK_w" type="2002" fontName="Ubuntu">
+      <children xmi:type="notation:DecorationNode" xmi:id="_OcmKsCgVEeKHJMrXXpEK_w" type="5002"/>
+      <element xmi:type="dwds:Handler" href="default.robmod#//@composition.4/@handlers.1"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Ock8kSgVEeKHJMrXXpEK_w" x="328" y="334"/>
+    </children>
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_I1n7ISgVEeKHJMrXXpEK_w"/>
+    <element xmi:type="dwds:Component" href="default.robmod#//@composition.4"/>
+    <edges xmi:type="notation:Connector" xmi:id="_P9VksCgVEeKHJMrXXpEK_w" type="4004" source="_NLV-MCgVEeKHJMrXXpEK_w" target="_I3zsdygVEeKHJMrXXpEK_w">
+      <styles xmi:type="notation:FontStyle" xmi:id="_P9VksSgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_P9VksigVEeKHJMrXXpEK_w" points="[-35, -7, 92, 18]$[-117, -26, 10, -1]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_P9v0YCgVEeKHJMrXXpEK_w" id="(0.9173553719008265,0.45)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_Qj1kACgVEeKHJMrXXpEK_w" type="4008" source="_NLV-MCgVEeKHJMrXXpEK_w" target="_I3zFYCgVEeKHJMrXXpEK_w">
+      <styles xmi:type="notation:FontStyle" xmi:id="_Qj1kASgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_Qj1kAigVEeKHJMrXXpEK_w" points="[36, -15, -89, 35]$[112, -51, -13, -1]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_Qj4AQCgVEeKHJMrXXpEK_w" id="(0.07428571428571429,0.45)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_RJyJsCgVEeKHJMrXXpEK_w" type="4008" source="_NLV-MCgVEeKHJMrXXpEK_w" target="_I3zFZigVEeKHJMrXXpEK_w">
+      <styles xmi:type="notation:FontStyle" xmi:id="_RJyJsSgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RJyJsigVEeKHJMrXXpEK_w" points="[36, -6, -82, 12]$[112, -18, -6, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RJ3pQCgVEeKHJMrXXpEK_w" id="(0.034482758620689655,0.55)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_RuYEgCgVEeKHJMrXXpEK_w" type="4008" source="_NLV-MCgVEeKHJMrXXpEK_w" target="_I3zscSgVEeKHJMrXXpEK_w">
+      <styles xmi:type="notation:FontStyle" xmi:id="_RuYEgSgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_RuYEgigVEeKHJMrXXpEK_w" points="[36, 4, -83, -11]$[112, 15, -7, 0]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_RubH0CgVEeKHJMrXXpEK_w" id="(0.03664921465968586,0.7)"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_SV3iUCgVEeKHJMrXXpEK_w" type="4004" source="_Ock8kCgVEeKHJMrXXpEK_w" target="_I30TgSgVEeKHJMrXXpEK_w">
+      <styles xmi:type="notation:FontStyle" xmi:id="_SV3iUSgVEeKHJMrXXpEK_w" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_SV3iUigVEeKHJMrXXpEK_w" points="[-50, -4, 96, 6]$[-140, -11, 6, -1]"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_SV5XgCgVEeKHJMrXXpEK_w" id="(0.958041958041958,0.45)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>

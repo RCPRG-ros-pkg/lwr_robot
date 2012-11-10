@@ -12,20 +12,21 @@ public:
   JointLimitsAvoidance(const std::string & name) : TaskContext(name) {
     JointPosition_trig = false;
 
+
+  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&JointLimitsAvoidance::JointPosition_onData, this, _1)).doc("");
+
+	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
   }
 
   ~JointLimitsAvoidance(){
   }
 
   bool configureHook() {
-  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&JointLimitsAvoidance::JointPosition_onData, this, _1)).doc("");
-
-	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
-
 
     // Start of user code configureHook
-    // TODO Put implementation of configureHook here !!!
-    // End of user code
+	jnt_pos_.resize(7);
+	jnt_trq_.resize(7);
+	// End of user code
     return true;
   }
 
@@ -53,7 +54,17 @@ private:
 
   void doAvoidance() {
     // Start of user code Avoidance
-	// TODO Put implementation of handler here !!!
+	port_JointPosition.read(jnt_pos_);
+
+	jnt_trq_[0] = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos_[0]);
+	jnt_trq_[1] = jointLimitTrq(2.09, -2.09, 0.26, 10.0, jnt_pos_[1]);
+	jnt_trq_[2] = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos_[2]);
+	jnt_trq_[3] = jointLimitTrq(2.09, -2.09, 0.26, 10.0, jnt_pos_[3]);
+	jnt_trq_[4] = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos_[4]);
+	jnt_trq_[5] = jointLimitTrq(2.09, -2.09, 0.26, 10.0, jnt_pos_[5]);
+	jnt_trq_[6] = jointLimitTrq(2.96, -2.96, 0.26, 10.0, jnt_pos_[6]);
+
+	port_JointTorqueCommand.write(jnt_trq_);
 	// End of user code
   }
 
@@ -69,7 +80,18 @@ private:
   bool JointPosition_trig;
 
   // Start of user code userData
-  // TODO userData !!!
+  std::vector<double> jnt_pos_;
+  std::vector<double> jnt_trq_;
+
+  double jointLimitTrq(double hl, double ll, double ls, double r_max, double q) {
+    if(q > (hl - ls)) {
+      return -1 * ((q - hl + ls)/ls) * ((q - hl + ls)/ls) * r_max;
+    } else if(q < (ll + ls)) {
+      return ((ll + ls - q)/ls) * ((ll + ls - q)/ls) * r_max;
+    } else {
+      return 0.0;
+    }
+  }
   // End of user code
 
 };

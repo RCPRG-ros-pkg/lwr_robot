@@ -224,14 +224,11 @@ CartImpTrajectory::sampleInterpolation() {
     next_point.impedance.stiffness.torque.z = linearlyInterpolate
       (timeFromStart, segStartTime, segEndTime, 
        last_point_.impedance.stiffness.torque.z, trajectory_.trajectory[trajectory_index_].impedance.stiffness.torque.z);  
-/*
+
     next_point.impedance.damping = trajectory_.trajectory[trajectory_index_].impedance.damping;
     next_point.wrench = trajectory_.trajectory[trajectory_index_].wrench;
-*/
- // RTT::Logger::log(RTT::Logger::Error) << "pos : " << next_point.pose.position.x << " y " << next_point.pose.position.y << " z " << next_point.pose.position.z << RTT::endlog();
-//  RTT::Logger::log(RTT::Logger::Error) << "stf : " << next_point.impedance.stiffness.force.x << " y " << next_point.impedance.stiffness.force.x << " z " << next_point.impedance.stiffness.force.x << " rx " << next_point.impedance.stiffness.torque.x << " rz " << next_point.impedance.stiffness.torque.x << " rz " << next_point.impedance.stiffness.torque.z << RTT::endlog();
-//  RTT::Logger::log(RTT::Logger::Error) << "dmp : " << next_point.impedance.damping.force.x << " y " << next_point.impedance.damping.force.x << " z " << next_point.impedance.damping.force.x << " rx " << next_point.impedance.damping.torque.x << " rz " << next_point.impedance.damping.torque.x << " rz " << next_point.impedance.damping.torque.z << RTT::endlog();
-  return next_point;
+
+    return next_point;
 }
 
 }

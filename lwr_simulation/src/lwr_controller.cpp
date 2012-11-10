@@ -120,11 +120,11 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   m_msr_data.robot.control = FRI_CTRL_JNT_IMP;
   m_msr_data.intf.state = FRI_STATE_MON;
   m_msr_data.robot.power = 0xFFFF;
+
   m_msr_data.robot.error = 0x0000;
   m_msr_data.robot.warning = 0x0000;
   m_msr_data.intf.desiredCmdSampleTime = 0.001;
   m_msr_data.intf.desiredMsrSampleTime = 0.001;
-  
   
   cnt = 0;
 }
@@ -159,7 +159,7 @@ void LWRController::UpdateChild()
 
   for(unsigned int i = 0; i< 7; i++)
   {
-    m_msr_data.data.msrJntPos[i] = pos(i) = joint_pos(i) = joints_[i]->GetAngle(0).GetAsRadian();
+    m_msr_data.data.cmdJntPos[i] = m_msr_data.data.msrJntPos[i] = pos(i) = joint_pos(i) = joints_[i]->GetAngle(0).GetAsRadian();
     joint_vel(i) = joints_[i]->GetVelocity(0);
   }
 

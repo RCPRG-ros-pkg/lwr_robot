@@ -54,6 +54,14 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   if (_sdf->HasElement("remoteIP"))
     this->remote = _sdf->GetElement("remoteIP")->GetValueString();
 
+  chain_start = std::string("calib_") + this->robotPrefix + "_arm_base_link";
+  if (_sdf->HasElement("baseLink"))
+    this->chain_start = _sdf->GetElement("baseLink")->GetValueString();
+
+  chain_end = this->robotPrefix + "_arm_7_link";
+  if (_sdf->HasElement("toolLink"))
+    this->chain_end = _sdf->GetElement("toolLink")->GetValueString();
+    
   gzdbg << "remote : " << remote << " : " << remote_port << "\n";
   
   if (!ros::isInitialized())
@@ -107,18 +115,22 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
 	remoteAddr.sin_addr.s_addr = inet_addr(remote.c_str());
 	remoteAddr.sin_port = htons(remote_port);
   
+  bzero((char *) &m_msr_data, sizeof(tFriMsrData));
 	
   m_msr_data.robot.control = FRI_CTRL_JNT_IMP;
   m_msr_data.intf.state = FRI_STATE_MON;
   m_msr_data.robot.power = 0xFFFF;
+  m_msr_data.robot.error = 0x0000;
+  m_msr_data.robot.warning = 0x0000;
   m_msr_data.intf.desiredCmdSampleTime = 0.001;
+  m_msr_data.intf.desiredMsrSampleTime = 0.001;
+  
   
   cnt = 0;
 }
 
 void LWRController::GetRobotChain()
 {
-  std::string chain_start, chain_end;
   KDL::Tree my_tree;
   std::string robot_desc_string;
   rosnode_->param("robot_description", robot_desc_string, std::string());
@@ -126,9 +138,6 @@ void LWRController::GetRobotChain()
     ROS_ERROR("Failed to construct kdl tree");
   }
 
-  chain_start = std::string("calib_") + this->robotPrefix + "_arm_base_link";
-  
-  chain_end = this->robotPrefix + "_arm_7_link";
   my_tree.getChain(chain_start, chain_end, chain_);
   
   dyn = new KDL::ChainDynParam(chain_, KDL::Vector(0.0, 0.0, -9.81));
@@ -194,6 +203,8 @@ void LWRController::UpdateChild()
   {
     m_msr_data.intf.state = FRI_STATE_MON;
   }
+  
+  
   
   //send msr data
   if (0 > sendto(socketFd, (void*) &m_msr_data, sizeof(m_msr_data), 0,

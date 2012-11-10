@@ -20,15 +20,18 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 #uncomment if you have defined messages
 rosbuild_genmsg()
 #uncomment if you have defined services
-#rosbuild_gensrv()
+rosbuild_gensrv()
 
 rosbuild_find_ros_package(rtt )
 find_package(Orocos-RTT HINTS ${rtt_PACKAGE_PATH}/../install )
 
 include(${OROCOS-RTT_USE_FILE_PATH}/UseOROCOS-RTT.cmake)
  
+ros_generate_rtt_typekit(lwr_impedance_controller)
+ 
 orocos_component(cartesianimpedance src/CartesianImpedance.cpp)
 orocos_component(nullspaceprojection src/NullSpaceProjection.cpp)
 orocos_component(jointlimitsavoidance src/JointLimitsAvoidance.cpp)
 orocos_component(singularityavoidance src/SingularityAvoidance.cpp)
 orocos_component(impedancetrajectorygenerator src/ImpedanceTrajectoryGenerator.cpp)
+orocos_component(sumvectors2 src/SumVectors2.cpp)

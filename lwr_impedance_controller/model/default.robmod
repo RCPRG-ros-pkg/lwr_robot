@@ -10,7 +10,7 @@
     <inputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand"/>
     <inputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand"/>
     <inputPorts dataType="geometry_msgs::Pose" name="Tool"/>
-    <inputPorts dataType="std::vector&lt;double>" name="JointVelocity" description=""/>
+    <inputPorts dataType="geometry_msgs::Twist" name="CartesianVelocity" description=""/>
     <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
     <outputPorts dataType="lwr_fri::FriJointImpedance" name="JointImpedanceCommand"/>
     <outputPorts dataType="std::vector&lt;double>" name="JointPositionCommand"/>
@@ -42,5 +42,11 @@
     <outputPorts dataType="geometry_msgs::Pose" name="CartesianPositionCommand"/>
     <outputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand"/>
     <outputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand"/>
+  </composition>
+  <composition type="SumVectors2">
+    <handlers name="Sum" trigeredBy="//@composition.5/@inputPorts.1 //@composition.5/@inputPorts.0" generates="//@composition.5/@outputPorts.0"/>
+    <inputPorts dataType="std::vector&lt;double>" name="Input2" trigger="//@composition.5/@handlers.0"/>
+    <inputPorts dataType="std::vector&lt;double>" name="Input1" trigger="//@composition.5/@handlers.0"/>
+    <outputPorts dataType="std::vector&lt;double>" name="Output"/>
   </composition>
 </dwds:Component>

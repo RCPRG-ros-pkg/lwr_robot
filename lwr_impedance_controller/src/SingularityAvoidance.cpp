@@ -14,16 +14,16 @@ public:
 
     threshold_prop = 0.4;
     gain_prop = 10.0;
+
+  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&SingularityAvoidance::JointPosition_onData, this, _1)).doc("");
+
+	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
   }
 
   ~SingularityAvoidance(){
   }
 
   bool configureHook() {
-  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&SingularityAvoidance::JointPosition_onData, this, _1)).doc("");
-
-	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
-
 	this->addProperty("threshold", threshold_prop);
 	this->addProperty("gain", gain_prop);
 

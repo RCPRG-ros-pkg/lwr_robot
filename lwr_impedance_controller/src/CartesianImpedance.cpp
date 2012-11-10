@@ -35,12 +35,7 @@ public:
     MassMatrix_trig = false;
     CartesianPositionCommand_trig = false;
 
-  }
 
-  ~CartesianImpedance(){
-  }
-
-  bool configureHook() {
   	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&CartesianImpedance::JointPosition_onData, this, _1)).doc("");
   	this->ports()->addEventPort("CartesianPosition", port_CartesianPosition, boost::bind(&CartesianImpedance::CartesianPosition_onData, this, _1)).doc("");
   	this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&CartesianImpedance::Jacobian_onData, this, _1)).doc("");
@@ -49,12 +44,17 @@ public:
 	this->ports()->addPort("CartesianWrenchCommand", port_CartesianWrenchCommand).doc("");
 	this->ports()->addPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand).doc("");
 	this->ports()->addPort("Tool", port_Tool).doc("");
-	this->ports()->addPort("JointVelocity", port_JointVelocity).doc("");
+	this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
 
 	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
 	this->ports()->addPort("JointImpedanceCommand", port_JointImpedanceCommand).doc("");
 	this->ports()->addPort("JointPositionCommand", port_JointPositionCommand).doc("");
+  }
 
+  ~CartesianImpedance(){
+  }
+
+  bool configureHook() {
 
     // Start of user code configureHook
 		tau_.resize(7);
@@ -75,7 +75,6 @@ public:
 
   void stopHook() {
     // Start of user code stopHook
-		// TODO Put implementation of stopHook here !!!
 		// End of user code
   }
 
@@ -98,6 +97,7 @@ private:
 		lwr_impedance_controller::CartesianImpedance cart_imp;
 		lwr_fri::FriJointImpedance jnt_imp;
 		geometry_msgs::Pose cart_pos, cart_pos_cmd, tool_pos;
+		geometry_msgs::Twist cart_vel;
 		Matrix77d Kj, Dj;
 		Vector6d Kc, Dxi,K0;
 		Matrix77d M, Mi, N;
@@ -106,7 +106,6 @@ private:
 		Vector6d F;
 		Vector4d e;
 		Matrix66d A, A1, Kc1, Dc, Q;
-		Eigen::Map<Vector7d> v(&jnt_vel_[0]);
 
 		Eigen::GeneralizedSelfAdjointEigenSolver<Matrix66d> es;
 
@@ -116,7 +115,7 @@ private:
 		port_CartesianPosition.read(cart_pos);
 		port_CartesianPositionCommand.read(cart_pos_cmd);
 		port_CartesianImpedanceCommand.read(cart_imp);
-		port_JointVelocity.read(jnt_vel_);
+		port_CartesianVelocity.read(cart_vel);
 
 		tf::PoseMsgToKDL(cart_pos, T);
 		tf::PoseMsgToKDL(cart_pos_cmd, T_D);
@@ -166,27 +165,27 @@ private:
 		Dc = Q.transpose() * Dxi.asDiagonal() * K0.cwiseSqrt().asDiagonal() * Q;
 
 		// compute length of spring
-		T_S = T_D.Inverse() * T_C;
+		T_S = T_C.Inverse() * T_D;
 
 		T_S.M.GetQuaternion(e(0), e(1), e(2), e(3));
 
 		// calculate spring force
-		F(0) = Kc(0) * T_S.p(0);
-		F(1) = Kc(1) * T_S.p(1);
-		F(2) = Kc(2) * T_S.p(2);
+		F(0) = Kc(0) * T_S.p[0];
+		F(1) = Kc(1) * T_S.p[1];
+		F(2) = Kc(2) * T_S.p[2];
 
 		F(3) = Kc(3) * e(0);
 		F(4) = Kc(4) * e(1);
 		F(5) = Kc(5) * e(2);
 
 		// compute dumping force
-		F(0) += Dc.diagonal()(0) * v(0);
-		F(1) += Dc.diagonal()(1) * v(1);
-		F(2) += Dc.diagonal()(2) * v(2);
+		F(0) -= Dc.diagonal()(0) * cart_vel.linear.x;
+		F(1) -= Dc.diagonal()(1) * cart_vel.linear.y;
+		F(2) -= Dc.diagonal()(2) * cart_vel.linear.z;
 
-		F(3) += Dc.diagonal()(3) * v(3);
-		F(4) += Dc.diagonal()(4) * v(4);
-		F(5) += Dc.diagonal()(5) * v(5);
+		F(3) -= Dc.diagonal()(3) * cart_vel.angular.x;
+		F(4) -= Dc.diagonal()(4) * cart_vel.angular.y;
+		F(5) -= Dc.diagonal()(5) * cart_vel.angular.z;
 
 		// transform cartesian force to joint torques
 		tau = jT * F;
@@ -195,8 +194,8 @@ private:
 
 		for(unsigned int i = 0; i < 7; i++) {
 			jnt_trq_cmd_[i] = tau(i);
-		    jnt_imp.stiffness[i] = Kj(i, i);
-		    jnt_imp.damping[i] = 0.0;
+		  jnt_imp.stiffness[i] = Kj(i, i);
+		  jnt_imp.damping[i] = 0.0;
 		}
 
 		port_JointImpedanceCommand.write(jnt_imp);
@@ -229,7 +228,7 @@ private:
   RTT::InputPort<geometry_msgs::Wrench > port_CartesianWrenchCommand;
   RTT::InputPort<lwr_impedance_controller::CartesianImpedance > port_CartesianImpedanceCommand;
   RTT::InputPort<geometry_msgs::Pose > port_Tool;
-  RTT::InputPort<std::vector<double> > port_JointVelocity;
+  RTT::InputPort<geometry_msgs::Twist > port_CartesianVelocity;
 
   RTT::OutputPort<std::vector<double> > port_JointTorqueCommand;
   RTT::OutputPort<lwr_fri::FriJointImpedance > port_JointImpedanceCommand;
@@ -244,7 +243,7 @@ private:
 
   // Start of user code userData
 	KDL::Jacobian j_;
-	std::vector<double> jnt_pos_, tau_, jnt_trq_cmd_, jnt_vel_;
+	std::vector<double> jnt_pos_, tau_, jnt_trq_cmd_;
 	KDL::Frame T_T;
 	// End of user code
 

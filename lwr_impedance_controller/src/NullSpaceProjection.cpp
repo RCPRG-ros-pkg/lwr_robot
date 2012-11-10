@@ -21,22 +21,22 @@ public:
     MassMatrix_trig = false;
     NullSpaceTorque_trig = false;
 
+
+  	this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&NullSpaceProjection::Jacobian_onData, this, _1)).doc("");
+  	this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&NullSpaceProjection::MassMatrix_onData, this, _1)).doc("");
+  	this->ports()->addEventPort("NullSpaceTorque", port_NullSpaceTorque, boost::bind(&NullSpaceProjection::NullSpaceTorque_onData, this, _1)).doc("");
+
+	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
   }
 
   ~NullSpaceProjection(){
   }
 
   bool configureHook() {
-  	this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&NullSpaceProjection::Jacobian_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&NullSpaceProjection::MassMatrix_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("NullSpaceTorque", port_NullSpaceTorque, boost::bind(&NullSpaceProjection::NullSpaceTorque_onData, this, _1)).doc("");
-
-	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
-
 
     // Start of user code configureHook
 	torque_in.resize(7);
-	torque_in.resize(7);
+	torque_out.resize(7);
 	// End of user code
     return true;
   }

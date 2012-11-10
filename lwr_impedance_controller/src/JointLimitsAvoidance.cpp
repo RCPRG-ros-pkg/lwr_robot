@@ -12,16 +12,16 @@ public:
   JointLimitsAvoidance(const std::string & name) : TaskContext(name) {
     JointPosition_trig = false;
 
+
+  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&JointLimitsAvoidance::JointPosition_onData, this, _1)).doc("");
+
+	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
   }
 
   ~JointLimitsAvoidance(){
   }
 
   bool configureHook() {
-  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&JointLimitsAvoidance::JointPosition_onData, this, _1)).doc("");
-
-	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
-
 
     // Start of user code configureHook
 	jnt_pos_.resize(7);

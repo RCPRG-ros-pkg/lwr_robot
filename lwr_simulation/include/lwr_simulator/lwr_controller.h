@@ -76,7 +76,8 @@ namespace gazebo
         gazebo::physics::ModelPtr parent_model_;
         std::string robotPrefix;
         std::vector<gazebo::physics::JointPtr>  joints_;
-        
+        std::string chain_start, chain_end;
+          
          // Pointer to the model
         physics::WorldPtr world;
 

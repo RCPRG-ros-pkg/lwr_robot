@@ -13,18 +13,18 @@ public:
     Input2_trig = false;
     Input1_trig = false;
 
+	
 
-  	this->ports()->addEventPort("Input2", port_Input2, boost::bind(&SumVectors2::Input2_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("Input1", port_Input1, boost::bind(&SumVectors2::Input1_onData, this, _1)).doc("");
+    this->ports()->addEventPort("Input2", port_Input2, boost::bind(&SumVectors2::Input2_onData, this, _1)).doc("");
+    this->ports()->addEventPort("Input1", port_Input1, boost::bind(&SumVectors2::Input1_onData, this, _1)).doc("");
 
-	this->ports()->addPort("Output", port_Output).doc("");
+    this->ports()->addPort("Output", port_Output).doc("");
   }
 
   ~SumVectors2(){
   }
 
   bool configureHook() {
-
     // Start of user code configureHook
     in1_.resize(7);
     in2_.resize(7);

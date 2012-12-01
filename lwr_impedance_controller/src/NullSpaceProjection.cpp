@@ -21,19 +21,19 @@ public:
     MassMatrix_trig = false;
     NullSpaceTorque_trig = false;
 
+	
 
-  	this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&NullSpaceProjection::Jacobian_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&NullSpaceProjection::MassMatrix_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("NullSpaceTorque", port_NullSpaceTorque, boost::bind(&NullSpaceProjection::NullSpaceTorque_onData, this, _1)).doc("");
+    this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&NullSpaceProjection::Jacobian_onData, this, _1)).doc("");
+    this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&NullSpaceProjection::MassMatrix_onData, this, _1)).doc("");
+    this->ports()->addEventPort("NullSpaceTorque", port_NullSpaceTorque, boost::bind(&NullSpaceProjection::NullSpaceTorque_onData, this, _1)).doc("");
 
-	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
+    this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
   }
 
   ~NullSpaceProjection(){
   }
 
   bool configureHook() {
-
     // Start of user code configureHook
 	torque_in.resize(7);
 	torque_out.resize(7);
@@ -69,6 +69,7 @@ private:
     // Start of user code Projection
 	Matrix77d M, Mi, N;
 	Matrix76d Ji, jT;
+	Matrix66d A;
 	Vector7d r0;
 	Eigen::Map<Vector7d> tau_0(&torque_in[0]);
 	Eigen::Map<Vector7d> tau(&torque_out[0]);
@@ -80,7 +81,10 @@ private:
 	jT = J.data.transpose();
 	Mi = M.inverse();
 	Ji = Mi * jT * (J.data * Mi * jT).inverse();
-	N = (Matrix77d::Identity() - Ji * J.data);
+	N = (Matrix77d::Identity() - J.data.transpose() * Ji.transpose());
+
+    //A = (J.data * Mi * jT).inverse();
+    //N = (Matrix77d::Identity() - jT * A * J.data * Mi);
 
 	tau = N * tau_0;
 

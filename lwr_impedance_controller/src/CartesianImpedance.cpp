@@ -9,7 +9,8 @@
 #include <kdl/jacobian.hpp>
 #include <tf_conversions/tf_kdl.h>
 
-#include <lwr_fri/typekit/Types.h>
+#include <lwr_fri/CartesianImpedance.h>
+#include <lwr_fri/FriJointImpedance.h>
 #include <sensor_msgs/typekit/Types.h>
 #include <geometry_msgs/typekit/Types.h>
 #include <lwr_impedance_controller/CartesianImpedance.h>
@@ -35,27 +36,27 @@ public:
     MassMatrix_trig = false;
     CartesianPositionCommand_trig = false;
 
+	
 
-  	this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&CartesianImpedance::JointPosition_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("CartesianPosition", port_CartesianPosition, boost::bind(&CartesianImpedance::CartesianPosition_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&CartesianImpedance::Jacobian_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&CartesianImpedance::MassMatrix_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("CartesianPositionCommand", port_CartesianPositionCommand, boost::bind(&CartesianImpedance::CartesianPositionCommand_onData, this, _1)).doc("");
-	this->ports()->addPort("CartesianWrenchCommand", port_CartesianWrenchCommand).doc("");
-	this->ports()->addPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand).doc("");
-	this->ports()->addPort("Tool", port_Tool).doc("");
-	this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
+    this->ports()->addEventPort("JointPosition", port_JointPosition, boost::bind(&CartesianImpedance::JointPosition_onData, this, _1)).doc("");
+    this->ports()->addEventPort("CartesianPosition", port_CartesianPosition, boost::bind(&CartesianImpedance::CartesianPosition_onData, this, _1)).doc("");
+    this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&CartesianImpedance::Jacobian_onData, this, _1)).doc("");
+    this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&CartesianImpedance::MassMatrix_onData, this, _1)).doc("");
+    this->ports()->addEventPort("CartesianPositionCommand", port_CartesianPositionCommand, boost::bind(&CartesianImpedance::CartesianPositionCommand_onData, this, _1)).doc("");
+    this->ports()->addPort("CartesianWrenchCommand", port_CartesianWrenchCommand).doc("");
+    this->ports()->addPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand).doc("");
+    this->ports()->addPort("Tool", port_Tool).doc("");
+    this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
 
-	this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
-	this->ports()->addPort("JointImpedanceCommand", port_JointImpedanceCommand).doc("");
-	this->ports()->addPort("JointPositionCommand", port_JointPositionCommand).doc("");
+    this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
+    this->ports()->addPort("JointImpedanceCommand", port_JointImpedanceCommand).doc("");
+    this->ports()->addPort("JointPositionCommand", port_JointPositionCommand).doc("");
   }
 
   ~CartesianImpedance(){
   }
 
   bool configureHook() {
-
     // Start of user code configureHook
 		tau_.resize(7);
 		jnt_pos_.resize(7);
@@ -96,6 +97,7 @@ private:
 		KDL::Frame T, T_D, T_C, T_S;
 		lwr_impedance_controller::CartesianImpedance cart_imp;
 		lwr_fri::FriJointImpedance jnt_imp;
+		geometry_msgs::Wrench force_add;
 		geometry_msgs::Pose cart_pos, cart_pos_cmd, tool_pos;
 		geometry_msgs::Twist cart_vel;
 		Matrix77d Kj, Dj;
@@ -115,6 +117,7 @@ private:
 		port_CartesianPosition.read(cart_pos);
 		port_CartesianPositionCommand.read(cart_pos_cmd);
 		port_CartesianImpedanceCommand.read(cart_imp);
+		port_CartesianWrenchCommand.read(force_add);
 		port_CartesianVelocity.read(cart_vel);
 
 		tf::PoseMsgToKDL(cart_pos, T);
@@ -186,6 +189,16 @@ private:
 		F(3) -= Dc.diagonal()(3) * cart_vel.angular.x;
 		F(4) -= Dc.diagonal()(4) * cart_vel.angular.y;
 		F(5) -= Dc.diagonal()(5) * cart_vel.angular.z;
+
+		// -------------------------------------------
+
+		F(0) += force_add.force.x;
+		F(1) += force_add.force.y;
+		F(2) += force_add.force.z;
+
+		F(3) += force_add.torque.x;
+		F(4) += force_add.torque.y;
+		F(5) += force_add.torque.z;
 
 		// transform cartesian force to joint torques
 		tau = jT * F;

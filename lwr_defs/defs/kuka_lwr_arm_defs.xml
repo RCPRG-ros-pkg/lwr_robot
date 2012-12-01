@@ -350,7 +350,7 @@
     </transmission>
 
     <joint name="${name}_arm_6_joint" type="revolute">
-      <origin xyz="0 0 0.078" rpy="0 0 0"/>
+      <origin xyz="0 0 0.078" rpy="0 0 ${M_PI}"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />

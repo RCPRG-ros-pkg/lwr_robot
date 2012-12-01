@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<dwds:Component xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dwds="http://dupa.org/robmod.ecore" type2="Library">
+<dwds:Component xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dwds="http://dupa.org/robmod.ecore" name="lwr_impedance_controller" type2="Library">
   <composition type="CartesianImpedance">
     <handlers name="ImpedanceControl" trigeredBy="//@composition.0/@inputPorts.2 //@composition.0/@inputPorts.3 //@composition.0/@inputPorts.1 //@composition.0/@inputPorts.0 //@composition.0/@inputPorts.4" generates="//@composition.0/@outputPorts.2 //@composition.0/@outputPorts.1 //@composition.0/@outputPorts.0"/>
     <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.0/@handlers.0"/>
@@ -31,6 +31,7 @@
     <handlers name="Avoidance" trigeredBy="//@composition.3/@inputPorts.0" generates="//@composition.3/@outputPorts.0"/>
     <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.3/@handlers.0"/>
     <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
+    <outputPorts dataType="std_msgs::Float64" name="Manipulability" description=""/>
     <properties name="threshold" type="double" value="0.4"/>
     <properties name="gain" type="double" value="10.0"/>
   </composition>
@@ -42,6 +43,7 @@
     <outputPorts dataType="geometry_msgs::Pose" name="CartesianPositionCommand"/>
     <outputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand"/>
     <outputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand"/>
+    <outputPorts dataType="geometry_msgs::Pose" name="Tool"/>
   </composition>
   <composition type="SumVectors2">
     <handlers name="Sum" trigeredBy="//@composition.5/@inputPorts.1 //@composition.5/@inputPorts.0" generates="//@composition.5/@outputPorts.0"/>

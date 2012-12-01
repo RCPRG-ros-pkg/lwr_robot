@@ -7,6 +7,7 @@
 #include <geometry_msgs/typekit/Types.h>
 #include <lwr_impedance_controller/CartImpTrajectory.h>
 #include <lwr_impedance_controller/CartesianImpedance.h>
+#include <Eigen/Geometry>
 // End of user code
 
 class ImpedanceTrajectoryGenerator : public RTT::TaskContext {
@@ -15,20 +16,21 @@ public:
     CartesianPosition_trig = false;
     ImpedanceTrajectory_trig = false;
 
+	
 
-  	this->ports()->addEventPort("CartesianPosition", port_CartesianPosition, boost::bind(&ImpedanceTrajectoryGenerator::CartesianPosition_onData, this, _1)).doc("");
-  	this->ports()->addEventPort("ImpedanceTrajectory", port_ImpedanceTrajectory, boost::bind(&ImpedanceTrajectoryGenerator::ImpedanceTrajectory_onData, this, _1)).doc("");
+    this->ports()->addEventPort("CartesianPosition", port_CartesianPosition, boost::bind(&ImpedanceTrajectoryGenerator::CartesianPosition_onData, this, _1)).doc("");
+    this->ports()->addEventPort("ImpedanceTrajectory", port_ImpedanceTrajectory, boost::bind(&ImpedanceTrajectoryGenerator::ImpedanceTrajectory_onData, this, _1)).doc("");
 
-	this->ports()->addPort("CartesianPositionCommand", port_CartesianPositionCommand).doc("");
-	this->ports()->addPort("CartesianWrenchCommand", port_CartesianWrenchCommand).doc("");
-	this->ports()->addPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand).doc("");
+    this->ports()->addPort("CartesianPositionCommand", port_CartesianPositionCommand).doc("");
+    this->ports()->addPort("CartesianWrenchCommand", port_CartesianWrenchCommand).doc("");
+    this->ports()->addPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand).doc("");
+    this->ports()->addPort("Tool", port_Tool).doc("");
   }
 
   ~ImpedanceTrajectoryGenerator(){
   }
 
   bool configureHook() {
-
     // Start of user code configureHook
     // TODO Put implementation of configureHook here !!!
     // End of user code
@@ -119,14 +121,19 @@ private:
   }
   void doNewTrajectory() {
     // Start of user code NewTrajectory
-    if(port_ImpedanceTrajectory.read(trajectory_) == RTT::NewData) {
-      if(trajectory_.trajectory.size() == 0) {
+    if (port_ImpedanceTrajectory.read(trajectory_) == RTT::NewData) {
+      if (trajectory_.trajectory.size() == 0) {
         valid_trajectory_ = false;
       } else {
         trajectory_index_ = 0;
         last_point_ = setpoint_;
         last_point_.time_from_start = ros::Duration(0);
-          std::cout << "initial pose : [ " << setpoint_.pose.position.x << " " << setpoint_.pose.position.y << " " << setpoint_.pose.position.z << " ]  [ " << setpoint_.pose.orientation.x << " " << setpoint_.pose.orientation.y << " " << setpoint_.pose.orientation.z << " " << setpoint_.pose.orientation.w << " ]" << std::endl;
+        std::cout << "initial pose : [ " << setpoint_.pose.position.x << " "
+            << setpoint_.pose.position.y << " " << setpoint_.pose.position.z
+            << " ]  [ " << setpoint_.pose.orientation.x << " "
+            << setpoint_.pose.orientation.y << " "
+            << setpoint_.pose.orientation.z << " "
+            << setpoint_.pose.orientation.w << " ]" << std::endl;
         valid_trajectory_ = true;
       }
     }
@@ -146,6 +153,7 @@ private:
   RTT::OutputPort<geometry_msgs::Pose > port_CartesianPositionCommand;
   RTT::OutputPort<geometry_msgs::Wrench > port_CartesianWrenchCommand;
   RTT::OutputPort<lwr_impedance_controller::CartesianImpedance > port_CartesianImpedanceCommand;
+  RTT::OutputPort<geometry_msgs::Pose > port_Tool;
 
 
   bool CartesianPosition_trig;
@@ -160,7 +168,8 @@ private:
   lwr_impedance_controller::CartImpTrajectoryPoint sampleInterpolation() {
     lwr_impedance_controller::CartImpTrajectoryPoint next_point;
 
-    double timeFromStart = (double) (ros::Time::now() - trajectory_.header.stamp).toSec();
+    double timeFromStart =
+        (double) (ros::Time::now() - trajectory_.header.stamp).toSec();
     double segStartTime = last_point_.time_from_start.toSec();
     double segEndTime =
         trajectory_.trajectory[trajectory_index_].time_from_start.toSec();
@@ -182,23 +191,45 @@ private:
         trajectory_.trajectory[trajectory_index_].pose.position.z);
 
     // interpolate orientation
-    // x
-    next_point.pose.orientation.x = linearlyInterpolate(timeFromStart,
-        segStartTime, segEndTime, last_point_.pose.orientation.x,
-        trajectory_.trajectory[trajectory_index_].pose.orientation.x);
-    // y
-    next_point.pose.orientation.y = linearlyInterpolate(timeFromStart,
-        segStartTime, segEndTime, last_point_.pose.orientation.y,
-        trajectory_.trajectory[trajectory_index_].pose.orientation.y);
-    // z
-    next_point.pose.orientation.z = linearlyInterpolate(timeFromStart,
-        segStartTime, segEndTime, last_point_.pose.orientation.z,
-        trajectory_.trajectory[trajectory_index_].pose.orientation.z);
-    // w
-    next_point.pose.orientation.w = linearlyInterpolate(timeFromStart,
-        segStartTime, segEndTime, last_point_.pose.orientation.w,
-        trajectory_.trajectory[trajectory_index_].pose.orientation.w);
 
+    Eigen::Quaternion<double> start = Eigen::Quaternion<double>(last_point_.pose.orientation.w,
+        last_point_.pose.orientation.x, last_point_.pose.orientation.y,
+        last_point_.pose.orientation.z);
+    Eigen::Quaternion<double> end = Eigen::Quaternion<double>(
+        trajectory_.trajectory[trajectory_index_].pose.orientation.w,
+        trajectory_.trajectory[trajectory_index_].pose.orientation.x,
+        trajectory_.trajectory[trajectory_index_].pose.orientation.y,
+        trajectory_.trajectory[trajectory_index_].pose.orientation.z);
+
+    double t = linearlyInterpolate(timeFromStart, segStartTime, segEndTime, 0,
+        1);
+
+    Eigen::Quaternion<double> rot = start.slerp(t, end);
+
+    next_point.pose.orientation.x = rot.x();
+    next_point.pose.orientation.y = rot.y();
+    next_point.pose.orientation.z = rot.z();
+    next_point.pose.orientation.w = rot.w();
+
+
+    /*
+     // x
+     next_point.pose.orientation.x = linearlyInterpolate(timeFromStart,
+     segStartTime, segEndTime, last_point_.pose.orientation.x,
+     trajectory_.trajectory[trajectory_index_].pose.orientation.x);
+     // y
+     next_point.pose.orientation.y = linearlyInterpolate(timeFromStart,
+     segStartTime, segEndTime, last_point_.pose.orientation.y,
+     trajectory_.trajectory[trajectory_index_].pose.orientation.y);
+     // z
+     next_point.pose.orientation.z = linearlyInterpolate(timeFromStart,
+     segStartTime, segEndTime, last_point_.pose.orientation.z,
+     trajectory_.trajectory[trajectory_index_].pose.orientation.z);
+     // w
+     next_point.pose.orientation.w = linearlyInterpolate(timeFromStart,
+     segStartTime, segEndTime, last_point_.pose.orientation.w,
+     trajectory_.trajectory[trajectory_index_].pose.orientation.w);
+     */
     //interpolate stiffness
     // x
     next_point.impedance.stiffness.force.x = linearlyInterpolate(timeFromStart,
@@ -209,7 +240,7 @@ private:
         segStartTime, segEndTime, last_point_.impedance.stiffness.force.y,
         trajectory_.trajectory[trajectory_index_].impedance.stiffness.force.y);
 
-    next_point.impedance.stiffness.force.y = linearlyInterpolate(timeFromStart,
+    next_point.impedance.stiffness.force.z = linearlyInterpolate(timeFromStart,
         segStartTime, segEndTime, last_point_.impedance.stiffness.force.z,
         trajectory_.trajectory[trajectory_index_].impedance.stiffness.force.z);
 
@@ -233,13 +264,12 @@ private:
   }
 
   double linearlyInterpolate(double time,
-                  double startTime,
-                  double endTime,
-                  double startValue,
-                  double endValue) {
-    return startValue +
-      (time - startTime)*
-      (endValue - startValue)/(endTime - startTime);
+                             double startTime,
+                             double endTime,
+                             double startValue,
+                             double endValue) {
+    return startValue
+        + (time - startTime) * (endValue - startValue) / (endTime - startTime);
   }
   // End of user code
 

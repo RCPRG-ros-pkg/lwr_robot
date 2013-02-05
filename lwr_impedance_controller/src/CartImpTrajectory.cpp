@@ -70,27 +70,12 @@ bool CartImpTrajectory::startHook() {
   setpoint_.velocity.angular.x = 0.0;
   setpoint_.velocity.angular.y = 0.0;
   setpoint_.velocity.angular.z = 0.0;
-
-  tool_frame.M = KDL::Rotation::RPY(0.0, 0.0, 0.0);
-  tool_frame.p = KDL::Vector(-0.0, 0.0, -0.0);
   
   if(port_cart_pos_msr.read(setpoint_.pose) == RTT::NoData) {
 	  return false;
 	}
 
   std::cout << "initial pose : [ " << setpoint_.pose.position.x << " " << setpoint_.pose.position.y << " " << setpoint_.pose.position.z << " ]  [ " << setpoint_.pose.orientation.x << " " << setpoint_.pose.orientation.y << " " << setpoint_.pose.orientation.z << " " << setpoint_.pose.orientation.w << " ]" << std::endl;
-  
-  geometry_msgs::Pose tool_frame_msg;
-  
-  tf::PoseKDLToMsg(tool_frame, tool_frame_msg);
-  
-  port_tool_frame.write(tool_frame_msg);
-  
-  tf::PoseMsgToKDL(setpoint_.pose, cart_pos_cmd);
-  
-  cart_pos_cmd = cart_pos_cmd * tool_frame;
-  
-  tf::PoseKDLToMsg(cart_pos_cmd, setpoint_.pose);
   
   last_point_ = setpoint_;
 
@@ -209,7 +194,7 @@ CartImpTrajectory::sampleInterpolation() {
       (timeFromStart, segStartTime, segEndTime, 
        last_point_.impedance.stiffness.force.y, trajectory_.trajectory[trajectory_index_].impedance.stiffness.force.y); 
        
-    next_point.impedance.stiffness.force.y = linearlyInterpolate
+    next_point.impedance.stiffness.force.z = linearlyInterpolate
       (timeFromStart, segStartTime, segEndTime, 
        last_point_.impedance.stiffness.force.z, trajectory_.trajectory[trajectory_index_].impedance.stiffness.force.z);
        

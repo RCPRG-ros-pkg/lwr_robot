@@ -12,6 +12,7 @@
 <simple name="Import" type="string"><value>oro_joint_trajectory_action</value></simple>
 <simple name="Import" type="string"><value>joint_spline_trajectory_generator</value></simple>
 <simple name="Import" type="string"><value>lwr_fri</value></simple>
+<simple name="Import" type="string"><value>lwr_impedance_controller</value></simple>
 
 <struct name="diagnostic" type="ConnPolicy">
   <simple name="type" type="short"><value>0</value></simple>
@@ -27,11 +28,11 @@
   <simple name="name_id" type="string"><value>/arm_controller/fri_set_mode</value></simple>
 </struct>
 
-<struct name="CartesianWrench" type="ConnPolicy">
+<struct name="ImpedanceTrajectory" type="ConnPolicy">
   <simple name="type" type="short"><value>0</value></simple>
   <simple name="size" type="short"><value>1</value></simple>
   <simple name="transport" type="short"><value>3</value></simple>
-  <simple name="name_id" type="string"><value>/cartesian_wrench</value></simple>
+  <simple name="name_id" type="string"><value>/cartesian_trajectory</value></simple>
 </struct>
 
 <struct name="joints_state" type="ConnPolicy">
@@ -41,6 +42,7 @@
   <simple name="name_id" type="string"><value>/joint_states</value></simple>
 </struct>
 
+<!--
 <struct name="goal" type="ConnPolicy">
   <simple name="type" type="short"><value>0</value></simple>
   <simple name="size" type="short"><value>1</value></simple>
@@ -82,6 +84,7 @@
   <simple name="transport" type="short"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/command</value></simple>
 </struct>
+-->
 
 <struct name="JointStatePublisher" type="JointStatePublisher">
   <struct name="Activity" type="PeriodicActivity">
@@ -105,13 +108,13 @@
   </struct>
   
   <struct name="Ports" type="PropertyBag">
-    <simple name="msrJntPos" type="string"><value>msrJntPos</value></simple>
+    <simple name="msrJntPos" type="string"><value>JointPosition</value></simple>
     <simple name="joints_state" type="string"><value>joints_state</value></simple>
   </struct>
 </struct>
 
 
-<struct name="FRI" type="lwr_fri::FRIComponent">
+<struct name="FRI" type="FRIComponent">
   <struct name="Activity" type="NonPeriodicActivity">
     <simple name="Priority" type="short"><value>5</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
@@ -121,7 +124,7 @@
   <simple name="AutoStart" type="boolean"><value>1</value></simple>
 
   <struct name="Properties" type="PropertyBag">
-  	<simple name="udp_port" type="long"><description>local port</description><value>49938</value></simple>
+  	<simple name="fri_port" type="long"><value>49948</value></simple>
   </struct>
 
   <struct name="Ports" type="PropertyBag">
@@ -129,14 +132,15 @@
     <simple name="FRIState" type="string"><value>FriState</value></simple>
     <simple name="KRL_CMD" type="string"><value>KRL_CMD</value></simple>
 
-    <simple name="JointPosition" type="string"><value>msrJntPos</value></simple>
-    <simple name="JointPositionCommand" type="string"><value>cmdJntPos</value></simple>
-
-    <simple name="CartesianWrench" type="string"><value>CartesianWrench</value></simple>
-
-    <simple name="DesiredJointPosition" type="string"><value>desJntPos</value></simple>
-
-    <simple name="CommandPeriod" type="string"><value>CommandPeriod</value></simple>
+    <simple name="JointPosition" type="string"><value>JointPosition</value></simple>
+    <simple name="CartesianPosition" type="string"><value>CartesianPosition</value></simple>
+    <simple name="CartesianVelocity" type="string"><value>CartesianVelocity</value></simple>
+    <simple name="Jacobian" type="string"><value>Jacobian</value></simple>
+    <simple name="MassMatrix" type="string"><value>MassMatrix</value></simple>
+    
+    <simple name="JointPositionCommand" type="string"><value>JointPositionCommand</value></simple>
+    <simple name="JointTorqueCommand" type="string"><value>JointTorqueCommand</value></simple>
+    <simple name="JointImpedanceCommand" type="string"><value>JointImpedanceCommand</value></simple>
   </struct>
 </struct>
 
@@ -163,6 +167,54 @@
   </struct>
 </struct>
 
+
+<struct name="CartImp" type="CartesianImpedance">
+  <struct name="Activity" type="NonPeriodicActivity">
+    <simple name="Priority" type="short"><value>5</value></simple>
+    <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
+  </struct>
+
+  <simple name="AutoConf" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+
+  <struct name="Ports" type="PropertyBag">
+    <simple name="JointPosition" type="string"><value>JointPosition</value></simple>
+    <simple name="CartesianPosition" type="string"><value>CartesianPosition</value></simple>
+    <simple name="CartesianVelocity" type="string"><value>CartesianVelocity</value></simple>
+    <simple name="Jacobian" type="string"><value>Jacobian</value></simple>
+    <simple name="MassMatrix" type="string"><value>MassMatrix</value></simple>
+    
+    <simple name="CartesianPositionCommand" type="string"><value>CartesianPositionCommand</value></simple>
+    <simple name="CartesianWrenchCommand" type="string"><value>CartesianWrenchCommand</value></simple>
+    <simple name="CartesianImpedanceCommand" type="string"><value>CartesianImpedanceCommand</value></simple>
+    
+    <simple name="JointPositionCommand" type="string"><value>JointPositionCommand</value></simple>
+    <simple name="JointTorqueCommand" type="string"><value>JointTorqueCommand</value></simple>
+    <simple name="JointImpedanceCommand" type="string"><value>JointImpedanceCommand</value></simple>
+  </struct>
+</struct>
+
+<struct name="CartImpTrj" type="ImpedanceTrajectoryGenerator">
+  <struct name="Activity" type="NonPeriodicActivity">
+    <simple name="Priority" type="short"><value>5</value></simple>
+    <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
+  </struct>
+
+  <simple name="AutoConf" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+
+  <struct name="Ports" type="PropertyBag">
+    <simple name="CartesianPosition" type="string"><value>CartesianPosition</value></simple>
+
+    <simple name="ImpedanceTrajectory" type="string"><value>ImpedanceTrajectory</value></simple>
+
+    <simple name="CartesianPositionCommand" type="string"><value>CartesianPositionCommand</value></simple>
+    <simple name="CartesianWrenchCommand" type="string"><value>CartesianWrenchCommand</value></simple>
+    <simple name="CartesianImpedanceCommand" type="string"><value>CartesianImpedanceCommand</value></simple>
+  </struct>
+</struct>
+
+<!--
 <struct name="JointSplineTrajectoryGenerator" type="JointSplineTrajectoryGenerator">
   <struct name="Activity" type="Activity">
     <simple name="Priority" type="short"><value>5</value></simple>
@@ -226,6 +278,6 @@
   	<simple name="status" type="string"><value>status</value></simple>
   </struct>
 </struct>
-
+-->
 
 </properties>

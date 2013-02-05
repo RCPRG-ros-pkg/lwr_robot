@@ -535,6 +535,16 @@
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_72di0idgEeKTXdH5jZKJ8A" points="[15, -20, -101, 132]$[110, -152, -6, 0]"/>
       <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_72f_ECdgEeKTXdH5jZKJ8A" id="(0.04081632653061224,0.55)"/>
     </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_81vp0D0-EeKeLbuKHP6C8g" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_CxG2MCdgEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_81vp0T0-EeKeLbuKHP6C8g" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_81vp0j0-EeKeLbuKHP6C8g" points="[-35, 20, 193, -70]$[-141, 90, 87, 0]"/>
+    </edges>
+    <edges xmi:type="notation:Connector" xmi:id="_-v_I8D0-EeKeLbuKHP6C8g" type="4004" source="_0do7ICdgEeKTXdH5jZKJ8A" target="_FVQN8CdgEeKTXdH5jZKJ8A">
+      <styles xmi:type="notation:FontStyle" xmi:id="_-v_I8T0-EeKeLbuKHP6C8g" fontName="Ubuntu"/>
+      <element xsi:nil="true"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_-v_I8j0-EeKeLbuKHP6C8g" points="[-25, 20, 215, -100]$[-144, 120, 96, 0]"/>
+    </edges>
   </notation:Diagram>
   <notation:Diagram xmi:id="_I1n7ICgVEeKHJMrXXpEK_w" type="Robmod" measurementUnit="Pixel">
     <children xmi:type="notation:Node" xmi:id="_I3zFYCgVEeKHJMrXXpEK_w" type="2001">

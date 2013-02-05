@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <dwds:Component xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dwds="http://dupa.org/robmod.ecore" name="lwr_impedance_controller" type2="Library">
   <composition type="CartesianImpedance">
-    <handlers name="ImpedanceControl" trigeredBy="//@composition.0/@inputPorts.2 //@composition.0/@inputPorts.3 //@composition.0/@inputPorts.1 //@composition.0/@inputPorts.0 //@composition.0/@inputPorts.4" generates="//@composition.0/@outputPorts.2 //@composition.0/@outputPorts.1 //@composition.0/@outputPorts.0"/>
+    <handlers name="ImpedanceControl" trigeredBy="//@composition.0/@inputPorts.2 //@composition.0/@inputPorts.3 //@composition.0/@inputPorts.1 //@composition.0/@inputPorts.0 //@composition.0/@inputPorts.4 //@composition.0/@inputPorts.5 //@composition.0/@inputPorts.6" generates="//@composition.0/@outputPorts.2 //@composition.0/@outputPorts.1 //@composition.0/@outputPorts.0"/>
     <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.0/@handlers.0"/>
     <inputPorts dataType="geometry_msgs::Pose" name="CartesianPosition" trigger="//@composition.0/@handlers.0"/>
     <inputPorts dataType="KDL::Jacobian" name="Jacobian" trigger="//@composition.0/@handlers.0"/>
     <inputPorts dataType="Matrix77d" name="MassMatrix" trigger="//@composition.0/@handlers.0"/>
     <inputPorts dataType="geometry_msgs::Pose" name="CartesianPositionCommand" trigger="//@composition.0/@handlers.0"/>
-    <inputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand"/>
-    <inputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand"/>
+    <inputPorts dataType="geometry_msgs::Wrench" name="CartesianWrenchCommand" trigger="//@composition.0/@handlers.0"/>
+    <inputPorts dataType="lwr_impedance_controller::CartesianImpedance" name="CartesianImpedanceCommand" trigger="//@composition.0/@handlers.0"/>
     <inputPorts dataType="geometry_msgs::Pose" name="Tool"/>
     <inputPorts dataType="geometry_msgs::Twist" name="CartesianVelocity" description=""/>
     <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
@@ -31,7 +31,7 @@
     <handlers name="Avoidance" trigeredBy="//@composition.3/@inputPorts.0" generates="//@composition.3/@outputPorts.0"/>
     <inputPorts dataType="std::vector&lt;double>" name="JointPosition" trigger="//@composition.3/@handlers.0"/>
     <outputPorts dataType="std::vector&lt;double>" name="JointTorqueCommand"/>
-    <outputPorts dataType="std_msgs::Float64" name="Manipulability" description=""/>
+    <outputPorts dataType="std_msgs::Float32" name="Manipulability" description=""/>
     <properties name="threshold" type="double" value="0.4"/>
     <properties name="gain" type="double" value="10.0"/>
   </composition>

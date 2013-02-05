@@ -8,6 +8,9 @@
 #include <lwr_impedance_controller/CartImpTrajectory.h>
 #include <lwr_impedance_controller/CartesianImpedance.h>
 #include <Eigen/Geometry>
+
+#include "xeno_clock.h"
+
 // End of user code
 
 class ImpedanceTrajectoryGenerator : public RTT::TaskContext {
@@ -90,7 +93,7 @@ public:
     }
   }
 
-private:
+private: 
 
   void doGenerate() {
     // Start of user code Generate
@@ -98,7 +101,7 @@ private:
       ///do interpolation
       if ((trajectory_.header.stamp
           + trajectory_.trajectory[trajectory_index_].time_from_start)
-          <= ros::Time::now()) {
+          <= now()) {
         if (trajectory_.trajectory.size() <= (trajectory_index_ + 1)) {
           // setpoint_ = trajectory_.trajectory[trajectory_index_];
           valid_trajectory_ = false;
@@ -128,12 +131,15 @@ private:
         trajectory_index_ = 0;
         last_point_ = setpoint_;
         last_point_.time_from_start = ros::Duration(0);
-        std::cout << "initial pose : [ " << setpoint_.pose.position.x << " "
-            << setpoint_.pose.position.y << " " << setpoint_.pose.position.z
-            << " ]  [ " << setpoint_.pose.orientation.x << " "
-            << setpoint_.pose.orientation.y << " "
-            << setpoint_.pose.orientation.z << " "
-            << setpoint_.pose.orientation.w << " ]" << std::endl;
+//        std::cout << "initial pose : [ " << setpoint_.pose.position.x << " "
+//            << setpoint_.pose.position.y << " " << setpoint_.pose.position.z
+//            << " ]  [ " << setpoint_.pose.orientation.x << " "
+//            << setpoint_.pose.orientation.y << " "
+//            << setpoint_.pose.orientation.z << " "
+//            << setpoint_.pose.orientation.w << " "
+//            << now() << "  "
+//            << trajectory_.header.stamp << " "
+//            << now() - trajectory_.header.stamp << " ]" << std::endl;
         valid_trajectory_ = true;
       }
     }
@@ -169,7 +175,7 @@ private:
     lwr_impedance_controller::CartImpTrajectoryPoint next_point;
 
     double timeFromStart =
-        (double) (ros::Time::now() - trajectory_.header.stamp).toSec();
+        (double) (now() - trajectory_.header.stamp).toSec();
     double segStartTime = last_point_.time_from_start.toSec();
     double segEndTime =
         trajectory_.trajectory[trajectory_index_].time_from_start.toSec();

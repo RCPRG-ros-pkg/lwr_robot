@@ -12,6 +12,7 @@
   <depend package="rtt"/>
   <depend package="kdl"/>
   <depend package="lwr_fri"/>
+  <depend package="xeno_clock"/>
   <depend package="geometry_msgs"/>
   <depend package="rtt_geometry_msgs"/>
   

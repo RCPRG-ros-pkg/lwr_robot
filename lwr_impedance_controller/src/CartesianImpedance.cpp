@@ -35,6 +35,8 @@ public:
     Jacobian_trig = false;
     MassMatrix_trig = false;
     CartesianPositionCommand_trig = false;
+    CartesianWrenchCommand_trig = false;
+    CartesianImpedanceCommand_trig = false;
 
 	
 
@@ -43,8 +45,8 @@ public:
     this->ports()->addEventPort("Jacobian", port_Jacobian, boost::bind(&CartesianImpedance::Jacobian_onData, this, _1)).doc("");
     this->ports()->addEventPort("MassMatrix", port_MassMatrix, boost::bind(&CartesianImpedance::MassMatrix_onData, this, _1)).doc("");
     this->ports()->addEventPort("CartesianPositionCommand", port_CartesianPositionCommand, boost::bind(&CartesianImpedance::CartesianPositionCommand_onData, this, _1)).doc("");
-    this->ports()->addPort("CartesianWrenchCommand", port_CartesianWrenchCommand).doc("");
-    this->ports()->addPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand).doc("");
+    this->ports()->addEventPort("CartesianWrenchCommand", port_CartesianWrenchCommand, boost::bind(&CartesianImpedance::CartesianWrenchCommand_onData, this, _1)).doc("");
+    this->ports()->addEventPort("CartesianImpedanceCommand", port_CartesianImpedanceCommand, boost::bind(&CartesianImpedance::CartesianImpedanceCommand_onData, this, _1)).doc("");
     this->ports()->addPort("Tool", port_Tool).doc("");
     this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
 
@@ -80,13 +82,15 @@ public:
   }
 
   void updateHook() {
-	if(Jacobian_trig && MassMatrix_trig && CartesianPosition_trig && JointPosition_trig && CartesianPositionCommand_trig &&  true) {
+	if(Jacobian_trig && MassMatrix_trig && CartesianPosition_trig && JointPosition_trig && CartesianPositionCommand_trig && CartesianWrenchCommand_trig && CartesianImpedanceCommand_trig &&  true) {
       doImpedanceControl();
       Jacobian_trig = false;
       MassMatrix_trig = false;
       CartesianPosition_trig = false;
       JointPosition_trig = false;
       CartesianPositionCommand_trig = false;
+      CartesianWrenchCommand_trig = false;
+      CartesianImpedanceCommand_trig = false;
     }
   }
 
@@ -206,7 +210,7 @@ private:
 		Kj = jT * Kc.asDiagonal() * j_.data;
 
 		for(unsigned int i = 0; i < 7; i++) {
-			jnt_trq_cmd_[i] = tau(i);
+		  jnt_trq_cmd_[i] = tau(i);
 		  jnt_imp.stiffness[i] = Kj(i, i);
 		  jnt_imp.damping[i] = 0.0;
 		}
@@ -232,6 +236,12 @@ private:
   void CartesianPositionCommand_onData(RTT::base::PortInterface* port) {
     CartesianPositionCommand_trig = true;
   }
+  void CartesianWrenchCommand_onData(RTT::base::PortInterface* port) {
+    CartesianWrenchCommand_trig = true;
+  }
+  void CartesianImpedanceCommand_onData(RTT::base::PortInterface* port) {
+    CartesianImpedanceCommand_trig = true;
+  }
 
   RTT::InputPort<std::vector<double> > port_JointPosition;
   RTT::InputPort<geometry_msgs::Pose > port_CartesianPosition;
@@ -253,6 +263,8 @@ private:
   bool Jacobian_trig;
   bool MassMatrix_trig;
   bool CartesianPositionCommand_trig;
+  bool CartesianWrenchCommand_trig;
+  bool CartesianImpedanceCommand_trig;
 
   // Start of user code userData
 	KDL::Jacobian j_;

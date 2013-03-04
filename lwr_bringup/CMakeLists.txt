@@ -16,15 +16,23 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 #set the default path for built libraries to the "lib" directory
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
 
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
+rosbuild_find_ros_package(xacro)
+include(${xacro_PACKAGE_PATH}/cmake/xacro.cmake)
 
-#common commands for building c++ executables and libraries
-#rosbuild_add_library(${PROJECT_NAME} src/example.cpp)
-#target_link_libraries(${PROJECT_NAME} another_library)
-#rosbuild_add_boost_directories()
-#rosbuild_link_boost(${PROJECT_NAME} thread)
-#rosbuild_add_executable(example examples/example.cpp)
-#target_link_libraries(example ${PROJECT_NAME})
+set(config_files "")
+
+file(GLOB config_xacro_files ${PROJECT_SOURCE_DIR}/configs/*.xml.xacro) 
+
+foreach(it ${config_xacro_files})
+  get_filename_component(basepath ${it} PATH)
+  get_filename_component(basename ${it} NAME_WE)
+  
+  message(" processing world file :",${basepath}," : ",${basename})
+  
+  set(expanded_file "${basepath}/${basename}.xml")
+  message("    produce expanded file :",${expanded_file})
+  
+  add_custom_target(media_files ALL "${xacro_PACKAGE_PATH}/xacro.py" "${it}" "-o" "${expanded_file}" )
+endforeach(it)
+
+

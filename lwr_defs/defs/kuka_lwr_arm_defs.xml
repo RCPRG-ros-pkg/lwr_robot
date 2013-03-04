@@ -38,15 +38,16 @@
         <material name="Orange"/>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 0.055" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/>
+<!--          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/> -->
+          <cylinder radius="0.07" length="0.11"/>
         </geometry>
       </collision>
     </link>
 
     <gazebo reference="calib_${name}_arm_base_link">
-      <material value="kuka-lwr.material"/>
+      <!--<material value="kuka-lwr.material"/>-->
       <turnGravityOff>false</turnGravityOff>
     </gazebo>
 
@@ -80,18 +81,39 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-
+<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl"/>
         </geometry>
       </collision>
+ -->     
+      <collision>
+        <origin xyz="0 0 0.0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 -0.06 0.2" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 -0.03 0.1" rpy="0.291 0 0"/>
+        <geometry>
+          <cylinder radius="0.07" length="0.208"/>
+        </geometry>
+      </collision>
     </link>
 
     <gazebo reference="${name}_arm_1_link">
-      <material value="kuka-lwr.material"/>
-<turnGravityOff>true</turnGravityOff>
+      <!--<material value="kuka-lwr.material"/> -->
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -130,18 +152,39 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-
+<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="${M_PI} 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
       </collision>
+-->
+      <collision>
+        <origin xyz="0 0 0.2" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 0.06 0.0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 0.03 0.1" rpy="0.291 0 0"/>
+        <geometry>
+          <cylinder radius="0.07" length="0.208"/>
+        </geometry>
+      </collision>
     </link>
 
     <gazebo reference="${name}_arm_2_link">
-      <material value="kuka-lwr.material"/>
-<turnGravityOff>true</turnGravityOff>
+      <!--<material value="kuka-lwr.material"/>-->
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
@@ -180,18 +223,39 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-
+<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl"/>
         </geometry>
       </collision>
+-->
+      <collision>
+        <origin xyz="0 0 0.0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 0.06 0.2" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 0.03 0.1" rpy="-0.291 0 0"/>
+        <geometry>
+          <cylinder radius="0.07" length="0.208"/>
+        </geometry>
+      </collision>
     </link>
 
     <gazebo reference="${name}_arm_3_link">
-      <material value="kuka-lwr.material"/>
-<turnGravityOff>true</turnGravityOff>
+      <!--<material value="kuka-lwr.material"/> -->
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -230,17 +294,38 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-
+<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
       </collision>
+-->
+      <collision>
+        <origin xyz="0 0 0.2" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 -0.06 0.0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 -0.03 0.1" rpy="-0.291 0 0"/>
+        <geometry>
+          <cylinder radius="0.07" length="0.208"/>
+        </geometry>
+      </collision>
     </link>
 
     <gazebo reference="${name}_arm_4_link">
-      <material value="kuka-lwr.material"/>
+      <!--<material value="kuka-lwr.material"/>-->
 <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
@@ -280,18 +365,39 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-
+<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_last_convex.stl"/>
         </geometry>
       </collision>
+-->
+      <collision>
+        <origin xyz="0 0 0.0" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 -0.04 0.19" rpy="0 0 0"/>
+        <geometry>
+          <sphere radius="0.07"/>
+        </geometry>
+      </collision>
+      
+      <collision>
+        <origin xyz="0 -0.02 0.095" rpy="0.207 0 0"/>
+        <geometry>
+          <cylinder radius="0.07" length="0.198"/>
+        </geometry>
+      </collision>
     </link>
 
     <gazebo reference="${name}_arm_5_link">
-      <material value="kuka-lwr.material"/>
-<turnGravityOff>true</turnGravityOff>
+      <!--<material value="kuka-lwr.material"/>-->
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
@@ -339,8 +445,8 @@
     </link>
 
     <gazebo reference="${name}_arm_6_link">
-      <material value="kuka-lwr.material"/>
-<turnGravityOff>true</turnGravityOff>
+      <!--<material value="kuka-lwr.material"/>-->
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -386,8 +492,8 @@
     </link>
 
     <gazebo reference="${name}_arm_7_link">
-      <material value="kuka-lwr.material"/>
-<turnGravityOff>true</turnGravityOff>
+      <!--<material value="kuka-lwr.material"/> -->
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">

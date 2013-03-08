@@ -85,31 +85,30 @@ namespace gazebo
         event::ConnectionPtr updateConnection;
         
         KDL::Chain chain_;
-	KDL::ChainDynParam *dyn;
-	KDL::ChainFkSolverPos_recursive *fk;
-	KDL::ChainJntToJacSolver *jc;
+	      KDL::ChainDynParam *dyn;
+	      KDL::ChainFkSolverPos_recursive *fk;
+	      KDL::ChainJntToJacSolver *jc;
 
         std::string base_frame_;
 	
-	int cnt;
+	      int cnt;
         
-        Eigen::Matrix<double, 7, 1> joint_pos;
-        Eigen::Matrix<double, 7, 1> joint_pos_cmd;
-        Eigen::Matrix<double, 7, 1> joint_vel;
+        Eigen::Matrix<double, 7, 1> joint_pos_;
+        Eigen::Matrix<double, 7, 1> joint_pos_cmd_;
+        Eigen::Matrix<double, 7, 1> joint_vel_;
         Eigen::Matrix<double, 7, 1> stiffness_;
         Eigen::Matrix<double, 7, 1> damping_;
         Eigen::Matrix<double, 7, 1> trq_cmd_;
-        Eigen::Matrix<double, 7, 1> trq;
+        Eigen::Matrix<double, 7, 1> trq_;
         
-	int remote_port;
-	std::string remote;
+	      int remote_port;
+	      std::string remote;
 	
         int socketFd;
         struct sockaddr_in localAddr, remoteAddr;
 
         tFriMsrData m_msr_data;
-	tFriCmdData m_cmd_data;
-
+	      tFriCmdData m_cmd_data;
    };
 
 }

@@ -88,14 +88,21 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
       this->joints_.push_back(gazebo::physics::JointPtr());  // FIXME: cannot be null, must be an empty boost shared pointer
       ROS_ERROR("A joint named \"%s\" is not part of Mechanism Controlled joints.\n", joint_name.c_str());
     }
-      
+    
+    if(_sdf->HasElement(joint_name)) {
+      double init = _sdf->GetElement(joint_name)->GetValueDouble();
+      joint->SetAngle(0, init);
+    }
+    
     stiffness_(i) = 200.0;
     damping_(i) = 5.0;
     trq_cmd_(i) = 0;
-    joint_pos_cmd(i) = 0;
+    joint_pos_cmd_(i) = joints_[i]->GetAngle(0).Radian();;
     
     m_msr_data.data.cmdJntPos[i] = 0.0;
     m_msr_data.data.cmdJntPosFriOffset[i] = 0.0;
+    
+    
   }
   
   socketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
@@ -159,8 +166,8 @@ void LWRController::UpdateChild()
 
   for(unsigned int i = 0; i< 7; i++)
   {
-    m_msr_data.data.cmdJntPos[i] = m_msr_data.data.msrJntPos[i] = pos(i) = joint_pos(i) = joints_[i]->GetAngle(0).GetAsRadian();
-    joint_vel(i) = joints_[i]->GetVelocity(0);
+    m_msr_data.data.cmdJntPos[i] = m_msr_data.data.msrJntPos[i] = pos(i) = joint_pos_(i) = joints_[i]->GetAngle(0).Radian();
+    joint_vel_(i) = joints_[i]->GetVelocity(0);
   }
 
   /*dyn->JntToGravity(pos, grav);*/
@@ -216,40 +223,39 @@ void LWRController::UpdateChild()
   fd_set rd;
   struct timeval tv;
   tv.tv_sec = 0;
-  tv.tv_usec = 5000;
+  tv.tv_usec = 1000;
   
   FD_ZERO(&rd);
   FD_SET(socketFd, &rd);
 	
   int sret = select(socketFd+1, &rd, NULL, NULL, &tv);
-  if(sret > 0)
-  {
+  if(sret > 0) {
     int n = recvfrom(socketFd, (void*) &m_cmd_data, sizeof(m_cmd_data), 0,
 			(sockaddr*) &cliAddr, &cliAddr_len);
     if (sizeof(tFriCmdData) != n) {
       ROS_ERROR( "bad packet length");
     }
 
-    for(unsigned int i = 0; i < 7; i++){
-      joint_pos_cmd(i) = m_cmd_data.cmd.jntPos[i];
+    for(unsigned int i = 0; i < 7; i++) {
+      joint_pos_cmd_(i) = m_cmd_data.cmd.jntPos[i];
       stiffness_(i) = m_cmd_data.cmd.jntStiffness[i];
       damping_(i) = m_cmd_data.cmd.jntDamping[i];
       trq_cmd_(i) = m_cmd_data.cmd.addJntTrq[i];
     }
-    trq = stiffness_.asDiagonal() * (joint_pos_cmd -joint_pos) - damping_.asDiagonal() * joint_vel + trq_cmd_;
 
-    for(unsigned int i = 0; i< 7; i++)
-    {
-      joints_[i]->SetForce(0, trq(i));
-    }
-    if(cnt < 20)
-    {
+    if(cnt < 20) {
       ++cnt;
     }
     
   } else {
     if(cnt > 0)
       --cnt;
+  }
+  
+  trq_ = stiffness_.asDiagonal() * (joint_pos_cmd_ - joint_pos_) - damping_.asDiagonal() * joint_vel_ + trq_cmd_;
+
+  for(unsigned int i = 0; i< 7; i++) {
+    joints_[i]->SetForce(0, trq_(i));
   }
 }
 

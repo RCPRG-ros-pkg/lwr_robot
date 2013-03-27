@@ -24,6 +24,7 @@
   <depend package="oro_joint_state_publisher"/>
   <depend package="oro_joint_trajectory_action"/>
   <depend package="joint_spline_trajectory_generator"/>
+  <depend package="lwr_impedance_controller"/>
 
 </package>
 

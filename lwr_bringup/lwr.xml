@@ -15,73 +15,73 @@
 <simple name="Import" type="string"><value>lwr_impedance_controller</value></simple>
 
 <struct name="diagnostic" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/diagnostic</value></simple>
 </struct>
 
 <struct name="KRL_CMD" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/fri_set_mode</value></simple>
 </struct>
 
 <struct name="ImpedanceTrajectory" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/cartesian_trajectory</value></simple>
 </struct>
 
 <struct name="joints_state" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/joint_states</value></simple>
 </struct>
 
 <!--
 <struct name="goal" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/joint_trajectory_action/goal</value></simple>
 </struct>
 
 <struct name="cancel" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/joint_trajectory_action/cancel</value></simple>
 </struct>
 
 <struct name="status" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/joint_trajectory_action/status</value></simple>
 </struct>
 
 <struct name="feedback" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/joint_trajectory_action/feedback</value></simple>
 </struct>
 
 <struct name="result" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/joint_trajectory_action/result</value></simple>
 </struct>
 
 <struct name="command" type="ConnPolicy">
-  <simple name="type" type="short"><value>0</value></simple>
-  <simple name="size" type="short"><value>1</value></simple>
-  <simple name="transport" type="short"><value>3</value></simple>
+  <simple name="type" type="int"><value>0</value></simple>
+  <simple name="size" type="int"><value>1</value></simple>
+  <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/arm_controller/command</value></simple>
 </struct>
 -->
@@ -144,7 +144,7 @@
   </struct>
 </struct>
 
-<struct name="FRIDiagnostics" type="LWR::FRIDiagnostics">
+<struct name="FRIDiagnostics" type="FRIDiagnostics">
   <struct name="Activity" type="PeriodicActivity">
 		<simple name="Period" type="double"><value>0.05</value></simple>
     <simple name="Priority" type="short"><value>1</value></simple>
@@ -160,14 +160,14 @@
 
   <struct name="Ports" type="PropertyBag">
     <simple name="RobotState" type="string"><value>RobotState</value></simple>
-    <simple name="FriState" type="string"><value>FriState</value></simple>
+    <simple name="FRIState" type="string"><value>FriState</value></simple>
 
-    <simple name="diagnostic" type="string"><value>diagnostic</value></simple>
+    <simple name="Diagnostics" type="string"><value>diagnostic</value></simple>
 
   </struct>
 </struct>
 
-
+<!--
 <struct name="CartImp" type="CartesianImpedance">
   <struct name="Activity" type="NonPeriodicActivity">
     <simple name="Priority" type="short"><value>5</value></simple>
@@ -213,11 +213,11 @@
     <simple name="CartesianImpedanceCommand" type="string"><value>CartesianImpedanceCommand</value></simple>
   </struct>
 </struct>
-
+-->
 <!--
 <struct name="JointSplineTrajectoryGenerator" type="JointSplineTrajectoryGenerator">
   <struct name="Activity" type="Activity">
-    <simple name="Priority" type="short"><value>5</value></simple>
+    <simple name="Priority" type="int"><value>5</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
   <simple name="AutoConf" type="boolean"><value>1</value></simple>
@@ -242,7 +242,7 @@
 <struct name="JointTrajectoryAction" type="JointTrajectoryAction">
   <struct name="Activity" type="PeriodicActivity">
     <simple name="Period" type="double"><value>0.1</value></simple>
-    <simple name="Priority" type="short"><value>2</value></simple>
+    <simple name="Priority" type="int"><value>2</value></simple>
     <simple name="Scheduler" type="string"><value>ORO_SCHED_RT</value></simple>
   </struct>
   
@@ -254,7 +254,7 @@
   </struct>
   
   <struct name="Properties" type="PropertyBag">
-    <simple name="number_of_joints" type="short"><value>7</value></simple>
+    <simple name="number_of_joints" type="int"><value>7</value></simple>
     <simple name="joint0_name" type="string"><value>lwr_arm_0_joint</value></simple>
     <simple name="joint1_name" type="string"><value>lwr_arm_1_joint</value></simple>
     <simple name="joint2_name" type="string"><value>lwr_arm_2_joint</value></simple>

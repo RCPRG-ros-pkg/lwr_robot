@@ -12,7 +12,7 @@
   </node>
 
   <!-- load controllers -->
-   <node name="lwr_controller" pkg="ocl" type="deployer" launch-prefix="lxterm -e" args="-s $(find lwr_bringup)/lwr.xml --">
+   <node name="lwr_controller" pkg="ocl" type="rttlua" launch-prefix="lxterm -e" args="-i $(find lwr_bringup)/deploy.lua --">
    </node> 
 </launch>
 

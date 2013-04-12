@@ -7,6 +7,13 @@
       <alwaysOn>true</alwaysOn>
       <robotPrefix>lwr</robotPrefix>
       <remotePort>49938</remotePort>
+      <lwr_arm_0_joint>0.0</lwr_arm_0_joint>
+      <lwr_arm_1_joint>0.7</lwr_arm_1_joint>
+      <lwr_arm_2_joint>0.0</lwr_arm_2_joint>
+      <lwr_arm_3_joint>-0.7</lwr_arm_3_joint>
+      <lwr_arm_4_joint>0.7</lwr_arm_4_joint>
+      <lwr_arm_5_joint>0.7</lwr_arm_5_joint>
+      <lwr_arm_6_joint>0.7</lwr_arm_6_joint>
     </controller:lwr_controller>
   </gazebo>
 

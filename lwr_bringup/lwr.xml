@@ -28,13 +28,14 @@
   <simple name="name_id" type="string"><value>/arm_controller/fri_set_mode</value></simple>
 </struct>
 
+<!--
 <struct name="ImpedanceTrajectory" type="ConnPolicy">
   <simple name="type" type="int"><value>0</value></simple>
   <simple name="size" type="int"><value>1</value></simple>
   <simple name="transport" type="int"><value>3</value></simple>
   <simple name="name_id" type="string"><value>/cartesian_trajectory</value></simple>
 </struct>
-
+-->
 <struct name="joints_state" type="ConnPolicy">
   <simple name="type" type="int"><value>0</value></simple>
   <simple name="size" type="int"><value>1</value></simple>
@@ -94,10 +95,10 @@
   </struct>
   
   <simple name="AutoConf" type="boolean"><value>1</value></simple>
-  <simple name="AutoStart" type="boolean"><value>1</value></simple>
+  <simple name="AutoStart" type="boolean"><value>0</value></simple>
   
   <struct name="Properties" type="PropertyBag">
-    <simple name="number_of_joints" type="long"><value>7</value></simple>
+    <simple name="number_of_joints" type="int"><value>7</value></simple>
     <simple name="joint0_name" type="string"><value>lwr_arm_0_joint</value></simple>
     <simple name="joint1_name" type="string"><value>lwr_arm_1_joint</value></simple>
     <simple name="joint2_name" type="string"><value>lwr_arm_2_joint</value></simple>
@@ -124,7 +125,7 @@
   <simple name="AutoStart" type="boolean"><value>1</value></simple>
 
   <struct name="Properties" type="PropertyBag">
-  	<simple name="fri_port" type="long"><value>49948</value></simple>
+  	<simple name="fri_port" type="long"><value>49938</value></simple>
   </struct>
 
   <struct name="Ports" type="PropertyBag">
@@ -133,14 +134,14 @@
     <simple name="KRL_CMD" type="string"><value>KRL_CMD</value></simple>
 
     <simple name="JointPosition" type="string"><value>JointPosition</value></simple>
-    <simple name="CartesianPosition" type="string"><value>CartesianPosition</value></simple>
+<!--    <simple name="CartesianPosition" type="string"><value>CartesianPosition</value></simple>
     <simple name="CartesianVelocity" type="string"><value>CartesianVelocity</value></simple>
     <simple name="Jacobian" type="string"><value>Jacobian</value></simple>
     <simple name="MassMatrix" type="string"><value>MassMatrix</value></simple>
     
     <simple name="JointPositionCommand" type="string"><value>JointPositionCommand</value></simple>
     <simple name="JointTorqueCommand" type="string"><value>JointTorqueCommand</value></simple>
-    <simple name="JointImpedanceCommand" type="string"><value>JointImpedanceCommand</value></simple>
+    <simple name="JointImpedanceCommand" type="string"><value>JointImpedanceCommand</value></simple>-->
   </struct>
 </struct>
 

@@ -3,7 +3,7 @@
        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
 
   <gazebo>
-    <controller:lwr_controller name="lwr_controller" plugin="liblwr_controller.so">
+    <plugin name="lwr_controller" filename="liblwr_controller.so">
       <alwaysOn>true</alwaysOn>
       <robotPrefix>lwr</robotPrefix>
       <remotePort>49938</remotePort>
@@ -14,7 +14,7 @@
       <lwr_arm_4_joint>0.7</lwr_arm_4_joint>
       <lwr_arm_5_joint>0.7</lwr_arm_5_joint>
       <lwr_arm_6_joint>0.7</lwr_arm_6_joint>
-    </controller:lwr_controller>
+    </plugin>
   </gazebo>
 
 </robot>

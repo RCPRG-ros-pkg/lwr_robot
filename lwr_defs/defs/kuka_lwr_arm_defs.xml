@@ -33,24 +33,23 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_base.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/base.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
       <collision>
-        <origin xyz="0 0 0.055" rpy="0 0 0"/>
+        <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}"/>
         <geometry>
 <!--          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/> -->
           <cylinder radius="0.07" length="0.11"/>
         </geometry>
       </collision>
     </link>
-
+<!--
     <gazebo reference="calib_${name}_arm_base_link">
-      <!--<material value="kuka-lwr.material"/>-->
       <turnGravityOff>false</turnGravityOff>
     </gazebo>
-
+-->
     <!-- Second segment of the arm. Joint along z-axis -->
     <joint name="${name}_arm_0_joint" type="revolute">
       <origin xyz="0 0 0.11" rpy="0 0 0"/>
@@ -75,9 +74,9 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_a.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_1.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -112,8 +111,7 @@
     </link>
 
     <gazebo reference="${name}_arm_1_link">
-      <!--<material value="kuka-lwr.material"/> -->
-      <turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -124,7 +122,7 @@
 
     <!-- Third segment of the arm. Joint along y-axis -->
     <joint name="${name}_arm_1_joint" type="revolute">
-      <origin xyz="0 0 0.20" rpy="0 0 0"/>
+      <origin xyz="0 0 0.2005" rpy="0 0 0"/>
       <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
@@ -146,9 +144,9 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0.2" rpy="${M_PI} 0 0"/>
+        <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_b.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_2.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -183,10 +181,9 @@
     </link>
 
     <gazebo reference="${name}_arm_2_link">
-      <!--<material value="kuka-lwr.material"/>-->
-      <turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
-
+    
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
       <actuator name="${name}_arm_1_motor"/>
       <joint name="${name}_arm_1_joint"/>
@@ -217,9 +214,9 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
+        <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_a.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_3.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -254,8 +251,7 @@
     </link>
 
     <gazebo reference="${name}_arm_3_link">
-      <!--<material value="kuka-lwr.material"/> -->
-      <turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -288,9 +284,9 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0"/>
+        <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_b.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_4.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -325,8 +321,7 @@
     </link>
 
     <gazebo reference="${name}_arm_4_link">
-      <!--<material value="kuka-lwr.material"/>-->
-<turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
 
     <transmission name="${name}_arm_3_trans" type="SimpleTransmission">
@@ -359,9 +354,9 @@
       </inertial>
 
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry name="${name}_arm_5_geom">
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_segment_last.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_5.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -396,10 +391,9 @@
     </link>
 
     <gazebo reference="${name}_arm_5_link">
-      <!--<material value="kuka-lwr.material"/>-->
-      <turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
-
+    
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
       <actuator name="${name}_arm_4_motor"/>
       <joint name="${name}_arm_4_joint"/>
@@ -431,7 +425,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/arm_wrist.dae"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_6.STL"/>
         </geometry>
         <material name="Grey"/>
       </visual>
@@ -445,8 +439,7 @@
     </link>
 
     <gazebo reference="${name}_arm_6_link">
-      <!--<material value="kuka-lwr.material"/>-->
-      <turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -477,9 +470,9 @@
                             mass="0.2"/>
       </inertial>
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <cylinder radius="0.04" length="0.05"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_7.STL"/>
         </geometry>
         <material name="Grey"/>
       </visual>
@@ -492,10 +485,9 @@
     </link>
 
     <gazebo reference="${name}_arm_7_link">
-      <!--<material value="kuka-lwr.material"/> -->
-      <turnGravityOff>true</turnGravityOff>
+      <gravity>false</gravity>
     </gazebo>
-
+    
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">
       <actuator name="${name}_arm_6_motor"/>
       <joint name="${name}_arm_6_joint"/>

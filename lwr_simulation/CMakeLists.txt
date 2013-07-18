@@ -1,32 +1,62 @@
-cmake_minimum_required(VERSION 2.4.6)
-include($ENV{ROS_ROOT}/core/rosbuild/rosbuild.cmake)
+# http://ros.org/doc/groovy/api/catkin/html/user_guide/supposed.html
+cmake_minimum_required(VERSION 2.8.3)
+project(lwr_simulation)
 
-# Set the build type.  Options are:
-#  Coverage       : w/ debug symbols, w/o optimization, w/ code-coverage
-#  Debug          : w/ debug symbols, w/o optimization
-#  Release        : w/o debug symbols, w/ optimization
-#  RelWithDebInfo : w/ debug symbols, w/ optimization
-#  MinSizeRel     : w/o debug symbols, w/ optimization, stripped binaries
-#set(ROS_BUILD_TYPE RelWithDebInfo)
+find_package(catkin REQUIRED COMPONENTS orocos_kdl kuka_lwr_fri)
 
-rosbuild_init()
-
-#set the default path for built executables to the "bin" directory
-set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
-#set the default path for built libraries to the "lib" directory
-set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
-#uncomment if you have defined messages
-#rosbuild_genmsg()
-#uncomment if you have defined services
-#rosbuild_gensrv()
-
-add_definitions(-fPIC)
-
-rosbuild_add_boost_directories()
-
+find_package(Boost REQUIRED COMPONENTS thread)
+find_package(GAZEBO REQUIRED)
+find_package(SDF REQUIRED)
 find_package(Eigen REQUIRED)
-include_directories(${Eigen_INCLUDE_DIRS})
 
-rosbuild_add_library(lwr_controller src/lwr_controller.cpp)
-rosbuild_link_boost(lwr_controller thread)
+# http://stackoverflow.com/questions/7172670/best-shortest-way-to-join-a-list-in-cmake
+function(JOIN VALUES GLUE OUTPUT)
+  string (REGEX REPLACE "([^\\]|^);" "\\1${GLUE}" _TMP_STR "${VALUES}")
+  string (REGEX REPLACE "[\\](.)" "\\1" _TMP_STR "${_TMP_STR}") #fixes escaping
+  set (${OUTPUT} "${_TMP_STR}" PARENT_SCOPE)
+endfunction()
+JOIN("${GAZEBO_LDFLAGS}" " " LD_FLAGS)
+
+message(STATUS "lwr_simulation: using LD_FLAGS = \"${LD_FLAGS}\"")
+
+include_directories(
+  include
+  ${Boost_INCLUDE_DIRS}
+  ${catkin_INCLUDE_DIRS}
+  ${GAZEBO_INCLUDE_DIRS}
+  ${SDFormat_INCLUDE_DIRS}
+  ${Eigen_INCLUDE_DIRS}
+)
+
+link_directories(${orocos_kdl_LIBRARY_DIRS})
+
+add_library(lwr_controller src/lwr_controller.cpp)
+set_target_properties(lwr_controller PROPERTIES LINK_FLAGS "${LD_FLAGS}")
+target_link_libraries(lwr_controller
+  ${Boost_LIBRARIES}
+  ${catkin_LIBRARIES}
+  ${GAZEBO_LIBRARIES}
+  ${SDFormat_LIBRARIES}
+)
+
+catkin_package(
+  CATKIN_DEPENDS
+    gazebo_ros
+  LIBRARIES
+    lwr_controller
+)
+
+# Install targets
+install(TARGETS
+  lwr_controller
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+  )
+
+
+install(DIRECTORY launch/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+  )
+
+install(DIRECTORY worlds/
+  DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}/worlds
+  )

@@ -4,12 +4,12 @@
 #include <rtt/Component.hpp>
 
 // Start of user code includes
-#include <geometry_msgs/typekit/Types.h>
+#include <geometry_msgs/Pose.h>
 #include <lwr_impedance_controller/CartImpTrajectory.h>
 #include <lwr_impedance_controller/CartesianImpedance.h>
 #include <Eigen/Geometry>
 
-#include "xeno_clock.h"
+#include "xeno_clock/xeno_clock.h"
 
 // End of user code
 

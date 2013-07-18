@@ -3,7 +3,7 @@
   <!-- send elektron.xml to param server -->
   <param name="robot_description" command="$(find xacro)/xacro.py '$(find lwr_defs)/robots/kuka_lwr_arm.urdf.xml'" />
 
-  <rosparam command="load" file="$(find lwr_bringup)/controllers.yaml" />
+  <rosparam command="load" file="$(find lwr_bringup)/config/controllers.yaml" />
 
   <!-- Robot state publisher -->
   <node pkg="robot_state_publisher" type="state_publisher" name="robot_state_publisher">
@@ -12,7 +12,7 @@
   </node>
 
   <!-- load controllers -->
-   <node name="lwr_controller" pkg="ocl" type="rttlua" launch-prefix="lxterm -e" args="-i $(find lwr_bringup)/deploy.lua --">
+   <node name="lwr_controller" pkg="ocl" type="rttlua" launch-prefix="lxterm -e" args="-i $(find lwr_bringup)/config/deploy.lua --">
    </node> 
 </launch>
 

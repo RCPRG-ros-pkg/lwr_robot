@@ -1,0 +1,26 @@
+<package>
+  <name>lwr_simulation</name>
+  <version>0.0.1</version>
+  <description>	Simulation plugin and launch scripts for LWR in gazebo.</description>
+  <maintainer email="konradb3@gmail.com">Konrad Banachowicz</maintainer>
+
+  <license>BSD</license>
+
+  <author>Konrad Banachowicz</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>gazebo</build_depend>
+  <build_depend>gazebo_ros</build_depend>
+  <build_depend>orocos_kdl</build_depend>
+  <build_depend>kuka_lwr_fri</build_depend>
+
+  <run_depend>gazebo</run_depend>
+  <run_depend>gazebo_ros</run_depend>
+  <run_depend>orocos_kdl</run_depend>
+  
+  <export>
+    <gazebo_ros plugin_path="${prefix}/lib"/>
+  </export>
+
+</package>

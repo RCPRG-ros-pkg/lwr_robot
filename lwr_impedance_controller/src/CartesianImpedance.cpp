@@ -11,8 +11,7 @@
 
 #include <lwr_fri/CartesianImpedance.h>
 #include <lwr_fri/FriJointImpedance.h>
-#include <sensor_msgs/typekit/Types.h>
-#include <geometry_msgs/typekit/Types.h>
+#include <geometry_msgs/Pose.h>
 #include <lwr_impedance_controller/CartesianImpedance.h>
 
 #include <Eigen/Dense>

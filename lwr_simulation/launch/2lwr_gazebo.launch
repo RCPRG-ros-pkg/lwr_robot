@@ -7,8 +7,8 @@
   
   <!-- load robot -->
   <param name="/use_sim_time" value="true"/>
-  <param name="robot_description" command="$(find xacro)/xacro.py '$(find two_lwr_defs)/robots/two_lwr.urdf.xml'" />
-  <node name="spawn_lwr" pkg="gazebo" type="spawn_model" args="-urdf -param robot_description -model two_lwr -paused=true" respawn="false" output="screen" />
+  <param name="robot_description" command="$(find xacro)/xacro.py '$(find velma_defs)/robots/velma.urdf.xml'" />
+  <node name="spawn_lwr" pkg="gazebo" type="spawn_model" args="-urdf -param robot_description -model velma -paused=true" respawn="false" output="screen" />
   
   <!-- start gui -->
   <group if="$(arg gui)">

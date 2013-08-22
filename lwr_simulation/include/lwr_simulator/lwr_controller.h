@@ -1,117 +1,107 @@
-/*
- *  Gazebo - Outdoor Multi-Robot Simulator
- *  Copyright (C) 2003  
- *     Nate Koenig & Andrew Howard
- *
- *  This program is free software; you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation; either version 2 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program; if not, write to the Free Software
- *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
- *
- */
-/*
- * Desc: 3D position interface.
- * Author: Sachin Chitta and John Hsu
- * Date: 10 June 2008
- * SVN: $Id$
- */
+
 #ifndef LWR_CONTROLLER_HH
 #define LWR_CONTROLLER_HH
 
 #include <ros/callback_queue.h>
 #include <ros/advertise_options.h>
 
-#include "physics/physics.hh"
-#include "transport/TransportTypes.hh"
-#include "common/Time.hh"
-#include "common/Plugin.hh"
-#include "common/Events.hh"
+#include <gazebo/gazebo.hh>
+#include <gazebo/physics/physics.hh>
+#include <gazebo/common/common.hh>
+
 #include <ros/ros.h>
 #include <kdl/chain.hpp>
 #include <kdl/chaindynparam.hpp>
 #include <kdl/chainfksolverpos_recursive.hpp>
 #include <kdl/chainjnttojacsolver.hpp>
 #include "Eigen/Dense"
+
+#include <rtt/Component.hpp>
+#include <rtt/Port.hpp>
+#include <rtt/TaskContext.hpp>
+#include <rtt/Logger.hpp>
+
+#include <lwr_fri/CartesianImpedance.h>
+#include <lwr_fri/FriJointImpedance.h>
+
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/Wrench.h>
+#include <geometry_msgs/Twist.h>
+
 #include <kuka_lwr_fri/friComm.h>
 
-#include <sys/socket.h> /* for bind socket accept */
-#include <unistd.h> /* for close() */
-#include <arpa/inet.h>/* for inet_Addr etc*/
+typedef Eigen::Matrix<double, 7, 7> Matrix77d;
 
-namespace gazebo
+
+class LWRController : public RTT::TaskContext
 {
+  public: EIGEN_MAKE_ALIGNED_OPERATOR_NEW
+  /// \brief Constructor
+  public: LWRController(const std::string& name);
 
-   class LWRController : public ModelPlugin
-   {
-      public: EIGEN_MAKE_ALIGNED_OPERATOR_NEW
-      /// \brief Constructor
-      public: LWRController();
+  /// \brief Destructor
+  public: virtual ~LWRController();
+  public: virtual bool startHook();
+  public: virtual bool gazeboConfigureHook(gazebo::physics::ModelPtr model);
+  public: virtual void updateHook();
+  public: virtual bool configureHook();
+  public: virtual void gazeboUpdateHook(gazebo::physics::ModelPtr model);
 
-      /// \brief Destructor
-      public: virtual ~LWRController();
+  private: void GetRobotChain();
 
-      /// \brief Load the controller
-      public: void Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf );
+  private:
+    //! Synchronization
+    RTT::os::MutexRecursive gazebo_mutex_;
 
-      /// \brief Update the controller
-      protected: virtual void UpdateChild();
-      
-      void GetRobotChain();
-      
-      private:
-        /*
-         *  \brief pointer to ros node
-         */
-        ros::NodeHandle* rosnode_;
-        
-        gazebo::physics::ModelPtr parent_model_;
-        std::string robotPrefix;
-        std::vector<gazebo::physics::JointPtr>  joints_;
-        std::string chain_start, chain_end;
-          
-         // Pointer to the model
-        physics::WorldPtr world;
+    ros::NodeHandle* rosnode_;
+    
+    std::string robotPrefix_;
+    std::vector<gazebo::physics::JointPtr>  joints_;
+    std::string chain_start, chain_end;
+    
+    
+    KDL::Chain chain_;
+    KDL::ChainDynParam *dyn;
+    KDL::ChainFkSolverPos_recursive *fk;
+    KDL::ChainJntToJacSolver *jc;
 
-        // Pointer to the update event connection
-        event::ConnectionPtr updateConnection;
-        
-        KDL::Chain chain_;
-	      KDL::ChainDynParam *dyn;
-	      KDL::ChainFkSolverPos_recursive *fk;
-	      KDL::ChainJntToJacSolver *jc;
+    std::string base_frame_;
 
-        std::string base_frame_;
-	
-	      int cnt;
-        
-        Eigen::Matrix<double, 7, 1> joint_pos_;
-        Eigen::Matrix<double, 7, 1> joint_pos_cmd_;
-        Eigen::Matrix<double, 7, 1> joint_vel_;
-        Eigen::Matrix<double, 7, 1> stiffness_;
-        Eigen::Matrix<double, 7, 1> damping_;
-        Eigen::Matrix<double, 7, 1> trq_cmd_;
-        Eigen::Matrix<double, 7, 1> trq_;
-        
-	      int remote_port;
-	      std::string remote;
-	
-        int socketFd;
-        struct sockaddr_in localAddr, remoteAddr;
+    Eigen::Matrix<double, 7, 1> joint_pos_;
+    Eigen::Matrix<double, 7, 1> joint_pos_cmd_;
+    Eigen::Matrix<double, 7, 1> joint_vel_;
+    Eigen::Matrix<double, 7, 1> stiffness_;
+    Eigen::Matrix<double, 7, 1> damping_;
+    Eigen::Matrix<double, 7, 1> trq_cmd_;
+    Eigen::Matrix<double, 7, 1> trq_;
+    
+    std::vector<double> jnt_pos_;
+    std::vector<double> jnt_trq_;
+    std::vector<double> jnt_vel_;
 
-        tFriMsrData m_msr_data;
-	      tFriCmdData m_cmd_data;
-   };
+    std::vector<double> jnt_pos_cmd_;
+    std::vector<double> jnt_trq_cmd_;
 
-}
+    KDL::Frame T_old;
+    
+    RTT::InputPort<lwr_fri::CartesianImpedance > port_CartesianImpedanceCommand;
+    RTT::InputPort<geometry_msgs::Wrench > port_CartesianWrenchCommand;
+    RTT::InputPort<geometry_msgs::Pose > port_CartesianPositionCommand;
+    RTT::InputPort<lwr_fri::FriJointImpedance > port_JointImpedanceCommand;
+    RTT::InputPort<std::vector<double> > port_JointPositionCommand;
+    RTT::InputPort<std::vector<double> > port_JointTorqueCommand;
+
+    RTT::OutputPort<geometry_msgs::Wrench > port_CartesianWrench;
+    RTT::OutputPort<tFriRobotState > port_RobotState;
+    RTT::OutputPort<tFriIntfState > port_FRIState;
+    RTT::OutputPort<std::vector<double> > port_JointVelocity;
+    RTT::OutputPort<geometry_msgs::Twist > port_CartesianVelocity;
+    RTT::OutputPort<geometry_msgs::Pose > port_CartesianPosition;
+    RTT::OutputPort<Matrix77d > port_MassMatrix;
+    RTT::OutputPort<KDL::Jacobian > port_Jacobian;
+    RTT::OutputPort<std::vector<double> > port_JointTorque;
+    RTT::OutputPort<std::vector<double> > port_JointPosition;
+};
 
 #endif
 

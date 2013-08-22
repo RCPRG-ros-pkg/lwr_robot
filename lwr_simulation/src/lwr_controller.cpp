@@ -1,15 +1,32 @@
 #include <kdl_parser/kdl_parser.hpp>
-#include <sys/select.h>
 #include <lwr_simulator/lwr_controller.h>
-
-namespace gazebo
-{
-
 
 ////////////////////////////////////////////////////////////////////////////////
 // Constructor
-LWRController::LWRController()
+LWRController::LWRController(std::string const& name) : 
+    TaskContext(name),
+    robotPrefix_("lwr")
 {
+    // Add required gazebo interfaces
+    this->provides("gazebo")->addOperation("configure",&LWRController::gazeboConfigureHook,this,RTT::ClientThread);
+    this->provides("gazebo")->addOperation("update",&LWRController::gazeboUpdateHook,this,RTT::ClientThread);
+
+  this->addProperty("robotPrefix", robotPrefix_);
+
+  this->ports()->addPort("JointImpedanceCommand", port_JointImpedanceCommand).doc("");
+  this->ports()->addPort("JointPositionCommand", port_JointPositionCommand).doc("");
+  this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
+
+  this->ports()->addPort("CartesianWrench", port_CartesianWrench).doc("");
+  this->ports()->addPort("RobotState", port_RobotState).doc("");
+  this->ports()->addPort("FRIState", port_FRIState).doc("");
+  this->ports()->addPort("JointVelocity", port_JointVelocity).doc("");
+  this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
+  this->ports()->addPort("CartesianPosition", port_CartesianPosition).doc("");
+  this->ports()->addPort("MassMatrix", port_MassMatrix).doc("");
+  this->ports()->addPort("Jacobian", port_Jacobian).doc("");
+  this->ports()->addPort("JointTorque", port_JointTorque).doc("");
+  this->ports()->addPort("JointPosition", port_JointPosition).doc("");
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -18,51 +35,36 @@ LWRController::~LWRController()
 {
 }
 
-////////////////////////////////////////////////////////////////////////////////
-// Load the controller
-void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
+void LWRController::updateHook()
 {
-  // Get then name of the parent model
-  std::string modelName = _sdf->GetParent()->GetValueString("name");
+  // Synchronize with gazeboUpdate()
+  RTT::os::MutexLock lock(gazebo_mutex_);
+}
 
-  // Get the world name.
-  this->world = _parent->GetWorld();
+bool LWRController::startHook()
+{
+  return true;
+}
 
-  // Get a pointer to the model
-  this->parent_model_ = _parent;
+bool LWRController::configureHook()
+{
+  return true;
+}
 
-  // Error message if the model couldn't be found
-  if (!this->parent_model_)
-    gzerr << "Unable to get parent model\n";
-
-  // Listen to the update event. This event is broadcast every
-  // simulation iteration.
-  this->updateConnection = event::Events::ConnectWorldUpdateStart(
-      boost::bind(&LWRController::UpdateChild, this));
-  gzdbg << "plugin model name: " << modelName << "\n";
-
-  // get parameter name
-  this->robotPrefix = "";
-  if (_sdf->HasElement("robotPrefix"))
-    this->robotPrefix = _sdf->GetElement("robotPrefix")->GetValueString();
+bool LWRController::gazeboConfigureHook(gazebo::physics::ModelPtr model)
+{
+  if(model.get() == NULL) {return false;}
   
-  remote_port = 7998;
-  if (_sdf->HasElement("remotePort"))
-    this->remote_port = _sdf->GetElement("remotePort")->GetValueDouble();
+  // get parameter name
+//  if (_sdf->HasElement("robotPrefix"))
+//    this->robotPrefix = _sdf->GetElement("robotPrefix")->GetValueString();
+  chain_start = std::string("calib_") + this->robotPrefix_ + "_arm_base_link";
+//  if (_sdf->HasElement("baseLink"))
+//    this->chain_start = _sdf->GetElement("baseLink")->GetValueString();
 
-  remote = "127.0.0.1";
-  if (_sdf->HasElement("remoteIP"))
-    this->remote = _sdf->GetElement("remoteIP")->GetValueString();
-
-  chain_start = std::string("calib_") + this->robotPrefix + "_arm_base_link";
-  if (_sdf->HasElement("baseLink"))
-    this->chain_start = _sdf->GetElement("baseLink")->GetValueString();
-
-  chain_end = this->robotPrefix + "_arm_7_link";
-  if (_sdf->HasElement("toolLink"))
-    this->chain_end = _sdf->GetElement("toolLink")->GetValueString();
-    
-  gzdbg << "remote : " << remote << " : " << remote_port << "\n";
+  chain_end = this->robotPrefix_ + "_arm_7_link";
+//  if (_sdf->HasElement("toolLink"))
+//    this->chain_end = _sdf->GetElement("toolLink")->GetValueString();
   
   if (!ros::isInitialized())
   {
@@ -73,12 +75,15 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
   this->rosnode_ = new ros::NodeHandle();
     
   GetRobotChain();
-    
+  
+  jnt_pos_.resize(7);
+  jnt_vel_.resize(7);
+  
   for(unsigned int i = 0; i< 7; i++)
   {
     // fill in gazebo joints pointer
-    std::string joint_name = this->robotPrefix + "_arm_" + (char)(i + 48) + "_joint";
-    gazebo::physics::JointPtr joint = this->parent_model_->GetJoint(joint_name);     
+    std::string joint_name = this->robotPrefix_ + "_arm_" + (char)(i + 48) + "_joint";
+    gazebo::physics::JointPtr joint = model->GetJoint(joint_name);     
     if (joint)
     {
       this->joints_.push_back(joint);
@@ -86,54 +91,20 @@ void LWRController::Load( physics::ModelPtr _parent, sdf::ElementPtr _sdf )
     else
     {
       this->joints_.push_back(gazebo::physics::JointPtr());  // FIXME: cannot be null, must be an empty boost shared pointer
-      ROS_ERROR("A joint named \"%s\" is not part of Mechanism Controlled joints.\n", joint_name.c_str());
+      RTT::log(RTT::Error) << "A joint named " << joint_name.c_str() << " is not part of Mechanism Controlled joints." << RTT::endlog();
     }
     
-    if(_sdf->HasElement(joint_name)) {
-      double init = _sdf->GetElement(joint_name)->GetValueDouble();
-      joint->SetAngle(0, init);
-    }
+    //if(_sdf->HasElement(joint_name)) {
+    //  double init = 0.0; //_sdf->GetElement(joint_name)->GetValueDouble();
+    //  joint->SetAngle(0, init);
+    //}
     
     stiffness_(i) = 200.0;
     damping_(i) = 5.0;
     trq_cmd_(i) = 0;
     joint_pos_cmd_(i) = joints_[i]->GetAngle(0).Radian();;
-    
-    m_msr_data.data.cmdJntPos[i] = 0.0;
-    m_msr_data.data.cmdJntPosFriOffset[i] = 0.0;
-    
-    
   }
-  
-  socketFd = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
-  setsockopt(socketFd, SOL_SOCKET, SO_REUSEADDR, 0, 0);
-  
-  bzero((char *) &localAddr, sizeof(localAddr));
-  localAddr.sin_family = AF_INET;
-  localAddr.sin_addr.s_addr = INADDR_ANY;
-  localAddr.sin_port = htons(remote_port + 1);
-
-  if (bind(socketFd, (sockaddr*) &localAddr, sizeof(sockaddr_in)) < 0) {
-    ROS_ERROR("Binding of port failed with ");
-  }
-  
-  bzero((char *) &remoteAddr, sizeof(remoteAddr));
-	remoteAddr.sin_family = AF_INET;
-	remoteAddr.sin_addr.s_addr = inet_addr(remote.c_str());
-	remoteAddr.sin_port = htons(remote_port);
-  
-  bzero((char *) &m_msr_data, sizeof(tFriMsrData));
-	
-  m_msr_data.robot.control = FRI_CTRL_JNT_IMP;
-  m_msr_data.intf.state = FRI_STATE_MON;
-  m_msr_data.robot.power = 0xFFFF;
-
-  m_msr_data.robot.error = 0x0000;
-  m_msr_data.robot.warning = 0x0000;
-  m_msr_data.intf.desiredCmdSampleTime = 0.001;
-  m_msr_data.intf.desiredMsrSampleTime = 0.001;
-  
-  cnt = 0;
+  return true;
 }
 
 void LWRController::GetRobotChain()
@@ -154,25 +125,25 @@ void LWRController::GetRobotChain()
 
 ////////////////////////////////////////////////////////////////////////////////
 // Update the controller
-void LWRController::UpdateChild()
+void LWRController::gazeboUpdateHook(gazebo::physics::ModelPtr model)
 {
-  struct sockaddr cliAddr;
-  unsigned int cliAddr_len;
   KDL::Frame f;
   KDL::Jacobian jac(7);
   KDL::JntSpaceInertiaMatrix H(7);
   KDL::JntArray pos(7);
   KDL::JntArray grav(7);
-
+  lwr_fri::FriJointImpedance jnt_imp_cmd;
+  Matrix77d mass;
+  
   for(unsigned int i = 0; i< 7; i++)
   {
-    m_msr_data.data.cmdJntPos[i] = m_msr_data.data.msrJntPos[i] = pos(i) = joint_pos_(i) = joints_[i]->GetAngle(0).Radian();
-    joint_vel_(i) = joints_[i]->GetVelocity(0);
+    jnt_pos_[i] = pos(i) = joint_pos_(i) = joints_[i]->GetAngle(0).Radian();
+    jnt_vel_[i] =joint_vel_(i) = joints_[i]->GetVelocity(0);
   }
 
-  /*dyn->JntToGravity(pos, grav);*/
+  dyn->JntToGravity(pos, grav);
   fk->JntToCart(pos, f);
-  
+  /*
   m_msr_data.data.msrCartPos[0] = f.M.data[0];
   m_msr_data.data.msrCartPos[1] = f.M.data[1];
   m_msr_data.data.msrCartPos[2] = f.M.data[2];
@@ -187,69 +158,35 @@ void LWRController::UpdateChild()
   m_msr_data.data.msrCartPos[9] = f.M.data[7];
   m_msr_data.data.msrCartPos[10] = f.M.data[8];
   m_msr_data.data.msrCartPos[11] = f.p.data[2];
-  
+  */
   jc->JntToJac(pos, jac);
   jac.changeRefFrame(KDL::Frame(f.Inverse().M));
-  //Kuka uses Tx, Ty, Tz, Rz, Ry, Rx convention, so we need to swap Rz and Rx
-  jac.data.row(3).swap(jac.data.row(5));
-  for ( int i = 0; i < FRI_CART_VEC; i++)
-    for ( int j = 0; j < LBR_MNJ; j++)
-      m_msr_data.data.jacobian[i*LBR_MNJ+j] = jac.data(i,j);
-    
   dyn->JntToMass(pos, H);
   for(unsigned int i=0;i<LBR_MNJ;i++) {
     for(unsigned int j=0;j<LBR_MNJ;j++) {
-      m_msr_data.data.massMatrix[LBR_MNJ*i+j] = H.data(i, j);
+      mass(i, j) = H.data(i, j);
     }
   }
   
-  if(cnt > 10)
-  {
-    m_msr_data.intf.state = FRI_STATE_CMD;
-  } else 
-  {
-    m_msr_data.intf.state = FRI_STATE_MON;
+  if (port_JointTorqueCommand.read(jnt_trq_cmd_) == RTT::NewData) {
+    for (unsigned int i = 0; i < LBR_MNJ; i++)
+      trq_cmd_(i) = jnt_trq_cmd_[i];
   }
   
-  
-  
-  //send msr data
-  if (0 > sendto(socketFd, (void*) &m_msr_data, sizeof(m_msr_data), 0,
-			(sockaddr*) &remoteAddr, sizeof(remoteAddr))) {
-		ROS_ERROR( "Sending datagram failed.");
-		//return -1;
-	}
-
-  fd_set rd;
-  struct timeval tv;
-  tv.tv_sec = 0;
-  tv.tv_usec = 1000;
-  
-  FD_ZERO(&rd);
-  FD_SET(socketFd, &rd);
-	
-  int sret = select(socketFd+1, &rd, NULL, NULL, &tv);
-  if(sret > 0) {
-    int n = recvfrom(socketFd, (void*) &m_cmd_data, sizeof(m_cmd_data), 0,
-			(sockaddr*) &cliAddr, &cliAddr_len);
-    if (sizeof(tFriCmdData) != n) {
-      ROS_ERROR( "bad packet length");
+  if (port_JointImpedanceCommand.read(jnt_imp_cmd) == RTT::NewData) {
+    for (unsigned int i = 0; i < LBR_MNJ; i++) {
+      stiffness_(i) = jnt_imp_cmd.stiffness[i];
+      damping_(i) = jnt_imp_cmd.damping[i];
     }
-
-    for(unsigned int i = 0; i < 7; i++) {
-      joint_pos_cmd_(i) = m_cmd_data.cmd.jntPos[i];
-      stiffness_(i) = m_cmd_data.cmd.jntStiffness[i];
-      damping_(i) = m_cmd_data.cmd.jntDamping[i];
-      trq_cmd_(i) = m_cmd_data.cmd.addJntTrq[i];
-    }
-
-    if(cnt < 20) {
-      ++cnt;
-    }
-    
-  } else {
-    if(cnt > 0)
-      --cnt;
+  }
+  
+  if (port_JointPositionCommand.read(jnt_pos_cmd_) == RTT::NewData) {
+    if (jnt_pos_cmd_.size() == LBR_MNJ) {
+      for (unsigned int i = 0; i < LBR_MNJ; i++)
+        joint_pos_cmd_(i) = jnt_pos_cmd_[i];
+      } else
+        RTT::log(RTT::Warning) << "Size of " << port_JointPositionCommand.getName()
+            << " not equal to " << LBR_MNJ << RTT::endlog();
   }
   
   trq_ = stiffness_.asDiagonal() * (joint_pos_cmd_ - joint_pos_) - damping_.asDiagonal() * joint_vel_ + trq_cmd_;
@@ -257,8 +194,20 @@ void LWRController::UpdateChild()
   for(unsigned int i = 0; i< 7; i++) {
     joints_[i]->SetForce(0, trq_(i));
   }
+  
+  port_JointPosition.write(jnt_pos_);
+  port_JointVelocity.write(jnt_vel_);
+  port_JointTorque.write(jnt_trq_);
+
+//  port_CartesianPosition.write(cart_pos);
+//  port_CartesianVelocity.write(cart_twist);
+//  port_CartesianWrench.write(cart_wrench);
+
+  port_Jacobian.write(jac);
+  port_MassMatrix.write(mass);
+  
 }
 
-GZ_REGISTER_MODEL_PLUGIN(LWRController);
+ORO_LIST_COMPONENT_TYPE(LWRController)
+ORO_CREATE_COMPONENT_LIBRARY();
 
-}

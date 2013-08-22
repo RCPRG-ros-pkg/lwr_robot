@@ -13,14 +13,20 @@
   <build_depend>gazebo</build_depend>
   <build_depend>gazebo_ros</build_depend>
   <build_depend>orocos_kdl</build_depend>
+  <build_depend>kdl_parser</build_depend>
   <build_depend>kuka_lwr_fri</build_depend>
-
+  <build_depend>lwr_fri</build_depend>
+  <build_depend>rtt_gazebo_plugin</build_depend>
+  
   <run_depend>gazebo</run_depend>
   <run_depend>gazebo_ros</run_depend>
   <run_depend>orocos_kdl</run_depend>
+  <run_depend>kdl_parser</run_depend>
+  <run_depend>rtt_gazebo_plugin</run_depend>
   
+  <!--
   <export>
     <gazebo_ros plugin_path="${prefix}/lib"/>
   </export>
-
+-->
 </package>

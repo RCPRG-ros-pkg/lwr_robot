@@ -18,7 +18,7 @@
     <!-- First (shoulder) element of the arm. Fixed to its parent. -->
     <joint name="${parent}_${name}_arm_base_joint" type="fixed">
       <insert_block name="origin"/>
-      <parent link="${parent}_link"/>
+      <parent link="${parent}"/>
       <child link="calib_${name}_arm_base_link"/>
     </joint>
 
@@ -449,7 +449,7 @@
     </transmission>
 
     <joint name="${name}_arm_6_joint" type="revolute">
-      <origin xyz="0 0 0.078" rpy="0 0 ${M_PI}"/>
+      <origin xyz="0 0 0.078" rpy="0 0 0"/>
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />

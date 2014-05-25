@@ -45,11 +45,11 @@
         </geometry>
       </collision>
     </link>
-<!--
+
     <gazebo reference="calib_${name}_arm_base_link">
-      <turnGravityOff>false</turnGravityOff>
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
--->
+    
     <!-- Second segment of the arm. Joint along z-axis -->
     <joint name="${name}_arm_0_joint" type="revolute">
       <origin xyz="0 0 0.11" rpy="0 0 0"/>
@@ -111,7 +111,7 @@
     </link>
 
     <gazebo reference="${name}_arm_1_link">
-      <gravity>false</gravity>
+      <gravity>0</gravity>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -181,7 +181,7 @@
     </link>
 
     <gazebo reference="${name}_arm_2_link">
-      <gravity>false</gravity>
+      <gravity>0</gravity>
     </gazebo>
     
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
@@ -251,7 +251,7 @@
     </link>
 
     <gazebo reference="${name}_arm_3_link">
-      <gravity>false</gravity>
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -321,7 +321,7 @@
     </link>
 
     <gazebo reference="${name}_arm_4_link">
-      <gravity>false</gravity>
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_3_trans" type="SimpleTransmission">
@@ -391,7 +391,7 @@
     </link>
 
     <gazebo reference="${name}_arm_5_link">
-      <gravity>false</gravity>
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
     
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
@@ -439,7 +439,7 @@
     </link>
 
     <gazebo reference="${name}_arm_6_link">
-      <gravity>false</gravity>
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -485,7 +485,7 @@
     </link>
 
     <gazebo reference="${name}_arm_7_link">
-      <gravity>false</gravity>
+      <turnGravityOff>true</turnGravityOff>
     </gazebo>
     
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">

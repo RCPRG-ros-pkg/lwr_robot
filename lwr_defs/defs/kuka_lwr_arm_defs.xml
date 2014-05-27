@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
        xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+       xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
 
-  <include filename="$(find lwr_defs)/defs/util_defs.xml"/>
+  <xacro:include filename="$(find lwr_defs)/defs/util_defs.xml"/>
 
   <property name="arm_elem_base_mass" value="2.0"/>
   <property name="arm_elem_link_mass" value="2.0"/>

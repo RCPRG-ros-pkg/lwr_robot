@@ -45,6 +45,14 @@
           <cylinder radius="0.07" length="0.11"/>
         </geometry>
       </collision>
+
+      <self_collision_checking>
+        <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}"/>
+        <geometry>
+          <capsule radius="0.07" length="0.11"/>
+        </geometry>
+      </self_collision_checking>
+
     </link>
 
     <gazebo reference="calib_${name}_arm_base_link">
@@ -109,6 +117,13 @@
           <cylinder radius="0.07" length="0.208"/>
         </geometry>
       </collision>
+
+      <self_collision_checking>
+        <origin xyz="0 -0.03 0.1" rpy="0.291 0 0"/>
+        <geometry>
+          <capsule radius="0.07" length="0.208"/>
+        </geometry>
+      </self_collision_checking>
     </link>
 
     <gazebo reference="${name}_arm_1_link">
@@ -179,6 +194,14 @@
           <cylinder radius="0.07" length="0.208"/>
         </geometry>
       </collision>
+
+      <self_collision_checking>
+        <origin xyz="0 0.03 0.1" rpy="0.291 0 0"/>
+        <geometry>
+          <capsule radius="0.07" length="0.208"/>
+        </geometry>
+      </self_collision_checking>
+
     </link>
 
     <gazebo reference="${name}_arm_2_link">
@@ -249,6 +272,14 @@
           <cylinder radius="0.07" length="0.208"/>
         </geometry>
       </collision>
+
+      <self_collision_checking>
+        <origin xyz="0 0.03 0.1" rpy="-0.291 0 0"/>
+        <geometry>
+          <capsule radius="0.07" length="0.208"/>
+        </geometry>
+      </self_collision_checking>
+
     </link>
 
     <gazebo reference="${name}_arm_3_link">
@@ -319,6 +350,14 @@
           <cylinder radius="0.07" length="0.208"/>
         </geometry>
       </collision>
+
+      <self_collision_checking>
+        <origin xyz="0 -0.03 0.1" rpy="-0.291 0 0"/>
+        <geometry>
+          <capsule radius="0.07" length="0.208"/>
+        </geometry>
+      </self_collision_checking>
+
     </link>
 
     <gazebo reference="${name}_arm_4_link">
@@ -389,6 +428,20 @@
           <cylinder radius="0.07" length="0.198"/>
         </geometry>
       </collision>
+<!--
+      <self_collision_checking>
+        <origin xyz="0 -0.02 0.095" rpy="0.207 0 0"/>
+        <geometry>
+          <capsule radius="0.07" length="0.198"/>
+        </geometry>
+      </self_collision_checking>
+-->
+      <self_collision_checking>
+        <origin xyz="0 -0.01 0.0475" rpy="0.207 0 0"/>
+        <geometry>
+          <capsule radius="0.07" length="0.1"/>
+        </geometry>
+      </self_collision_checking>
     </link>
 
     <gazebo reference="${name}_arm_5_link">
@@ -437,6 +490,14 @@
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>
         </geometry>
       </collision>
+
+      <self_collision_checking>
+        <origin xyz="0 -0.01 0.02" rpy="0 0 0"/>
+        <geometry>
+          <capsule radius="0.105" length="0.0"/>
+        </geometry>
+      </self_collision_checking>
+
     </link>
 
     <gazebo reference="${name}_arm_6_link">
@@ -483,6 +544,14 @@
           <cylinder radius="0.04" length="0.05"/>
         </geometry>
       </collision>
+<!--
+      <self_collision_checking>
+        <origin xyz="0 0.0 -0.07" rpy="0 0 0"/>
+        <geometry>
+          <capsule radius="0.105" length="0.0"/>
+        </geometry>
+      </self_collision_checking>
+-->
     </link>
 
     <gazebo reference="${name}_arm_7_link">

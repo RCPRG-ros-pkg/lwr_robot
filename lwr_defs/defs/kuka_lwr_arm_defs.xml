@@ -330,6 +330,7 @@
         </geometry>
       </collision>
 -->
+
       <collision>
         <origin xyz="0 0 0.2" rpy="0 0 0"/>
         <geometry>
@@ -408,6 +409,7 @@
         </geometry>
       </collision>
 -->
+
       <collision>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
@@ -416,18 +418,19 @@
       </collision>
       
       <collision>
-        <origin xyz="0 -0.04 0.19" rpy="0 0 0"/>
+        <origin xyz="0 -0.025 0.19" rpy="0 0 0"/>
         <geometry>
           <sphere radius="0.07"/>
         </geometry>
       </collision>
       
       <collision>
-        <origin xyz="0 -0.02 0.095" rpy="0.207 0 0"/>
+        <origin xyz="0 -0.0125 0.095" rpy="0.130 0 0"/>
         <geometry>
           <cylinder radius="0.07" length="0.198"/>
         </geometry>
       </collision>
+
       <self_collision_checking>
         <origin xyz="0 -0.015 0.095" rpy="0.207 0 0"/>
         <geometry>

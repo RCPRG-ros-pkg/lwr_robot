@@ -13,6 +13,8 @@
 
   <property name="arm_velocity_scale_factor" value="1"/>
 
+  <property name="collision_model_enlargement" value="$(arg collision_model_enlargement)" />
+
   <!-- right is either 1 (for right arm) or -1 (for left arm) -->
   <macro name="kuka_lwr_arm" params="parent name right *origin">
 
@@ -42,7 +44,7 @@
         <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}"/>
         <geometry>
 <!--          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/> -->
-          <cylinder radius="0.07" length="0.11"/>
+          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.11"/>
         </geometry>
       </collision>
 
@@ -100,21 +102,21 @@
       <collision>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.07"/>
+          <sphere radius="${0.07 + collision_model_enlargement}"/>
         </geometry>
       </collision>
       
       <collision>
         <origin xyz="0 -0.06 0.2" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.07"/>
+          <sphere radius="${0.07 + collision_model_enlargement}"/>
         </geometry>
       </collision>
       
       <collision>
         <origin xyz="0 -0.03 0.1" rpy="0.291 0 0"/>
         <geometry>
-          <cylinder radius="0.07" length="0.208"/>
+          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
 
@@ -177,21 +179,21 @@
       <collision>
         <origin xyz="0 0 0.2" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.07"/>
+          <sphere radius="${0.07 + collision_model_enlargement}"/>
         </geometry>
       </collision>
       
       <collision>
         <origin xyz="0 0.06 0.0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.07"/>
+          <sphere radius="${0.07 + collision_model_enlargement}"/>
         </geometry>
       </collision>
       
       <collision>
         <origin xyz="0 0.03 0.1" rpy="0.291 0 0"/>
         <geometry>
-          <cylinder radius="0.07" length="0.208"/>
+          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
 
@@ -244,6 +246,7 @@
         </geometry>
         <material name="Orange"/>
       </visual>
+
 <!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
@@ -252,24 +255,23 @@
         </geometry>
       </collision>
 -->
+
       <collision>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.07"/>
+          <sphere radius="${0.07 + collision_model_enlargement}"/>
         </geometry>
       </collision>
-      
       <collision>
         <origin xyz="0 0.06 0.2" rpy="0 0 0"/>
         <geometry>
-          <sphere radius="0.07"/>
+          <sphere radius="${0.07 + collision_model_enlargement}"/>
         </geometry>
       </collision>
-      
       <collision>
         <origin xyz="0 0.03 0.1" rpy="-0.291 0 0"/>
         <geometry>
-          <cylinder radius="0.07" length="0.208"/>
+          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
 
@@ -331,26 +333,36 @@
       </collision>
 -->
 
-      <collision>
-        <origin xyz="0 0 0.2" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="0.07"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 -0.06 0.0" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="0.07"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 -0.03 0.1" rpy="-0.291 0 0"/>
-        <geometry>
-          <cylinder radius="0.07" length="0.208"/>
-        </geometry>
-      </collision>
+      <!-- collision mesh used for grasp planning -->
+      <xacro:if value="$(arg collision_model_no_hands)">
+        <collision>
+          <origin xyz="0 -0.01 0.3" rpy="-0.1 0 0"/>
+          <geometry>
+            <cylinder radius="${0.09 + collision_model_enlargement}" length="0.7"/>
+          </geometry>
+        </collision>
+      </xacro:if>
+
+      <xacro:unless value="$(arg collision_model_no_hands)">
+        <collision>
+          <origin xyz="0 0 0.2" rpy="0 0 0"/>
+          <geometry>
+            <sphere radius="${0.07 + collision_model_enlargement}"/>
+          </geometry>
+        </collision>
+        <collision>
+          <origin xyz="0 -0.06 0.0" rpy="0 0 0"/>
+          <geometry>
+            <sphere radius="${0.07 + collision_model_enlargement}"/>
+          </geometry>
+        </collision>
+        <collision>
+          <origin xyz="0 -0.03 0.1" rpy="-0.291 0 0"/>
+          <geometry>
+            <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
+          </geometry>
+        </collision>
+      </xacro:unless>
 
       <self_collision_checking>
         <origin xyz="0 -0.015 0.1" rpy="-0.200 0 0"/>
@@ -410,26 +422,38 @@
       </collision>
 -->
 
-      <collision>
-        <origin xyz="0 0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="0.07"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 -0.025 0.19" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="0.07"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 -0.0125 0.095" rpy="0.130 0 0"/>
-        <geometry>
-          <cylinder radius="0.07" length="0.198"/>
-        </geometry>
-      </collision>
+      <xacro:unless value="$(arg collision_model_no_hands)">
+<!--        <collision>
+          <origin xyz="0 0 0.0" rpy="0 0 0"/>
+          <geometry>
+            <sphere radius="0.07"/>
+          </geometry>
+        </collision>-->
+        <!-- this geometry should not be enlarged -->
+        <collision>
+          <origin xyz="0 -0.025 0.19" rpy="0 0 0"/>
+          <geometry>
+            <sphere radius="0.07"/>
+          </geometry>
+        </collision>
+        <!-- this geometry should not be enlarged -->
+        <collision>
+          <origin xyz="0 -0.0125 0.095" rpy="0.130 0 0"/>
+          <geometry>
+            <cylinder radius="0.07" length="0.198"/>
+          </geometry>
+        </collision>
+        <collision>
+<!--          <origin xyz="0 -0.004166667 0.031666667" rpy="0.130 0 0"/>
+          <geometry>
+            <cylinder radius="${0.07+collision_model_enlargement}" length="0.066"/>
+          </geometry>-->
+          <origin xyz="0 -0.00625 0.0475" rpy="0.130 0 0"/>
+          <geometry>
+            <cylinder radius="${0.07+collision_model_enlargement}" length="0.099"/>
+          </geometry>
+        </collision>
+      </xacro:unless>
 
       <self_collision_checking>
         <origin xyz="0 -0.015 0.095" rpy="0.207 0 0"/>
@@ -479,12 +503,15 @@
         <material name="Grey"/>
       </visual>
 
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 0"/>
-        <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>
-        </geometry>
-      </collision>
+      <xacro:unless value="$(arg collision_model_no_hands)">
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 0"/>
+          <geometry>
+            <sphere radius="${0.09 + collision_model_enlargement}" />
+<!--            <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>-->
+          </geometry>
+        </collision>
+      </xacro:unless>
 
       <self_collision_checking>
         <origin xyz="0.0 0.01 0.0" rpy="0 0 0"/>
@@ -533,12 +560,16 @@
         </geometry>
         <material name="Grey"/>
       </visual>
-      <collision>
-        <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
-        <geometry>
-          <cylinder radius="0.04" length="0.05"/>
-        </geometry>
-      </collision>
+
+      <xacro:unless value="$(arg collision_model_no_hands)">
+        <collision>
+          <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
+          <geometry>
+            <cylinder radius="0.04" length="0.05"/>
+          </geometry>
+        </collision>
+      </xacro:unless>
+
     </link>
 
     <gazebo reference="${name}_arm_7_link">

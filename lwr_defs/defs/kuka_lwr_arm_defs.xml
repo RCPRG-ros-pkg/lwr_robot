@@ -440,19 +440,15 @@
         <collision>
           <origin xyz="0 -0.0125 0.095" rpy="0.130 0 0"/>
           <geometry>
-            <cylinder radius="0.07" length="0.198"/>
+            <cylinder radius="${0.07+collision_model_enlargement}" length="0.198"/>
           </geometry>
         </collision>
-        <collision>
-<!--          <origin xyz="0 -0.004166667 0.031666667" rpy="0.130 0 0"/>
-          <geometry>
-            <cylinder radius="${0.07+collision_model_enlargement}" length="0.066"/>
-          </geometry>-->
+<!--        <collision>
           <origin xyz="0 -0.00625 0.0475" rpy="0.130 0 0"/>
           <geometry>
             <cylinder radius="${0.07+collision_model_enlargement}" length="0.099"/>
           </geometry>
-        </collision>
+        </collision>-->
       </xacro:unless>
 
       <self_collision_checking>

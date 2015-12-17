@@ -38,6 +38,8 @@ orocos_use_package( rtt-typekit )
 ## Default component
 orocos_component(lwr_controller src/lwr_controller.cpp)
 
+orocos_component(lwr_signal src/signal_gen.cpp)
+
 #orocos_component(lwr_controller src/lwr_controller.cpp)
 set_target_properties(lwr_controller PROPERTIES COMPILE_FLAGS -DRTT_COMPONENT)
 target_link_libraries(lwr_controller

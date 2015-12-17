@@ -79,8 +79,8 @@ class LWRController : public RTT::TaskContext
     std::vector<double> jnt_trq_;
     std::vector<double> jnt_vel_;
 
-    std::vector<double> jnt_pos_cmd_;
-    std::vector<double> jnt_trq_cmd_;
+    Eigen::VectorXd jnt_pos_cmd_;
+    Eigen::VectorXd jnt_trq_cmd_;
 
     KDL::Frame T_old;
     
@@ -88,8 +88,8 @@ class LWRController : public RTT::TaskContext
     RTT::InputPort<geometry_msgs::Wrench > port_CartesianWrenchCommand;
     RTT::InputPort<geometry_msgs::Pose > port_CartesianPositionCommand;
     RTT::InputPort<lwr_fri::FriJointImpedance > port_JointImpedanceCommand;
-    RTT::InputPort<std::vector<double> > port_JointPositionCommand;
-    RTT::InputPort<std::vector<double> > port_JointTorqueCommand;
+    RTT::InputPort<Eigen::VectorXd > port_JointPositionCommand;
+    RTT::InputPort<Eigen::VectorXd > port_JointTorqueCommand;
 
     RTT::OutputPort<geometry_msgs::Wrench > port_CartesianWrench;
     RTT::OutputPort<tFriRobotState > port_RobotState;

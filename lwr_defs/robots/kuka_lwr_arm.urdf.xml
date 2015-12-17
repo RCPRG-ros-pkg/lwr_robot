@@ -6,23 +6,15 @@
 	 name="lwr">
 
   <!-- Gazebo Plugin -->
-<!--  <gazebo>
+  <gazebo>
     <plugin name="rtt_gazebo" filename="librtt_gazebo_deployer.so">
       <component>
         <package>lwr_simulation</package>
         <type>LWRController</type>
         <name>LWR</name>
       </component>
-        <orocosScript>
-          <inline>
-            import("rtt_ros");
-            /* comments in inline scripts must be terminated */
-            setPeriodicActivity("LWR",0.001,LowestPriority,ORO_SCHED_OTHER);
-          </inline>
-        </orocosScript>
     </plugin>
   </gazebo>
--->
 
   <xacro:arg name="collision_model_full" default="true"/>
   <xacro:arg name="collision_model_simplified" default="false"/>

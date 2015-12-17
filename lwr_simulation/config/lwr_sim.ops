@@ -10,8 +10,7 @@ ros.import("conman_ros");
 ros.import("lwr_fri");
 ros.import("oro_joint_state_publisher");
 ros.import("controller_common");
-//ros.import("lwr_controller");
-ros.import("rtt_gazebo");
+ros.import ("velma_controller")
 ros.import("lwr_simulation");
 ros.import("rtt_cartesian_trajectory_msgs");
 ros.import("rtt_std_msgs");

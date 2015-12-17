@@ -17,14 +17,9 @@
 #include <rtt/TaskContext.hpp>
 #include <rtt/Logger.hpp>
 
-#include <lwr_fri/CartesianImpedance.h>
-#include <lwr_fri/FriJointImpedance.h>
-
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/Wrench.h>
 #include <geometry_msgs/Twist.h>
-
-#include <kuka_lwr_fri/friComm.h>
 
 #include <kdl_parser/kdl_parser.hpp>
 

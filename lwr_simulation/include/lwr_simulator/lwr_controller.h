@@ -21,14 +21,9 @@
 #include <rtt/TaskContext.hpp>
 #include <rtt/Logger.hpp>
 
-#include <lwr_fri/CartesianImpedance.h>
-#include <lwr_fri/FriJointImpedance.h>
-
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/Wrench.h>
 #include <geometry_msgs/Twist.h>
-
-#include <kuka_lwr_fri/friComm.h>
 
 typedef Eigen::Matrix<double, 7, 7> Matrix77d;
 
@@ -84,16 +79,12 @@ class LWRController : public RTT::TaskContext
 
     KDL::Frame T_old;
     
-    RTT::InputPort<lwr_fri::CartesianImpedance > port_CartesianImpedanceCommand;
     RTT::InputPort<geometry_msgs::Wrench > port_CartesianWrenchCommand;
     RTT::InputPort<geometry_msgs::Pose > port_CartesianPositionCommand;
-    RTT::InputPort<lwr_fri::FriJointImpedance > port_JointImpedanceCommand;
     RTT::InputPort<Eigen::VectorXd > port_JointPositionCommand;
     RTT::InputPort<Eigen::VectorXd > port_JointTorqueCommand;
 
     RTT::OutputPort<geometry_msgs::Wrench > port_CartesianWrench;
-    RTT::OutputPort<tFriRobotState > port_RobotState;
-    RTT::OutputPort<tFriIntfState > port_FRIState;
     RTT::OutputPort<std::vector<double> > port_JointVelocity;
     RTT::OutputPort<geometry_msgs::Twist > port_CartesianVelocity;
     RTT::OutputPort<geometry_msgs::Pose > port_CartesianPosition;

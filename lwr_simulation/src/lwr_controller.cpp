@@ -13,13 +13,10 @@ LWRController::LWRController(std::string const& name) :
 
   this->addProperty("robotPrefix", robotPrefix_);
 
-  this->ports()->addPort("JointImpedanceCommand", port_JointImpedanceCommand).doc("");
   this->ports()->addPort("JointPositionCommand", port_JointPositionCommand).doc("");
   this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
 
   this->ports()->addPort("CartesianWrench", port_CartesianWrench).doc("");
-  this->ports()->addPort("RobotState", port_RobotState).doc("");
-  this->ports()->addPort("FRIState", port_FRIState).doc("");
   this->ports()->addPort("JointVelocity", port_JointVelocity).doc("");
   this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
   this->ports()->addPort("CartesianPosition", port_CartesianPosition).doc("");
@@ -135,7 +132,6 @@ void LWRController::gazeboUpdateHook(gazebo::physics::ModelPtr model)
   KDL::JntSpaceInertiaMatrix H(7);
   KDL::JntArray pos(7);
   KDL::JntArray grav(7);
-  lwr_fri::FriJointImpedance jnt_imp_cmd;
   Matrix77d mass;
   
   for(unsigned int i = 0; i< 7; i++)
@@ -165,27 +161,20 @@ void LWRController::gazeboUpdateHook(gazebo::physics::ModelPtr model)
   jc->JntToJac(pos, jac);
   jac.changeRefFrame(KDL::Frame(f.Inverse().M));
   dyn->JntToMass(pos, H);
-  for(unsigned int i=0;i<LBR_MNJ;i++) {
-    for(unsigned int j=0;j<LBR_MNJ;j++) {
+  for(unsigned int i=0;i<7;i++) {
+    for(unsigned int j=0;j<7;j++) {
       mass(i, j) = H.data(i, j);
     }
   }
   
   if (port_JointTorqueCommand.read(jnt_trq_cmd_) == RTT::NewData) {
-    for (unsigned int i = 0; i < LBR_MNJ; i++) {
+    for (unsigned int i = 0; i < 7; i++) {
       trq_cmd_(i) = jnt_trq_cmd_(i);
     }
   }
   
-  if (port_JointImpedanceCommand.read(jnt_imp_cmd) == RTT::NewData) {
-    for (unsigned int i = 0; i < LBR_MNJ; i++) {
-      stiffness_(i) = jnt_imp_cmd.stiffness[i];
-      damping_(i) = jnt_imp_cmd.damping[i];
-    }
-  }
-  
   if (port_JointPositionCommand.read(jnt_pos_cmd_) == RTT::NewData) {
-      for (unsigned int i = 0; i < LBR_MNJ; i++) {
+      for (unsigned int i = 0; i < 7; i++) {
         joint_pos_cmd_(i) = jnt_pos_cmd_(i);
       }
   }

@@ -67,7 +67,7 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="calib_${name}_arm_base_link"/>
       <child link="${name}_arm_1_link"/>
     </joint>
@@ -140,7 +140,7 @@
       <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="${name}_arm_1_link"/>
       <child link="${name}_arm_2_link"/>
     </joint>
@@ -214,7 +214,7 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="${name}_arm_2_link"/>
       <child link="${name}_arm_3_link"/>
     </joint>
@@ -288,7 +288,7 @@
       <axis xyz="0 -1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="${name}_arm_3_link"/>
       <child link="${name}_arm_4_link"/>
     </joint>
@@ -373,7 +373,7 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="${name}_arm_4_link"/>
       <child link="${name}_arm_5_link"/>
     </joint>
@@ -454,7 +454,7 @@
       <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="${name}_arm_5_link"/>
       <child link="${name}_arm_6_link"/>
     </joint>
@@ -509,7 +509,7 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
-      <dynamics damping="1.0"/>
+      <dynamics damping="0.4"/>
       <parent link="${name}_arm_6_link"/>
       <child link="${name}_arm_7_link"/>
     </joint>

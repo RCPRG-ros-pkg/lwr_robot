@@ -129,13 +129,13 @@ loadComponent("FK", "VelmaFK");
 FK.loadService("robot");
 FK.configure();
 
-connect("ToolIntRight.CartesianPositionCommand", "FK.RightToolCommand", ConnPolicy())
+connect("ToolIntRight.CartesianPositionCommand", "FK.RightToolCommand_INPORT", ConnPolicy())
 
-connect("FRIr.JointPosition", "FK.JointPositionCommand", ConnPolicy())
+connect("FRIr.JointPosition", "FK.JointPositionCommand_INPORT", ConnPolicy())
 
-connect("FK.RightPositionCommand", "PoseIntRight.CartesianPosition", ConnPolicy())
+connect("FK.RightPositionCommand_OUTPORT", "PoseIntRight.CartesianPosition", ConnPolicy())
 
-connect("FK.RightPositionCommand", "TfPub.In4", ConnPolicy())
+connect("FK.RightPositionCommand_OUTPORT", "TfPub.In4", ConnPolicy())
 
 loadComponent("TrajectoryGeneratorJoint", "InternalSpaceSplineTrajectoryGenerator")
 TrajectoryGeneratorJoint.loadService("rosparam");
@@ -223,7 +223,7 @@ setActivityOnCPU("CartTrjRight", 0.01, 1, ORO_SCHED_RT, 0);
 connect("CartTrjRight.CartesianTrajectoryCommand", "PoseIntRight.CartesianTrajectoryCommand", ConnPolicy());
 connect("CartTrjRight.CartesianPositionCommand", "PoseIntRight.CartesianPositionCommand", ConnPolicy());
 connect("CartTrjRight.CartesianWrench", "FRIr.CartesianWrench", ConnPolicy());
-connect("FK.RightPositionCommand", "CartTrjRight.CartesianPosition", ConnPolicy())
+connect("FK.RightPositionCommand_OUTPORT", "CartTrjRight.CartesianPosition", ConnPolicy())
 
 stream("CartTrjRight.trajectory", ros.comm.topic("/right_arm/trajectory"));
 

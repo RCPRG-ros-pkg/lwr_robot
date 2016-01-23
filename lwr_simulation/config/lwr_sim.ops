@@ -32,15 +32,15 @@ FRIr.rosparam.getAll();
 
 FRIr.configure();
 
-stream("FRIr.KRL_CMD", ros.comm.topic("/right_arm/KRL_CMD"));
+stream("FRIr.KRL_CMD_INPORT", ros.comm.topic("/right_arm/KRL_CMD"));
 
 loadComponent("LWRrDiag", "FRIDiagnostics")
 setActivityOnCPU("LWRrDiag", 0.1, 1, ORO_SCHED_RT, 0)
 LWRrDiag.loadService("rosparam");
 LWRrDiag.rosparam.getAll();
 
-connect("FRIr.RobotState", "LWRrDiag.RobotState", ConnPolicy());
-connect("FRIr.FRIState", "LWRrDiag.FRIState", ConnPolicy());
+connect("FRIr.RobotState_OUTPORT", "LWRrDiag.RobotState", ConnPolicy());
+connect("FRIr.FRIState_OUTPORT", "LWRrDiag.FRIState", ConnPolicy());
 stream("LWRrDiag.Diagnostics", ros.comm.topic("/diagnostic"));
 LWRrDiag.configure()
 
@@ -60,7 +60,7 @@ scheme.configure();
 
 loadComponent("Dwr", "DecimatorWrench");
 setActivityOnCPU("Dwr", 0.01, 1, ORO_SCHED_RT, 0)
-connect("Dwr.In", "FRIr.CartesianWrench", ConnPolicy());
+connect("Dwr.In", "FRIr.CartesianWrench_OUTPORT", ConnPolicy());
 stream("Dwr.Out", ros.comm.topic("/right_arm/wrench"));
 
 //loadComponent("Mass", "RobotMassMatrix");
@@ -68,18 +68,18 @@ loadComponent("Mass", "MassTest");
 Mass.loadService("robot");
 Mass.configure();
 
-connect("FRIr.JointPosition", "Mass.JointPosition", ConnPolicy());
-connect("FRIr.MassMatrix", "Mass.MassMatrixRight", ConnPolicy());
+connect("FRIr.JointPosition_OUTPORT", "Mass.JointPosition", ConnPolicy());
+connect("FRIr.MassMatrix_OUTPORT", "Mass.MassMatrixRight", ConnPolicy());
 
 loadComponent("CImp", "CartesianImpedance");
 CImp.loadService("robot");
 CImp.configure();
 
-connect("FRIr.JointPosition", "CImp.JointPosition", ConnPolicy());
-connect("FRIr.JointVelocity", "CImp.JointVelocity", ConnPolicy());
+connect("FRIr.JointPosition_OUTPORT", "CImp.JointPosition", ConnPolicy());
+connect("FRIr.JointVelocity_OUTPORT", "CImp.JointVelocity", ConnPolicy());
 connect("Mass.MassMatrix", "CImp.MassMatrixInv", ConnPolicy());
 
-connect("CImp.JointTorqueCommand", "FRIr.JointTorqueCommand", ConnPolicy());
+connect("CImp.JointTorqueCommand", "FRIr.JointTorqueCommand_INPORT", ConnPolicy());
 
 loadComponent("PoseIntRight", "CartesianInterpolator");
 
@@ -103,9 +103,9 @@ stream("TfPub.OutTf", ros.comm.topic("/tf"))
 
 loadComponent("TorquePubRight", "TorquePublisher")
 setActivityOnCPU("TorquePubRight", 0.01, 1, ORO_SCHED_RT, 0)
-connect("FRIr.JointTorque", "TorquePubRight.InJointTorque", ConnPolicy())
+connect("FRIr.JointTorque_OUTPORT", "TorquePubRight.InJointTorque", ConnPolicy())
 connect("CImp.JointTorqueCommand", "TorquePubRight.InJointTorqueCommand", ConnPolicy())
-connect("FRIr.GravityTorque", "TorquePubRight.InGravityTorque", ConnPolicy())
+connect("FRIr.GravityTorque_OUTPORT", "TorquePubRight.InGravityTorque", ConnPolicy())
 TorquePubRight.configure();
 stream("TorquePubRight.OutTorques", ros.comm.topic("/right_arm/torques"))
 
@@ -118,10 +118,10 @@ loadComponent("JntImp", "JointImpedance")
 JntImp.loadService("rosparam");
 JntImp.rosparam.getAll();
 
-connect("FRIr.JointPosition", "JntImp.JointPosition", ConnPolicy());
-connect("FRIr.JointVelocity", "JntImp.JointVelocity", ConnPolicy());
+connect("FRIr.JointPosition_OUTPORT", "JntImp.JointPosition", ConnPolicy());
+connect("FRIr.JointVelocity_OUTPORT", "JntImp.JointVelocity", ConnPolicy());
 connect("Mass.MassMatrix", "JntImp.MassMatrix", ConnPolicy());
-connect("JntImp.JointTorqueCommand", "FRIr.JointTorqueCommand", ConnPolicy());
+connect("JntImp.JointTorqueCommand", "FRIr.JointTorqueCommand_INPORT", ConnPolicy());
 
 JntImp.configure();
 
@@ -131,7 +131,7 @@ FK.configure();
 
 connect("ToolIntRight.CartesianPositionCommand", "FK.RightToolCommand_INPORT", ConnPolicy())
 
-connect("FRIr.JointPosition", "FK.JointPositionCommand_INPORT", ConnPolicy())
+connect("FRIr.JointPosition_OUTPORT", "FK.JointPositionCommand_INPORT", ConnPolicy())
 
 connect("FK.RightPositionCommand_OUTPORT", "PoseIntRight.CartesianPosition", ConnPolicy())
 
@@ -140,7 +140,7 @@ connect("FK.RightPositionCommand_OUTPORT", "TfPub.In4", ConnPolicy())
 loadComponent("TrajectoryGeneratorJoint", "InternalSpaceSplineTrajectoryGenerator")
 TrajectoryGeneratorJoint.loadService("rosparam");
 TrajectoryGeneratorJoint.rosparam.getAll();
-connect("FRIr.JointPosition","TrajectoryGeneratorJoint.JointPosition", ConnPolicy())
+connect("FRIr.JointPosition_OUTPORT","TrajectoryGeneratorJoint.JointPosition", ConnPolicy())
 connect("TrajectoryGeneratorJoint.JointPositionCommand","JntImp.JointPositionCommand", ConnPolicy())
 TrajectoryGeneratorJoint.configure()
 
@@ -148,15 +148,15 @@ loadComponent("JntLimit", "JointLimitAvoidance");
 JntLimit.loadService("rosparam");
 JntLimit.rosparam.getAll();
 
-connect("FRIr.JointPosition", "JntLimit.JointPosition", ConnPolicy());
-connect("FRIr.JointVelocity", "JntLimit.JointVelocity", ConnPolicy());
+connect("FRIr.JointPosition_OUTPORT", "JntLimit.JointPosition", ConnPolicy());
+connect("FRIr.JointVelocity_OUTPORT", "JntLimit.JointVelocity", ConnPolicy());
 connect("Mass.MassMatrix", "JntLimit.MassMatrix", ConnPolicy());
 connect("JntLimit.JointTorqueCommand", "CImp.NullSpaceTorqueCommand", ConnPolicy());
 
 loadComponent("VG", "VelmaGrav");
 VG.configure();
 
-connect("FRIr.GravityTorque", "VG.GravTrqRight", ConnPolicy());
+connect("FRIr.GravityTorque_OUTPORT", "VG.GravTrqRight", ConnPolicy());
 
 connect("VG.GravTrq", "JntLimit.NullSpaceTorqueCommand", ConnPolicy());
 
@@ -204,9 +204,9 @@ setActivityOnCPU("JntPub", 0.002, 2, ORO_SCHED_RT, 0);
 JntPub.loadService("rosparam");
 JntPub.rosparam.getAll();
 
-connect("FRIr.JointPosition", "JntPub.JointPosition", ConnPolicy());
-connect("FRIr.JointVelocity", "JntPub.JointVelocity", ConnPolicy());
-connect("FRIr.JointVelocity", "JntPub.JointEffort", ConnPolicy());
+connect("FRIr.JointPosition_OUTPORT", "JntPub.JointPosition", ConnPolicy());
+connect("FRIr.JointVelocity_OUTPORT", "JntPub.JointVelocity", ConnPolicy());
+connect("FRIr.JointVelocity_OUTPORT", "JntPub.JointEffort", ConnPolicy());
 //connect("CImp.JointTorqueCommand", "JntPub.JointEffort", ConnPolicy());
 
 stream("JntPub.joint_state", ros.comm.topic("/joint_states"));
@@ -222,7 +222,7 @@ setActivityOnCPU("CartTrjRight", 0.01, 1, ORO_SCHED_RT, 0);
 
 connect("CartTrjRight.CartesianTrajectoryCommand", "PoseIntRight.CartesianTrajectoryCommand", ConnPolicy());
 connect("CartTrjRight.CartesianPositionCommand", "PoseIntRight.CartesianPositionCommand", ConnPolicy());
-connect("CartTrjRight.CartesianWrench", "FRIr.CartesianWrench", ConnPolicy());
+connect("CartTrjRight.CartesianWrench", "FRIr.CartesianWrench_OUTPORT", ConnPolicy());
 connect("FK.RightPositionCommand_OUTPORT", "CartTrjRight.CartesianPosition", ConnPolicy())
 
 stream("CartTrjRight.trajectory", ros.comm.topic("/right_arm/trajectory"));
@@ -240,7 +240,7 @@ SplineTrajectoryActionJoint.rosparam.getAll();
 SplineTrajectoryActionJoint.loadService("actionlib")
 SplineTrajectoryActionJoint.actionlib.connect("/spline_trajectory_action_joint")
 connect("SplineTrajectoryActionJoint.trajectoryPtr", "TrajectoryGeneratorJoint.trajectoryPtr", ConnPolicy())
-connect("FRIr.JointPosition","SplineTrajectoryActionJoint.JointPosition", ConnPolicy())
+connect("FRIr.JointPosition_OUTPORT","SplineTrajectoryActionJoint.JointPosition", ConnPolicy())
 connect("TrajectoryGeneratorJoint.JointPositionCommand", "SplineTrajectoryActionJoint.JointPositionCommand", ConnPolicy())
 SplineTrajectoryActionJoint.configure()
 

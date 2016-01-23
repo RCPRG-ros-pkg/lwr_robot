@@ -39,9 +39,9 @@ setActivityOnCPU("LWRrDiag", 0.1, 1, ORO_SCHED_RT, 0)
 LWRrDiag.loadService("rosparam");
 LWRrDiag.rosparam.getAll();
 
-connect("FRIr.RobotState_OUTPORT", "LWRrDiag.RobotState", ConnPolicy());
-connect("FRIr.FRIState_OUTPORT", "LWRrDiag.FRIState", ConnPolicy());
-stream("LWRrDiag.Diagnostics", ros.comm.topic("/diagnostic"));
+connect("FRIr.RobotState_OUTPORT", "LWRrDiag.RobotState_INPORT", ConnPolicy());
+connect("FRIr.FRIState_OUTPORT", "LWRrDiag.FRIState_INPORT", ConnPolicy());
+stream("LWRrDiag.Diagnostics_OUTPORT", ros.comm.topic("/diagnostic"));
 LWRrDiag.configure()
 
 //------------------------------------------------------------------------------
@@ -75,15 +75,15 @@ loadComponent("CImp", "CartesianImpedance");
 CImp.loadService("robot");
 CImp.configure();
 
-connect("FRIr.JointPosition_OUTPORT", "CImp.JointPosition", ConnPolicy());
-connect("FRIr.JointVelocity_OUTPORT", "CImp.JointVelocity", ConnPolicy());
-connect("Mass.MassMatrix", "CImp.MassMatrixInv", ConnPolicy());
+connect("FRIr.JointPosition_OUTPORT", "CImp.JointPosition_INPORT", ConnPolicy());
+connect("FRIr.JointVelocity_OUTPORT", "CImp.JointVelocity_INPORT", ConnPolicy());
+connect("Mass.MassMatrix", "CImp.MassMatrixInv_INPORT", ConnPolicy());
 
-connect("CImp.JointTorqueCommand", "FRIr.JointTorqueCommand_INPORT", ConnPolicy());
+connect("CImp.JointTorqueCommand_OUTPORT", "FRIr.JointTorqueCommand_INPORT", ConnPolicy());
 
 loadComponent("PoseIntRight", "CartesianInterpolator");
 
-connect("PoseIntRight.CartesianPositionCommand", "CImp.CartesianPositionCommand0", ConnPolicy());
+connect("PoseIntRight.CartesianPositionCommand", "CImp.CartesianPositionCommand0_INPORT", ConnPolicy());
 
 // tool
 
@@ -91,7 +91,7 @@ loadComponent("ToolIntRight", "CartesianInterpolator")
 ToolIntRight.configure();
 ToolIntRight.loadService("rosparam");
 ToolIntRight.rosparam.getAll();
-connect("ToolIntRight.CartesianPositionCommand", "CImp.ToolPositionCommand0", ConnPolicy())
+connect("ToolIntRight.CartesianPositionCommand", "CImp.ToolPositionCommand0_INPORT", ConnPolicy())
 
 loadComponent("TfPub", "TfPublisher")
 setActivityOnCPU("TfPub", 0.01, 1, ORO_SCHED_RT, 0)
@@ -104,7 +104,7 @@ stream("TfPub.OutTf", ros.comm.topic("/tf"))
 loadComponent("TorquePubRight", "TorquePublisher")
 setActivityOnCPU("TorquePubRight", 0.01, 1, ORO_SCHED_RT, 0)
 connect("FRIr.JointTorque_OUTPORT", "TorquePubRight.InJointTorque", ConnPolicy())
-connect("CImp.JointTorqueCommand", "TorquePubRight.InJointTorqueCommand", ConnPolicy())
+connect("CImp.JointTorqueCommand_OUTPORT", "TorquePubRight.InJointTorqueCommand", ConnPolicy())
 connect("FRIr.GravityTorque_OUTPORT", "TorquePubRight.InGravityTorque", ConnPolicy())
 TorquePubRight.configure();
 stream("TorquePubRight.OutTorques", ros.comm.topic("/right_arm/torques"))
@@ -112,7 +112,7 @@ stream("TorquePubRight.OutTorques", ros.comm.topic("/right_arm/torques"))
 // impedance
 
 loadComponent("ImpedanceIntRight", "CartesianImpedanceInterpolator");
-connect("ImpedanceIntRight.CartesianImpedanceCommand", "CImp.CartesianImpedanceCommand0", ConnPolicy());
+connect("ImpedanceIntRight.CartesianImpedanceCommand", "CImp.CartesianImpedanceCommand0_INPORT", ConnPolicy());
 
 loadComponent("JntImp", "JointImpedance")
 JntImp.loadService("rosparam");
@@ -151,7 +151,7 @@ JntLimit.rosparam.getAll();
 connect("FRIr.JointPosition_OUTPORT", "JntLimit.JointPosition", ConnPolicy());
 connect("FRIr.JointVelocity_OUTPORT", "JntLimit.JointVelocity", ConnPolicy());
 connect("Mass.MassMatrix", "JntLimit.MassMatrix", ConnPolicy());
-connect("JntLimit.JointTorqueCommand", "CImp.NullSpaceTorqueCommand", ConnPolicy());
+connect("JntLimit.JointTorqueCommand", "CImp.NullSpaceTorqueCommand_INPORT", ConnPolicy());
 
 loadComponent("VG", "VelmaGrav");
 VG.configure();
@@ -207,7 +207,7 @@ JntPub.rosparam.getAll();
 connect("FRIr.JointPosition_OUTPORT", "JntPub.JointPosition", ConnPolicy());
 connect("FRIr.JointVelocity_OUTPORT", "JntPub.JointVelocity", ConnPolicy());
 connect("FRIr.JointVelocity_OUTPORT", "JntPub.JointEffort", ConnPolicy());
-//connect("CImp.JointTorqueCommand", "JntPub.JointEffort", ConnPolicy());
+//connect("CImp.JointTorqueCommand_OUTPORT", "JntPub.JointEffort", ConnPolicy());
 
 stream("JntPub.joint_state", ros.comm.topic("/joint_states"));
 stream("JntPub.joint_state", ros.comm.topic("/joint_states2"));

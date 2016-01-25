@@ -83,7 +83,7 @@ connect("CImp.JointTorqueCommand_OUTPORT", "FRIr.JointTorqueCommand_INPORT", Con
 
 loadComponent("PoseIntRight", "CartesianInterpolator");
 
-connect("PoseIntRight.CartesianPositionCommand", "CImp.CartesianPositionCommand0_INPORT", ConnPolicy());
+connect("PoseIntRight.CartesianPositionCommand", "CImp.CartPositionCommand0_INPORT", ConnPolicy());
 
 // tool
 
@@ -112,7 +112,7 @@ stream("TorquePubRight.OutTorques", ros.comm.topic("/right_arm/torques"))
 // impedance
 
 loadComponent("ImpedanceIntRight", "CartesianImpedanceInterpolator");
-connect("ImpedanceIntRight.CartesianImpedanceCommand", "CImp.CartesianImpedanceCommand0_INPORT", ConnPolicy());
+connect("ImpedanceIntRight.CartesianImpedanceCommand", "CImp.CartImpedanceCommand0_INPORT", ConnPolicy());
 
 loadComponent("JntImp", "JointImpedance")
 JntImp.loadService("rosparam");

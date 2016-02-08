@@ -125,7 +125,7 @@
     </link>
 
     <gazebo reference="${name}_arm_1_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -199,7 +199,7 @@
     </link>
 
     <gazebo reference="${name}_arm_2_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
     
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
@@ -273,7 +273,7 @@
     </link>
 
     <gazebo reference="${name}_arm_3_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -358,7 +358,7 @@
     </link>
 
     <gazebo reference="${name}_arm_4_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_3_trans" type="SimpleTransmission">
@@ -440,7 +440,7 @@
     </link>
 
     <gazebo reference="${name}_arm_5_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
     
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
@@ -495,7 +495,7 @@
     </link>
 
     <gazebo reference="${name}_arm_6_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -541,7 +541,7 @@
     </link>
 
     <gazebo reference="${name}_arm_7_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
     </gazebo>
     
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">

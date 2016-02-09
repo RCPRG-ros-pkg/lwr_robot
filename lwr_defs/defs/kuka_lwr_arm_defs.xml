@@ -516,10 +516,10 @@
 
 <link name="${name}_arm_7_link">
       <inertial>
-        <mass value="0.2"/>
+        <mass value="0.002"/>
         <origin xyz="0 0 0"/>
         <cuboid_inertia_def length="1" width="1" height="1"
-                            mass="0.2"/>
+                            mass="0.002"/>
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>

@@ -58,7 +58,8 @@
     </link>
 
     <gazebo reference="calib_${name}_arm_base_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <!-- Second segment of the arm. Joint along z-axis -->
@@ -126,6 +127,7 @@
 
     <gazebo reference="${name}_arm_1_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -200,6 +202,7 @@
 
     <gazebo reference="${name}_arm_2_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
@@ -274,6 +277,7 @@
 
     <gazebo reference="${name}_arm_3_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -359,6 +363,7 @@
 
     <gazebo reference="${name}_arm_4_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_3_trans" type="SimpleTransmission">
@@ -441,6 +446,7 @@
 
     <gazebo reference="${name}_arm_5_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
@@ -459,7 +465,7 @@
       <child link="${name}_arm_6_link"/>
     </joint>
 
-    <link name="${name}_arm_6_link">
+    <link name="${name}_arm_6_link" >
       <inertial>
         <mass value="0.2"/>
         <origin rpy="0 0 0" xyz="0 0 0.0625"/>
@@ -496,6 +502,7 @@
 
     <gazebo reference="${name}_arm_6_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -530,18 +537,20 @@
       </visual>
 
       <xacro:unless value="$(arg collision_model_no_hands)">
-        <collision>
+<!--        <collision>
           <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
           <geometry>
             <cylinder radius="0.04" length="0.05"/>
           </geometry>
         </collision>
+-->
       </xacro:unless>
 
     </link>
 
     <gazebo reference="${name}_arm_7_link">
       <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">

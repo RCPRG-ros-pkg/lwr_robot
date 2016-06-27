@@ -520,6 +520,9 @@
       <parent link="${name}_arm_6_link"/>
       <child link="${name}_arm_7_link"/>
     </joint>
+    <gazebo reference="${name}_arm_6_joint">
+      <provideFeedback>true</provideFeedback>
+    </gazebo>
 
 <link name="${name}_arm_7_link">
       <inertial>

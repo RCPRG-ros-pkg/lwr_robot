@@ -43,8 +43,8 @@
       <collision>
         <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}"/>
         <geometry>
-<!--          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/> -->
-          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.11"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/>
+<!--          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.11"/>-->
         </geometry>
       </collision>
 
@@ -88,14 +88,13 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl"/>
         </geometry>
       </collision>
- -->     
+<!--
       <collision>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
@@ -116,6 +115,7 @@
           <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
+ -->
 
       <self_collision_checking>
         <origin xyz="0 -0.015 0.1" rpy="0.200 0 0"/>
@@ -162,14 +162,13 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="${M_PI} 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
       </collision>
--->
+<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="0 0 0"/>
         <geometry>
@@ -190,6 +189,7 @@
           <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
+-->
 
       <self_collision_checking>
         <origin xyz="0 0.015 0.1" rpy="0.200 0 0"/>
@@ -238,15 +238,13 @@
         <material name="Orange"/>
       </visual>
 
-<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl"/>
         </geometry>
       </collision>
--->
-
+<!--
       <collision>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
@@ -265,6 +263,7 @@
           <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
+-->
 
       <self_collision_checking>
         <origin xyz="0 0.015 0.1" rpy="-0.200 0 0"/>
@@ -312,16 +311,14 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
       </collision>
--->
-
       <!-- collision mesh used for grasp planning -->
+<!--
       <xacro:if value="$(arg collision_model_no_hands)">
         <collision>
           <origin xyz="0 -0.01 0.3" rpy="-0.1 0 0"/>
@@ -351,6 +348,7 @@
           </geometry>
         </collision>
       </xacro:unless>
+-->
 
       <self_collision_checking>
         <origin xyz="0 -0.015 0.1" rpy="-0.200 0 0"/>
@@ -398,43 +396,28 @@
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_last_convex.stl"/>
         </geometry>
       </collision>
--->
-
+<!--
       <xacro:unless value="$(arg collision_model_no_hands)">
-<!--        <collision>
-          <origin xyz="0 0 0.0" rpy="0 0 0"/>
-          <geometry>
-            <sphere radius="0.07"/>
-          </geometry>
-        </collision>-->
-        <!-- this geometry should not be enlarged -->
         <collision>
           <origin xyz="0 -0.025 0.19" rpy="0 0 0"/>
           <geometry>
             <sphere radius="0.07"/>
           </geometry>
         </collision>
-        <!-- this geometry should not be enlarged -->
         <collision>
           <origin xyz="0 -0.0125 0.095" rpy="0.130 0 0"/>
           <geometry>
             <cylinder radius="${0.07+collision_model_enlargement}" length="0.198"/>
           </geometry>
         </collision>
-<!--        <collision>
-          <origin xyz="0 -0.00625 0.0475" rpy="0.130 0 0"/>
-          <geometry>
-            <cylinder radius="${0.07+collision_model_enlargement}" length="0.099"/>
-          </geometry>
-        </collision>-->
       </xacro:unless>
+-->
 
       <self_collision_checking>
         <origin xyz="0 -0.015 0.095" rpy="0.207 0 0"/>
@@ -485,8 +468,8 @@
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0"/>
           <geometry>
-            <sphere radius="${0.09 + collision_model_enlargement}" />
-<!--            <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>-->
+<!--            <sphere radius="${0.09 + collision_model_enlargement}" />-->
+            <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>
           </geometry>
         </collision>
       </xacro:unless>
@@ -538,17 +521,16 @@
         </geometry>
         <material name="Grey"/>
       </visual>
-
+<!--
       <xacro:unless value="$(arg collision_model_no_hands)">
-<!--        <collision>
+        <collision>
           <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
           <geometry>
             <cylinder radius="0.04" length="0.05"/>
           </geometry>
         </collision>
--->
       </xacro:unless>
-
+-->
     </link>
 
     <gazebo reference="${name}_arm_7_link">

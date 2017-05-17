@@ -1,0 +1,17 @@
+<package>
+  <name>lwr_msgs</name>
+  <version>0.1.0</version>
+  <license>BSD</license>
+  <maintainer email="dawid.seredynski@gmail.com">Dawid Seredynski</maintainer>
+  <description>
+
+    lwr_msgs
+
+  </description>
+  <author>Dawid Seredynski</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>message_generation</build_depend>
+  <run_depend>message_runtime</run_depend>
+</package>

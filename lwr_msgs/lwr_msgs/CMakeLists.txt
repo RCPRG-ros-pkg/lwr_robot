@@ -9,8 +9,6 @@ add_message_files(FILES
   FriRobotState.msg
   FriIntfState.msg
   FriIntfStatistics.msg
-  LwrCmd.msg
-  LwrStatus.msg
   )
   
 generate_messages(DEPENDENCIES

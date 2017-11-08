@@ -34,7 +34,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/base.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/base_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -81,7 +81,7 @@
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_1.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_1_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -133,7 +133,7 @@
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_2.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_2_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -186,7 +186,7 @@
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_3.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_3_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -239,7 +239,7 @@
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_4.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_4_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -292,7 +292,7 @@
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry name="${name}_arm_5_geom">
-          <mesh filename="package://lwr_defs/meshes/lwr/link_5.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
@@ -343,7 +343,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_6.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_6_simplified.STL"/>
         </geometry>
         <material name="Grey"/>
       </visual>
@@ -400,7 +400,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_7.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_7_simplified.STL"/>
         </geometry>
         <material name="Grey"/>
       </visual>

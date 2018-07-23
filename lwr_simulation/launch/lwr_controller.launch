@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="LOG_LEVEL" default="error"/>
+  <arg name="DEBUG" default="false"/>
+
+  <!-- Orocos target (gnulinux, xenomai, etc) -->
+  <arg name="OROCOS_TARGET" default="$(optenv OROCOS_TARGET)"/>
+  <!-- Path to look for dynamically-loaded plugins and components (something like /lib/orocos) -->
+  <arg name="RTT_COMPONENT_PATH" default="$(env RTT_COMPONENT_PATH)"/>
+  <!-- head target point source: True (joy) or False (topic /head_lookat_pose) -->
+
+  <node
+    name="velma_controller"
+    pkg="rtt_gazebo_deployer" type="rtt_gazebo_deployer"
+    args="--DeployerName lwr_controller -l $(arg LOG_LEVEL) -s $(find lwr_simulation)/config/lwr_sim.ops --" output="screen">
+    <env name="OROCOS_TARGET" value="$(arg OROCOS_TARGET)"/>
+    <env name="RTT_COMPONENT_PATH" value="$(arg RTT_COMPONENT_PATH)"/>
+  </node>
+
+  <group ns="velma_controller">
+    <rosparam>
+      FRIr:
+        fri_port: 49948
+        joint_offset: [0.0,-0.0,-0.0,-0.0,-0.0,0.0,0.0]
+      LWRrDiag:
+        prefix: right_arm_
+      TrajectoryGeneratorJoint:
+        number_of_joints: 7
+      SplineTrajectoryActionJoint:
+        joint_names: [right_arm_0_joint, right_arm_1_joint, right_arm_2_joint, right_arm_3_joint, right_arm_4_joint, right_arm_5_joint, right_arm_6_joint]
+        lower_limits: [-2.96, -2.09, -2.96, -2.09, -2.96, -2.09, -2.96]
+        upper_limits: [2.96, 2.09, 2.96, 2.09, 2.96, 2.09, 2.96]
+      JntImp:
+        number_of_joints: 7
+        initial_stiffness: [200.01, 200.01, 200.01, 200.01, 200.01, 200.01, 200.01]
+      JntLimit:
+        upper_limit: [2.96, 2.09, 2.96, 2.09, 2.96, 2.09, 2.96]
+        lower_limit: [-2.96, -2.09, -2.96, -2.09, -2.96, -2.09, -2.96]
+        limit_range: [0.26, 0.26, 0.26, 0.26, 0.26, 0.26, 0.26]
+        max_trq: [10.0, 10.0, 10.0, 10.0, 10.0, 6.0, 6.0]
+      JntPub:
+        joint_names: [right_arm_0_joint, right_arm_1_joint, right_arm_2_joint, right_arm_3_joint, right_arm_4_joint, right_arm_5_joint, right_arm_6_joint]
+      PT:
+        input_frames: 1
+      ToolIntRight:
+        activate_pose_init: true
+        init_setpoint:
+          orientation:
+            w: 1.0
+            x: 0.0
+            y: 0.0
+            z: 0.0
+          position:
+            x: 0.0
+            y: 0.0
+            z: 0.0
+      TfPub:
+        frame_ids: [right_arm_7_link]
+        child_frame_ids: [right_arm_tool]
+    </rosparam>
+  </group>
+</launch>

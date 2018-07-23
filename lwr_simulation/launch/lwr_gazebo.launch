@@ -1,7 +1,8 @@
+<?xml version="1.0"?>
 <launch>
-  
+
   <rosparam param="/gazebo/joints/joint_names">['joint1', 'joint2', 'joint3', 'joint4', 'joint5', 'joint6', 'joint7']</rosparam>
-  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+  <include file="$(find rtt_gazebo_examples)/test/empty_world.launch">
     <arg name="world_name" value="worlds/empty.world"/> <!-- Note: the world_name is with respect to GAZEBO_RESOURCE_PATH environmental variable -->
     <arg name="paused" value="false"/>
     <arg name="use_sim_time" value="true"/>

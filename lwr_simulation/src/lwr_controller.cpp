@@ -13,13 +13,10 @@ LWRController::LWRController(std::string const& name) :
 
   this->addProperty("robotPrefix", robotPrefix_);
 
-  this->ports()->addPort("JointImpedanceCommand", port_JointImpedanceCommand).doc("");
   this->ports()->addPort("JointPositionCommand", port_JointPositionCommand).doc("");
   this->ports()->addPort("JointTorqueCommand", port_JointTorqueCommand).doc("");
 
   this->ports()->addPort("CartesianWrench", port_CartesianWrench).doc("");
-  this->ports()->addPort("RobotState", port_RobotState).doc("");
-  this->ports()->addPort("FRIState", port_FRIState).doc("");
   this->ports()->addPort("JointVelocity", port_JointVelocity).doc("");
   this->ports()->addPort("CartesianVelocity", port_CartesianVelocity).doc("");
   this->ports()->addPort("CartesianPosition", port_CartesianPosition).doc("");
@@ -78,6 +75,9 @@ bool LWRController::gazeboConfigureHook(gazebo::physics::ModelPtr model)
   
   jnt_pos_.resize(7);
   jnt_vel_.resize(7);
+
+  jnt_pos_cmd_.resize(7);
+  jnt_trq_cmd_.resize(7);
   
   for(unsigned int i = 0; i< 7; i++)
   {
@@ -102,7 +102,7 @@ bool LWRController::gazeboConfigureHook(gazebo::physics::ModelPtr model)
     stiffness_(i) = 200.0;
     damping_(i) = 5.0;
     trq_cmd_(i) = 0;
-    joint_pos_cmd_(i) = joints_[i]->GetAngle(0).Radian();;
+    joint_pos_cmd_(i) = joints_[i]->GetAngle(0).Radian();
   }
   return true;
 }
@@ -132,7 +132,6 @@ void LWRController::gazeboUpdateHook(gazebo::physics::ModelPtr model)
   KDL::JntSpaceInertiaMatrix H(7);
   KDL::JntArray pos(7);
   KDL::JntArray grav(7);
-  lwr_fri::FriJointImpedance jnt_imp_cmd;
   Matrix77d mass;
   
   for(unsigned int i = 0; i< 7; i++)
@@ -162,31 +161,22 @@ void LWRController::gazeboUpdateHook(gazebo::physics::ModelPtr model)
   jc->JntToJac(pos, jac);
   jac.changeRefFrame(KDL::Frame(f.Inverse().M));
   dyn->JntToMass(pos, H);
-  for(unsigned int i=0;i<LBR_MNJ;i++) {
-    for(unsigned int j=0;j<LBR_MNJ;j++) {
+  for(unsigned int i=0;i<7;i++) {
+    for(unsigned int j=0;j<7;j++) {
       mass(i, j) = H.data(i, j);
     }
   }
   
   if (port_JointTorqueCommand.read(jnt_trq_cmd_) == RTT::NewData) {
-    for (unsigned int i = 0; i < LBR_MNJ; i++)
-      trq_cmd_(i) = jnt_trq_cmd_[i];
-  }
-  
-  if (port_JointImpedanceCommand.read(jnt_imp_cmd) == RTT::NewData) {
-    for (unsigned int i = 0; i < LBR_MNJ; i++) {
-      stiffness_(i) = jnt_imp_cmd.stiffness[i];
-      damping_(i) = jnt_imp_cmd.damping[i];
+    for (unsigned int i = 0; i < 7; i++) {
+      trq_cmd_(i) = jnt_trq_cmd_(i);
     }
   }
   
   if (port_JointPositionCommand.read(jnt_pos_cmd_) == RTT::NewData) {
-    if (jnt_pos_cmd_.size() == LBR_MNJ) {
-      for (unsigned int i = 0; i < LBR_MNJ; i++)
-        joint_pos_cmd_(i) = jnt_pos_cmd_[i];
-      } else
-        RTT::log(RTT::Warning) << "Size of " << port_JointPositionCommand.getName()
-            << " not equal to " << LBR_MNJ << RTT::endlog();
+      for (unsigned int i = 0; i < 7; i++) {
+        joint_pos_cmd_(i) = jnt_pos_cmd_(i);
+      }
   }
   
   trq_ = stiffness_.asDiagonal() * (joint_pos_cmd_ - joint_pos_) - damping_.asDiagonal() * joint_vel_ + trq_cmd_;

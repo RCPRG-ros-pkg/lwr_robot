@@ -1,22 +1,20 @@
 <?xml version="1.0"?>
-<robot xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
-       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
-       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
-       xmlns:xacro="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface">
+<robot xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+                        xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface"
+                        xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+                        xmlns:xacro="http://www.ros.org/wiki/xacro">
 
   <xacro:include filename="$(find lwr_defs)/defs/util_defs.xml"/>
 
-  <property name="arm_elem_base_mass" value="2.0"/>
-  <property name="arm_elem_link_mass" value="2.0"/>
-  <property name="arm_elem_end_link_mass" value="2.0"/>
-  <property name="arm_elem_ball_link_mass" value="2.0"/>
+  <xacro:property name="arm_elem_base_mass" value="2.0"/>
+  <xacro:property name="arm_elem_link_mass" value="2.0"/>
+  <xacro:property name="arm_elem_end_link_mass" value="2.0"/>
+  <xacro:property name="arm_elem_ball_link_mass" value="2.0"/>
 
   <property name="arm_velocity_scale_factor" value="1"/>
 
-  <property name="collision_model_enlargement" value="$(arg collision_model_enlargement)" />
-
   <!-- right is either 1 (for right arm) or -1 (for left arm) -->
-  <macro name="kuka_lwr_arm" params="parent name right *origin">
+  <xacro:macro name="kuka_lwr_arm" params="parent name right *origin">
 
     <!-- First (shoulder) element of the arm. Fixed to its parent. -->
     <joint name="${parent}_${name}_arm_base_joint" type="fixed">
@@ -36,15 +34,14 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/base.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/base_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
       <collision>
         <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}"/>
         <geometry>
-<!--          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/> -->
-          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.11"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl"/>
         </geometry>
       </collision>
 
@@ -58,7 +55,8 @@
     </link>
 
     <gazebo reference="calib_${name}_arm_base_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <!-- Second segment of the arm. Joint along z-axis -->
@@ -67,10 +65,6 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-168 * M_PI / 180}"
-                         soft_upper_limit="${168 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
       <dynamics damping="1.0"/>
       <parent link="calib_${name}_arm_base_link"/>
       <child link="${name}_arm_1_link"/>
@@ -87,36 +81,14 @@
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_1.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_1_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl"/>
-        </geometry>
-      </collision>
- -->     
-      <collision>
-        <origin xyz="0 0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="${0.07 + collision_model_enlargement}"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 -0.06 0.2" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="${0.07 + collision_model_enlargement}"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 -0.03 0.1" rpy="0.291 0 0"/>
-        <geometry>
-          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
 
@@ -129,7 +101,8 @@
     </link>
 
     <gazebo reference="${name}_arm_1_link">
-      <gravity>0</gravity>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
@@ -144,11 +117,7 @@
       <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-118 * M_PI / 180}"
-                         soft_upper_limit="${118 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
-      <dynamics damping="1.0" friction="10"/>
+      <dynamics damping="1.0"/>
       <parent link="${name}_arm_1_link"/>
       <child link="${name}_arm_2_link"/>
     </joint>
@@ -164,36 +133,14 @@
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_2.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_2_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="${M_PI} 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
-        </geometry>
-      </collision>
--->
-      <collision>
-        <origin xyz="0 0 0.2" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="${0.07 + collision_model_enlargement}"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 0.06 0.0" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="${0.07 + collision_model_enlargement}"/>
-        </geometry>
-      </collision>
-      
-      <collision>
-        <origin xyz="0 0.03 0.1" rpy="0.291 0 0"/>
-        <geometry>
-          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
 
@@ -207,7 +154,8 @@
     </link>
 
     <gazebo reference="${name}_arm_2_link">
-      <gravity>0</gravity>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <transmission name="${name}_arm_1_trans" type="SimpleTransmission">
@@ -222,10 +170,6 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-168 * M_PI / 180}"
-                         soft_upper_limit="${168 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
       <dynamics damping="1.0"/>
       <parent link="${name}_arm_2_link"/>
       <child link="${name}_arm_3_link"/>
@@ -242,36 +186,15 @@
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_3.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_3_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
 
-<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${M_PI}"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl"/>
-        </geometry>
-      </collision>
--->
-
-      <collision>
-        <origin xyz="0 0 0.0" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="${0.07 + collision_model_enlargement}"/>
-        </geometry>
-      </collision>
-      <collision>
-        <origin xyz="0 0.06 0.2" rpy="0 0 0"/>
-        <geometry>
-          <sphere radius="${0.07 + collision_model_enlargement}"/>
-        </geometry>
-      </collision>
-      <collision>
-        <origin xyz="0 0.03 0.1" rpy="-0.291 0 0"/>
-        <geometry>
-          <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
         </geometry>
       </collision>
 
@@ -281,11 +204,11 @@
           <capsule radius="0.065" length="0.208"/>
         </geometry>
       </self_collision_checking>
-
     </link>
 
     <gazebo reference="${name}_arm_3_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_2_trans" type="SimpleTransmission">
@@ -300,10 +223,6 @@
       <axis xyz="0 -1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-118 * M_PI / 180}"
-                         soft_upper_limit="${118 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
       <dynamics damping="1.0"/>
       <parent link="${name}_arm_3_link"/>
       <child link="${name}_arm_4_link"/>
@@ -320,50 +239,17 @@
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_4.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_4_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_b_convex.stl"/>
         </geometry>
       </collision>
--->
-
       <!-- collision mesh used for grasp planning -->
-      <xacro:if value="$(arg collision_model_no_hands)">
-        <collision>
-          <origin xyz="0 -0.01 0.3" rpy="-0.1 0 0"/>
-          <geometry>
-            <cylinder radius="${0.09 + collision_model_enlargement}" length="0.7"/>
-          </geometry>
-        </collision>
-      </xacro:if>
-
-      <xacro:unless value="$(arg collision_model_no_hands)">
-        <collision>
-          <origin xyz="0 0 0.2" rpy="0 0 0"/>
-          <geometry>
-            <sphere radius="${0.07 + collision_model_enlargement}"/>
-          </geometry>
-        </collision>
-        <collision>
-          <origin xyz="0 -0.06 0.0" rpy="0 0 0"/>
-          <geometry>
-            <sphere radius="${0.07 + collision_model_enlargement}"/>
-          </geometry>
-        </collision>
-        <collision>
-          <origin xyz="0 -0.03 0.1" rpy="-0.291 0 0"/>
-          <geometry>
-            <cylinder radius="${0.07 + collision_model_enlargement}" length="0.208"/>
-          </geometry>
-        </collision>
-      </xacro:unless>
-
       <self_collision_checking>
         <origin xyz="0 -0.015 0.1" rpy="-0.200 0 0"/>
         <geometry>
@@ -374,7 +260,8 @@
     </link>
 
     <gazebo reference="${name}_arm_4_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_3_trans" type="SimpleTransmission">
@@ -389,10 +276,6 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-168 * M_PI / 180}"
-                         soft_upper_limit="${168 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
       <dynamics damping="1.0"/>
       <parent link="${name}_arm_4_link"/>
       <child link="${name}_arm_5_link"/>
@@ -409,47 +292,16 @@
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0"/>
         <geometry name="${name}_arm_5_geom">
-          <mesh filename="package://lwr_defs/meshes/lwr/link_5.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL"/>
         </geometry>
         <material name="Orange"/>
       </visual>
-<!--
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_last_convex.stl"/>
         </geometry>
       </collision>
--->
-
-      <xacro:unless value="$(arg collision_model_no_hands)">
-<!--        <collision>
-          <origin xyz="0 0 0.0" rpy="0 0 0"/>
-          <geometry>
-            <sphere radius="0.07"/>
-          </geometry>
-        </collision>-->
-        <!-- this geometry should not be enlarged -->
-        <collision>
-          <origin xyz="0 -0.025 0.19" rpy="0 0 0"/>
-          <geometry>
-            <sphere radius="0.07"/>
-          </geometry>
-        </collision>
-        <!-- this geometry should not be enlarged -->
-        <collision>
-          <origin xyz="0 -0.0125 0.095" rpy="0.130 0 0"/>
-          <geometry>
-            <cylinder radius="${0.07+collision_model_enlargement}" length="0.198"/>
-          </geometry>
-        </collision>
-<!--        <collision>
-          <origin xyz="0 -0.00625 0.0475" rpy="0.130 0 0"/>
-          <geometry>
-            <cylinder radius="${0.07+collision_model_enlargement}" length="0.099"/>
-          </geometry>
-        </collision>-->
-      </xacro:unless>
 
       <self_collision_checking>
         <origin xyz="0 -0.015 0.095" rpy="0.207 0 0"/>
@@ -460,7 +312,8 @@
     </link>
 
     <gazebo reference="${name}_arm_5_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <transmission name="${name}_arm_4_trans" type="SimpleTransmission">
@@ -474,16 +327,12 @@
       <axis xyz="0 1 0"/>
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-118 * M_PI / 180}"
-                         soft_upper_limit="${118 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
       <dynamics damping="1.0"/>
       <parent link="${name}_arm_5_link"/>
       <child link="${name}_arm_6_link"/>
     </joint>
 
-    <link name="${name}_arm_6_link">
+    <link name="${name}_arm_6_link" >
       <inertial>
         <mass value="0.2"/>
         <origin rpy="0 0 0" xyz="0 0 0.0625"/>
@@ -494,7 +343,7 @@
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_6.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_6_simplified.STL"/>
         </geometry>
         <material name="Grey"/>
       </visual>
@@ -503,8 +352,7 @@
         <collision>
           <origin xyz="0 0 0" rpy="0 0 0"/>
           <geometry>
-            <sphere radius="${0.09 + collision_model_enlargement}" />
-<!--            <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>-->
+            <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_wrist_convex.stl"/>
           </geometry>
         </collision>
       </xacro:unless>
@@ -519,7 +367,8 @@
     </link>
 
     <gazebo reference="${name}_arm_6_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
 
     <transmission name="${name}_arm_5_trans" type="SimpleTransmission">
@@ -533,30 +382,29 @@
       <axis xyz="0 0 1"/>
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
-      <safety_controller soft_lower_limit="${-168 * M_PI / 180}"
-                         soft_upper_limit="${168 * M_PI / 180}"
-                         k_position="30"
-                         k_velocity="30"/>
       <dynamics damping="1.0"/>
       <parent link="${name}_arm_6_link"/>
       <child link="${name}_arm_7_link"/>
     </joint>
+    <gazebo reference="${name}_arm_6_joint">
+      <provideFeedback>true</provideFeedback>
+    </gazebo>
 
 <link name="${name}_arm_7_link">
       <inertial>
-        <mass value="0.2"/>
+        <mass value="0.002"/>
         <origin xyz="0 0 0"/>
         <cuboid_inertia_def length="1" width="1" height="1"
-                            mass="0.2"/>
+                            mass="0.002"/>
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <geometry>
-          <mesh filename="package://lwr_defs/meshes/lwr/link_7.STL"/>
+          <mesh filename="package://lwr_defs/meshes/lwr/link_7_simplified.STL"/>
         </geometry>
         <material name="Grey"/>
       </visual>
-
+<!--
       <xacro:unless value="$(arg collision_model_no_hands)">
         <collision>
           <origin xyz="0 0 0" rpy="0 0 ${right * -1/4 * M_PI}"/>
@@ -565,11 +413,12 @@
           </geometry>
         </collision>
       </xacro:unless>
-
+-->
     </link>
 
     <gazebo reference="${name}_arm_7_link">
-      <turnGravityOff>true</turnGravityOff>
+      <turnGravityOff>false</turnGravityOff>
+      <selfCollide>true</selfCollide>
     </gazebo>
     
     <transmission name="${name}_arm_6_trans" type="SimpleTransmission">
@@ -578,6 +427,6 @@
       <mechanicalReduction>1.0</mechanicalReduction>
     </transmission>
 
-  </macro>
+  </xacro:macro>
 
 </robot>

@@ -1,0 +1,44 @@
+import("rtt_ros");
+import("rtt_roscomm");
+import("rtt_rosparam");
+require("os")
+
+ros.import("eigen_typekit");
+ros.import("rtt_control_msgs");
+ros.import("conman");
+ros.import("conman_ros");
+ros.import("lwr_fri");
+ros.import("oro_joint_state_publisher");
+ros.import("controller_common");
+ros.import ("velma_controller")
+ros.import("lwr_simulation");
+ros.import("rtt_cartesian_trajectory_msgs");
+ros.import("rtt_std_msgs");
+ros.import("rtt_tf");
+ros.import("internal_space_spline_trajectory_action")
+ros.import("internal_space_spline_trajectory_generator")
+ros.import("port_operations")
+
+//setActivityOnCPU("lwr_controller", 0, 1, ORO_SCHED_RT, 0)
+
+//------------------------------------------------------------------------------
+//-- Hardware interface
+//------------------------------------------------------------------------------
+
+//loadComponent("LWR", "LWRController");
+//setActivityOnCPU("LWR", 0.0, 6, ORO_SCHED_RT, 3);
+setPeriodicActivity("LWR",0.001,LowestPriority,ORO_SCHED_OTHER);
+LWR.loadService("rosparam");
+LWR.rosparam.getAll();
+LWR.configure();
+
+loadComponent("LWRsignal", "LWRControllerSignal");
+setPeriodicActivity("LWRsignal", 0.001, LowestPriority, ORO_SCHED_OTHER);
+
+connect("LWR.JointPositionCommand", "LWRsignal.JointPositionCmdOut", ConnPolicy());
+
+LWRsignal.configure();
+
+LWRsignal.start();
+LWR.start();
+

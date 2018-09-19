@@ -26,26 +26,25 @@
         ros.import("rtt_sensor_msgs");
         ros.import("lwr_simulation");
         ros.import("oro_joint_state_publisher");
-        
+
         loadComponent("FRI","LWRController");
         loadComponent("joints","JointStatePublisher");
-        
+
         loadService("FRI","rosparam");
         loadService("joints","rosparam");
-        
+
         setActivity("FRI", 0.0, 5, ORO_SCHED_RT);
         setActivity("joints", 0.02, 5, ORO_SCHED_RT);
-        
+
         connect("FRI.JointPosition","joints.msrJntPos", ConnPolicy());
         stream("joints.joints_state", rostopic.connection("/joints_state"));
-        
+
         joints.rosparam.refreshProperties();
         joints.configure();
         joints.start();
       </opsScript>
-      
+
       <component>FRI</component>
     </plugin>
   </gazebo>
-
 </robot>

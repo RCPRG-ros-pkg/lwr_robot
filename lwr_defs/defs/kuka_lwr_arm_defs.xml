@@ -318,7 +318,7 @@
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
     </gazebo>
-
+    <!--
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">
       <actuator name="${name}_arm_0_motor" />
       <joint name="${name}_arm_0_joint" />
@@ -354,5 +354,6 @@
       <joint name="${name}_arm_6_joint" />
       <mechanicalReduction>1.0</mechanicalReduction>
     </transmission>
+  -->
   </xacro:macro>
 </robot>

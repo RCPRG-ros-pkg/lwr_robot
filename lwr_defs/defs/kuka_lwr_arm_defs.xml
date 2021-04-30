@@ -13,8 +13,38 @@
   <xacro:property name="arm_elem_ball_link_mass" value="2.0" />
   <xacro:property name="arm_velocity_scale_factor" value="1" />
 
-  <!-- right is either 1 (for right arm) or -1 (for left arm) -->
+  <xacro:macro name="visual_marker_xz_simple" params="size pos_x pos_y pos_z">
+    <visual name="white_box1">
+      <origin xyz="${pos_x + 0.5*size} ${pos_y} ${pos_z - 0.5*size}" rpy="0 0 0" />
+      <geometry><box size="${size} 0.005 ${size}" /></geometry>
+      <material name="White" ><color rgba="1 1 1 1.0"/></material>
+    </visual>
+    <visual name="white_box2">
+      <origin xyz="${pos_x - 0.5*size} ${pos_y} ${pos_z + 0.5*size}" rpy="0 0 0" />
+      <geometry><box size="${size} 0.005 ${size}" /></geometry>
+      <material name="White" ><color rgba="1 1 1 1.0"/></material>
+    </visual>
+    <visual name="black_box1">
+      <origin xyz="${pos_x + 0.5*size} ${pos_y} ${pos_z + 0.5*size}" rpy="0 0 0" />
+      <geometry><box size="${size} 0.005 ${size}" /></geometry>
+      <material name="Black" ><color rgba="0 0 0 1.0"/></material>
+    </visual>
+    <visual name="black_box2">
+      <origin xyz="${pos_x - 0.5*size} ${pos_y} ${pos_z - 0.5*size}" rpy="0 0 0" />
+      <geometry><box size="${size} 0.005 ${size}" /></geometry>
+      <material name="Black" ><color rgba="0 0 0 1.0"/></material>
+    </visual>
+  </xacro:macro>
+
+  <!-- right is either 1 (for right arm) or -1 (for left arm) - not used -->
   <xacro:macro name="kuka_lwr_arm" params="parent name right *origin">
+
+    <joint name="${parent}_${name}_arm_base_joint" type="fixed">
+      <insert_block name="origin" />
+      <parent link="${parent}" />
+      <child link="calib_${name}_arm_base_link" />
+    </joint>
+
     <link name="calib_${name}_arm_base_link">
       <inertial>
         <mass value="${arm_elem_base_mass}" />
@@ -26,7 +56,9 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/base_simplified.STL" />
         </geometry>
-        <material name="Orange" />
+        <material name="Orange" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
       </visual>
       <collision>
         <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}" />
@@ -41,6 +73,17 @@
         </geometry>
       </self_collision_checking>
     </link>
+
+    <joint name="${name}_arm_0_joint" type="revolute">
+      <origin xyz="0 0 0.11" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
+             effort="204" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="calib_${name}_arm_base_link" />
+      <child link="${name}_arm_1_link" />
+    </joint>
+
     <link name="${name}_arm_1_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
@@ -52,7 +95,9 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_1_simplified.STL" />
         </geometry>
-        <material name="Orange" />
+        <material name="Orange" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -67,6 +112,17 @@
         </geometry>
       </self_collision_checking>
     </link>
+
+    <joint name="${name}_arm_1_joint" type="revolute">
+      <origin xyz="0 0 0.2005" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
+             effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="${name}_arm_1_link" />
+      <child link="${name}_arm_2_link" />
+    </joint>
+
     <link name="${name}_arm_2_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
@@ -78,7 +134,9 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_2_simplified.STL" />
         </geometry>
-        <material name="Orange" />
+        <material name="Orange" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
       </visual>
       <collision>
         <origin xyz="0 0 0.2" rpy="${M_PI} 0 0" />
@@ -93,6 +151,17 @@
         </geometry>
       </self_collision_checking>
     </link>
+
+    <joint name="${name}_arm_2_joint" type="revolute">
+      <origin xyz="0 0 0.20" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
+             effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="${name}_arm_2_link" />
+      <child link="${name}_arm_3_link" />
+    </joint>
+
     <link name="${name}_arm_3_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
@@ -104,7 +173,9 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_3_simplified.STL" />
         </geometry>
-        <material name="Orange" />
+        <material name="Orange" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 ${M_PI}" />
@@ -118,7 +189,20 @@
           <capsule radius="0.065" length="0.208" />
         </geometry>
       </self_collision_checking>
+      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="0.095" pos_z="0.2" />
     </link>
+    <!--<visual_marker_xz parent="${name}_arm_3_link" size="0.02" pos_x="0" pos_y="0.095" pos_z="0.2" />-->
+
+    <joint name="${name}_arm_3_joint" type="revolute">
+      <origin xyz="0 0 0.20" rpy="0 0 0" />
+      <axis xyz="0 -1 0" />
+      <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
+             effort="306" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="${name}_arm_3_link" />
+      <child link="${name}_arm_4_link" />
+    </joint>
+
     <link name="${name}_arm_4_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
@@ -130,7 +214,9 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_4_simplified.STL" />
         </geometry>
-        <material name="Orange" />
+        <material name="Orange" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
       </visual>
       <collision>
         <origin xyz="0 0 0.2" rpy="0 ${M_PI} 0" />
@@ -144,7 +230,20 @@
           <capsule radius="0.065" length="0.208" />
         </geometry>
       </self_collision_checking>
+      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="-0.095" pos_z="0" />
     </link>
+    <!--<visual_marker_xz parent="${name}_arm_4_link" size="0.02" pos_x="0" pos_y="-0.095" pos_z="0" />-->
+
+    <joint name="${name}_arm_4_joint" type="revolute">
+      <origin xyz="0 0 0.20" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
+             effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="${name}_arm_4_link" />
+      <child link="${name}_arm_5_link" />
+    </joint>
+
     <link name="${name}_arm_5_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
@@ -156,7 +255,18 @@
         <geometry name="${name}_arm_5_geom">
           <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL" />
         </geometry>
-        <material name="Orange" />
+        <material name="Green" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
+      </visual>
+      <visual>
+        <origin xyz="0 0 -0.008" rpy="0 0 0" />
+        <geometry name="${name}_arm_5_geom">
+          <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL" />
+        </geometry>
+        <material name="Blue" >
+          <color rgba="1 0.5 0 1.0"/>
+        </material>
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -170,7 +280,20 @@
           <capsule radius="0.065" length="0.198" />
         </geometry>
       </self_collision_checking>
+      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="-0.095" pos_z="0.19" />
     </link>
+    <!--<visual_marker_xz parent="${name}_arm_5_link" size="0.02" pos_x="0" pos_y="-0.095" pos_z="0.19" />-->
+
+    <joint name="${name}_arm_5_joint" type="revolute">
+      <origin xyz="0 0 0.19" rpy="0 0 0" />
+      <axis xyz="0 1 0" />
+      <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
+             effort="306" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="${name}_arm_5_link" />
+      <child link="${name}_arm_6_link" />
+    </joint>
+
     <link name="${name}_arm_6_link" >
       <inertial>
         <mass value="0.2" />
@@ -182,7 +305,9 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_6_simplified.STL" />
         </geometry>
-        <material name="Grey" />
+        <material name="Grey" >
+          <color rgba="0.65 0.65 0.65 1.0"/>
+        </material>
       </visual>
       <xacro:unless value="$(arg collision_model_no_hands)">
         <collision>
@@ -198,7 +323,20 @@
           <capsule radius="0.08" length="0" />
         </geometry>
       </self_collision_checking>
+      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="0.08" pos_z="0" />
     </link>
+    <!--<visual_marker_xz parent="${name}_arm_6_link" size="0.02" pos_x="0" pos_y="0.08" pos_z="0" />-->
+
+    <joint name="${name}_arm_6_joint" type="revolute">
+      <origin xyz="0 0 0.078" rpy="0 0 0" />
+      <axis xyz="0 0 1" />
+      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
+             effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
+      <dynamics damping="1.0" />
+      <parent link="${name}_arm_6_link" />
+      <child link="${name}_arm_7_link" />
+    </joint>
+
     <link name="${name}_arm_7_link">
       <inertial>
         <mass value="0.002" />
@@ -210,106 +348,46 @@
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_7_simplified.STL" />
         </geometry>
-        <material name="Grey" />
+        <material name="Grey" >
+          <color rgba="0.65 0.65 0.65 1.0"/>
+        </material>
       </visual>
     </link>
-
-    <joint name="${parent}_${name}_arm_base_joint" type="fixed">
-      <insert_block name="origin" />
-      <parent link="${parent}" />
-      <child link="calib_${name}_arm_base_link" />
-    </joint>
-    <joint name="${name}_arm_0_joint" type="revolute">
-      <origin xyz="0 0 0.11" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
-      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
-             effort="204" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="calib_${name}_arm_base_link" />
-      <child link="${name}_arm_1_link" />
-    </joint>
-    <joint name="${name}_arm_1_joint" type="revolute">
-      <origin xyz="0 0 0.2005" rpy="0 0 0" />
-      <axis xyz="0 1 0" />
-      <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
-             effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="${name}_arm_1_link" />
-      <child link="${name}_arm_2_link" />
-    </joint>
-    <joint name="${name}_arm_2_joint" type="revolute">
-      <origin xyz="0 0 0.20" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
-      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
-             effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="${name}_arm_2_link" />
-      <child link="${name}_arm_3_link" />
-    </joint>
-    <joint name="${name}_arm_3_joint" type="revolute">
-      <origin xyz="0 0 0.20" rpy="0 0 0" />
-      <axis xyz="0 -1 0" />
-      <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
-             effort="306" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="${name}_arm_3_link" />
-      <child link="${name}_arm_4_link" />
-    </joint>
-    <joint name="${name}_arm_4_joint" type="revolute">
-      <origin xyz="0 0 0.20" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
-      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
-             effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="${name}_arm_4_link" />
-      <child link="${name}_arm_5_link" />
-    </joint>
-    <joint name="${name}_arm_5_joint" type="revolute">
-      <origin xyz="0 0 0.19" rpy="0 0 0" />
-      <axis xyz="0 1 0" />
-      <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
-             effort="306" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="${name}_arm_5_link" />
-      <child link="${name}_arm_6_link" />
-    </joint>
-    <joint name="${name}_arm_6_joint" type="revolute">
-      <origin xyz="0 0 0.078" rpy="0 0 0" />
-      <axis xyz="0 0 1" />
-      <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
-             effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
-      <dynamics damping="1.0" />
-      <parent link="${name}_arm_6_link" />
-      <child link="${name}_arm_7_link" />
-    </joint>
 
     <gazebo reference="calib_${name}_arm_base_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Orange</material>
     </gazebo>
     <gazebo reference="${name}_arm_1_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Orange</material>
     </gazebo>
     <gazebo reference="${name}_arm_2_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Orange</material>
     </gazebo>
     <gazebo reference="${name}_arm_3_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Orange</material>
     </gazebo>
     <gazebo reference="${name}_arm_4_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Orange</material>
     </gazebo>
     <gazebo reference="${name}_arm_5_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Orange</material>
     </gazebo>
     <gazebo reference="${name}_arm_6_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Grey</material>
     </gazebo>
     <gazebo reference="${name}_arm_6_joint">
       <provideFeedback>true</provideFeedback>
@@ -317,6 +395,7 @@
     <gazebo reference="${name}_arm_7_link">
       <turnGravityOff>false</turnGravityOff>
       <selfCollide>true</selfCollide>
+      <material>Gazebo/Grey</material>
     </gazebo>
     <!--
     <transmission name="${name}_arm_0_trans" type="SimpleTransmission">

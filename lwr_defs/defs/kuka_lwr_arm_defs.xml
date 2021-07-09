@@ -189,9 +189,7 @@
           <capsule radius="0.065" length="0.208" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="0.095" pos_z="0.2" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_3_link" size="0.02" pos_x="0" pos_y="0.095" pos_z="0.2" />-->
 
     <joint name="${name}_arm_3_joint" type="revolute">
       <origin xyz="0 0 0.20" rpy="0 0 0" />
@@ -230,9 +228,7 @@
           <capsule radius="0.065" length="0.208" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="-0.095" pos_z="0" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_4_link" size="0.02" pos_x="0" pos_y="-0.095" pos_z="0" />-->
 
     <joint name="${name}_arm_4_joint" type="revolute">
       <origin xyz="0 0 0.20" rpy="0 0 0" />
@@ -280,9 +276,7 @@
           <capsule radius="0.065" length="0.198" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="-0.095" pos_z="0.19" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_5_link" size="0.02" pos_x="0" pos_y="-0.095" pos_z="0.19" />-->
 
     <joint name="${name}_arm_5_joint" type="revolute">
       <origin xyz="0 0 0.19" rpy="0 0 0" />
@@ -323,9 +317,7 @@
           <capsule radius="0.08" length="0" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="0.08" pos_z="0" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_6_link" size="0.02" pos_x="0" pos_y="0.08" pos_z="0" />-->
 
     <joint name="${name}_arm_6_joint" type="revolute">
       <origin xyz="0 0 0.078" rpy="0 0 0" />
@@ -353,6 +345,14 @@
         </material>
       </visual>
     </link>
+
+    <joint name="${name}_arm_ee_joint" type="fixed">
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <parent link="${name}_arm_7_link"/>
+      <child link="${name}_arm_ee_link"/>
+    </joint>
+
+    <link name="${name}_arm_ee_link" />
 
     <gazebo reference="calib_${name}_arm_base_link">
       <turnGravityOff>false</turnGravityOff>

@@ -13,29 +13,6 @@
   <xacro:property name="arm_elem_ball_link_mass" value="2.0" />
   <xacro:property name="arm_velocity_scale_factor" value="1" />
 
-visuals of link right_arm_6_link:
-  name: None, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.0, 0.0, 0.0]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [0.0, 0.0, 0.0]]
-  name: white_box1, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.01, 0.08, -0.01]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [0.01, -0.01, -0.08]]
-  name: white_box2, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [-0.01, 0.08, 0.01]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [-0.01, 0.01, -0.08]]
-  name: black_box1, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.01, 0.08, 0.01]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [0.01, 0.01, -0.08]]
-  name: black_box2, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [-0.01, 0.08, -0.01]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [-0.01, -0.01, -0.08]]
-collisions of link right_arm_6_link:
-  old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.0, 0.0, 0.0]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [0.0, 0.0, 0.0]]
-inertial of link right_arm_6_link:
-  old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.0, 0.0, 0.0625]], new origin: [rpy: (-1.5707963267948966, -0.0, 0.0), xyz: [0.0, 0.0625, 0]]
-
-visuals of link right_arm_4_link:
-  name: None, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.0, 0.0, 0.0]], new origin: [rpy: (1.5707963267948966, -0.0, 0.0), xyz: [0.0, 0.0, 0.0]]
-  name: white_box1, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.01, -0.095, -0.01]], new origin: [rpy: (1.5707963267948966, -0.0, 0.0), xyz: [0.01, 0.01, -0.095]]
-  name: white_box2, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [-0.01, -0.095, 0.01]], new origin: [rpy: (1.5707963267948966, -0.0, 0.0), xyz: [-0.01, -0.01, -0.095]]
-  name: black_box1, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.01, -0.095, 0.01]], new origin: [rpy: (1.5707963267948966, -0.0, 0.0), xyz: [0.01, -0.01, -0.095]]
-  name: black_box2, old origin: [rpy: [0.0, 0.0, 0.0] xyz: [-0.01, -0.095, -0.01]], new origin: [rpy: (1.5707963267948966, -0.0, 0.0), xyz: [-0.01, 0.01, -0.095]]
-collisions of link right_arm_4_link:
-  old origin: [rpy: [0.0, 3.14159265359, 0.0] xyz: [0.0, 0.0, 0.2]], new origin: [rpy: (1.5707963267948968, 0, -3.1415926535895866), xyz: [0.0, -0.2, 0]]
-inertial of link right_arm_4_link:
-  old origin: [rpy: [0.0, 0.0, 0.0] xyz: [0.0, -0.06, 0.07]], new origin: [rpy: (1.5707963267948966, -0.0, 0.0), xyz: [0.0, -0.07, -0.06]]
-
-
   <xacro:macro name="visual_marker_xz_simple" params="size pos_x pos_y pos_z">
     <visual name="white_box1">
       <origin xyz="${pos_x + 0.5*size} ${pos_y} ${pos_z - 0.5*size}" rpy="0 0 0" />
@@ -72,10 +49,12 @@ inertial of link right_arm_4_link:
       <inertial>
         <mass value="${arm_elem_base_mass}" />
         <origin xyz="0 0 0.055" />
+        <!--<origin xyz="0 0 0.0552178642788" rpy="0 0 1.57079632679"/>-->
         <cylinder_inertia_def radius="0.06" length="0.11" mass="${arm_elem_base_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
+        <!--<origin xyz="0 0 0.000217864278779" rpy="0 0 1.57079632679" />-->
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/base_simplified.STL" />
         </geometry>
@@ -85,6 +64,7 @@ inertial of link right_arm_4_link:
       </visual>
       <collision>
         <origin xyz="0 0 0.055" rpy="0 0 ${M_PI}" />
+        <!--<origin xyz="0 0 0.0552178642788" rpy="0 0 -1.5707963268" />-->
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_base_convex.stl" />
         </geometry>
@@ -99,6 +79,7 @@ inertial of link right_arm_4_link:
 
     <joint name="${name}_arm_0_joint" type="revolute">
       <origin xyz="0 0 0.11" rpy="0 0 0" />
+      <!--<origin xyz="0 0 0.110217864279" rpy="0 0 0" />-->
       <axis xyz="0 0 1" />
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
@@ -111,10 +92,12 @@ inertial of link right_arm_4_link:
       <inertial>
         <mass value="${arm_elem_link_mass}" />
         <origin xyz="0 -0.06 0.13" rpy="0 0 0" />
+        <!--<origin xyz="-0.06 0 0.13" rpy="0 0 1.57079632679" />-->
         <cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0" />
+        <!--<origin xyz="0 0 -0.008" rpy="0 0 1.57079632679" />-->
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_1_simplified.STL" />
         </geometry>
@@ -124,6 +107,7 @@ inertial of link right_arm_4_link:
       </visual>
       <collision>
         <origin xyz="0 0 0" rpy="0 0 0" />
+        <!--<origin xyz="0 0 0" rpy="0 0 1.57079632679" />-->
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl" />
         </geometry>
@@ -137,9 +121,8 @@ inertial of link right_arm_4_link:
     </link>
 
     <joint name="${name}_arm_1_joint" type="revolute">
-      <!--<origin xyz="0 0 0.2005" rpy="0 0 0" />
-      <axis xyz="0 1 0" />-->
       <origin xyz="0 0 0.2005" rpy="1.5707963267948966 0 ${M_PI}" />
+      <!--<origin xyz="0 0 0.2005" rpy="1.57079632679 0 -1.5707963268" />-->
       <axis xyz="0 0 1" />
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 110 * M_PI / 180}" />
@@ -183,7 +166,7 @@ inertial of link right_arm_4_link:
     <joint name="${name}_arm_2_joint" type="revolute">
       <!--<origin xyz="0 0 0.20" rpy="0 0 0" />-->
       <!--<origin xyz="0 0.2 0" rpy="-1.5707963267948966 0 0" />-->
-      <origin xyz="0 0.2 0" rpy="1.5707963267948966 0 ${-M_PI}" />
+      <origin xyz="0 0 0" rpy="1.5707963267948966 0 ${M_PI}" />
       <axis xyz="0 0 1" />
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
@@ -195,11 +178,11 @@ inertial of link right_arm_4_link:
     <link name="${name}_arm_3_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
-        <origin xyz="0 0.06 0.13" rpy="0 0 0" />
+        <origin xyz="0 0.06 0.33" rpy="0 0 0" />
         <cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
-        <origin xyz="0 0 -0.008" rpy="0 0 0" />
+        <origin xyz="0 0 0.192" rpy="0 0 0" />
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_3_simplified.STL" />
         </geometry>
@@ -208,7 +191,7 @@ inertial of link right_arm_4_link:
         </material>
       </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 ${M_PI}" />
+        <origin xyz="0 0 0.2" rpy="0 0 ${-M_PI}" />
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_a_convex.stl" />
         </geometry>
@@ -219,14 +202,12 @@ inertial of link right_arm_4_link:
           <capsule radius="0.065" length="0.208" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="0.095" pos_z="0.2" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_3_link" size="0.02" pos_x="0" pos_y="0.095" pos_z="0.2" />-->
 
     <joint name="${name}_arm_3_joint" type="revolute">
       <!--<origin xyz="0 0 0.20" rpy="0 0 0" />
       <axis xyz="0 -1 0" />-->
-      <origin xyz="0 0 0.20" rpy="1.5707963267948966 0 0" />
+      <origin xyz="0 0 0.40" rpy="1.5707963267948966 0 0" />
       <axis xyz="0 0 1" />
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
@@ -265,14 +246,12 @@ inertial of link right_arm_4_link:
           <capsule radius="0.065" length="0.208" />
         </geometry>
       </self_collision_checking>
-      <!--<visual_marker_xz_simple size="0.02" pos_x="0" pos_y="-0.095" pos_z="0" />-->
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_4_link" size="0.02" pos_x="0" pos_y="-0.095" pos_z="0" />-->
 
     <joint name="${name}_arm_4_joint" type="revolute">
       <!--<origin xyz="0 0 0.20" rpy="0 0 0" />
       <axis xyz="0 0 1" />-->
-      <origin xyz="0 0.2 0" rpy="-1.5707963267948966 0 0" />
+      <origin xyz="0 0 0" rpy="1.57079632679 0 3.14159265359" />
       <axis xyz="0 0 1" />
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 130 * M_PI / 180}" />
@@ -284,11 +263,11 @@ inertial of link right_arm_4_link:
     <link name="${name}_arm_5_link">
       <inertial>
         <mass value="${arm_elem_link_mass}" />
-        <origin xyz="0 0 0.124" rpy="0 0 0" />
+        <origin xyz="0 0 0.324" rpy="0 0 3.14159265359" />
         <cuboid_inertia_def length="0.12" width="0.06" height="0.248" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
-        <origin xyz="0 0 -0.008" rpy="0 0 0" />
+        <origin xyz="0.0 0.0 0.192" rpy="0 0 3.14159265359" />
         <geometry name="${name}_arm_5_geom">
           <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL" />
         </geometry>
@@ -296,17 +275,8 @@ inertial of link right_arm_4_link:
           <color rgba="1 0.5 0 1.0"/>
         </material>
       </visual>
-      <visual>
-        <origin xyz="0 0 -0.008" rpy="0 0 0" />
-        <geometry name="${name}_arm_5_geom">
-          <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL" />
-        </geometry>
-        <material name="Blue" >
-          <color rgba="1 0.5 0 1.0"/>
-        </material>
-      </visual>
       <collision>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0.2" rpy="0 0 3.14159265359" />
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/convex/arm_segment_last_convex.stl" />
         </geometry>
@@ -317,14 +287,12 @@ inertial of link right_arm_4_link:
           <capsule radius="0.065" length="0.198" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="-0.095" pos_z="0.19" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_5_link" size="0.02" pos_x="0" pos_y="-0.095" pos_z="0.19" />-->
 
     <joint name="${name}_arm_5_joint" type="revolute">
       <!--<origin xyz="0 0 0.19" rpy="0 0 0" />
       <axis xyz="0 1 0" />-->
-      <origin xyz="0 0 0.19" rpy="1.5707963267948966 0 3.141592653589793" />
+      <origin xyz="0 0 0.39" rpy="1.5707963267948966 0 0" />
       <axis xyz="0 0 1" />
       <limit lower="${-120 * M_PI / 180}" upper="${120 * M_PI / 180}"
              effort="306" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
@@ -365,14 +333,12 @@ inertial of link right_arm_4_link:
           <capsule radius="0.08" length="0" />
         </geometry>
       </self_collision_checking>
-      <visual_marker_xz_simple size="0.02" pos_x="0" pos_y="0.08" pos_z="0" />
     </link>
-    <!--<visual_marker_xz parent="${name}_arm_6_link" size="0.02" pos_x="0" pos_y="0.08" pos_z="0" />-->
 
     <joint name="${name}_arm_6_joint" type="revolute">
       <!--<origin xyz="0 0 0.078" rpy="0 0 0" />
       <axis xyz="0 0 1" />-->
-      <origin xyz="0 0.078 0" rpy="1.5707963267948966 0 -3.141592653589793" />
+      <origin xyz="0 0 0" rpy="1.5707963267948966 0 -3.141592653589793" />
       <axis xyz="0 0 1" />
       <limit lower="${-170 * M_PI / 180}" upper="${170 * M_PI / 180}"
              effort="204" velocity="${arm_velocity_scale_factor * 180 * M_PI / 180}" />
@@ -384,11 +350,11 @@ inertial of link right_arm_4_link:
     <link name="${name}_arm_7_link">
       <inertial>
         <mass value="0.002" />
-        <origin xyz="0 0 0" />
+        <origin xyz="0 0 0.078" />
         <cuboid_inertia_def length="1" width="1" height="1" mass="0.002" />
       </inertial>
       <visual>
-        <origin xyz="0 0 0" rpy="0 0 0" />
+        <origin xyz="0 0 0.078" rpy="0 0 0" />
         <geometry>
           <mesh filename="package://lwr_defs/meshes/lwr/link_7_simplified.STL" />
         </geometry>
@@ -397,6 +363,14 @@ inertial of link right_arm_4_link:
         </material>
       </visual>
     </link>
+
+    <joint name="${name}_arm_ee_joint" type="fixed">
+      <origin xyz="0 0 0.078" rpy="0 0 0"/>
+      <parent link="${name}_arm_7_link"/>
+      <child link="${name}_arm_ee_link"/>
+    </joint>
+
+    <link name="${name}_arm_ee_link" />
 
     <gazebo reference="calib_${name}_arm_base_link">
       <turnGravityOff>false</turnGravityOff>

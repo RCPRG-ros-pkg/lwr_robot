@@ -43,7 +43,7 @@
   <xacro:macro name="kuka_lwr_arm" params="parent name right *origin">
 
     <joint name="${parent}_${name}_arm_base_joint" type="fixed">
-      <insert_block name="origin" />
+      <xacro:insert_block name="origin" />
       <parent link="${parent}" />
       <child link="calib_${name}_arm_base_link" />
     </joint>
@@ -52,7 +52,7 @@
       <inertial>
         <mass value="${arm_elem_base_mass}" />
         <origin xyz="0 0 0.055" />
-        <cylinder_inertia_def radius="0.06" length="0.11" mass="${arm_elem_base_mass}" />
+        <xacro:cylinder_inertia_def radius="0.06" length="0.11" mass="${arm_elem_base_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -93,7 +93,7 @@
       <inertial>
         <mass value="${arm_elem_link_mass}" />
         <origin xyz="0 -0.06 0.13" rpy="0 0 0" />
-        <cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
+        <xacro:cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0" />
@@ -154,7 +154,7 @@
       <inertial>
         <mass value="${arm_elem_link_mass}" />
         <origin xyz="0 0.06 0.07" rpy="0 0 0" />
-        <cuboid_inertia_def length="0.12" width="0.06" height="0.260" mass="${arm_elem_link_mass}" />
+        <xacro:cuboid_inertia_def length="0.12" width="0.06" height="0.260" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0" />
@@ -221,7 +221,7 @@
       <inertial>
         <mass value="${arm_elem_link_mass}" />
         <origin xyz="0 0.06 0.13" rpy="0 0 0" />
-        <cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
+        <xacro:cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0" />
@@ -288,7 +288,7 @@
       <inertial>
         <mass value="${arm_elem_link_mass}" />
         <origin xyz="0 -0.06 0.07" rpy="0 0 0" />
-        <cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
+        <xacro:cuboid_inertia_def length="0.12" width="0.06" height="0.26" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 0.0" rpy="0 0 0" />
@@ -355,7 +355,7 @@
       <inertial>
         <mass value="${arm_elem_link_mass}" />
         <origin xyz="0 0 0.124" rpy="0 0 0" />
-        <cuboid_inertia_def length="0.12" width="0.06" height="0.248" mass="${arm_elem_link_mass}" />
+        <xacro:cuboid_inertia_def length="0.12" width="0.06" height="0.248" mass="${arm_elem_link_mass}" />
       </inertial>
       <visual>
         <origin xyz="0 0 -0.008" rpy="0 0 0" />
@@ -431,7 +431,7 @@
       <inertial>
         <mass value="0.2" />
         <origin xyz="0 0 0.0625" rpy="0 0 0" />
-        <cuboid_inertia_def length="0.125" width="0.125" height="0.125" mass="0.2" />
+        <xacro:cuboid_inertia_def length="0.125" width="0.125" height="0.125" mass="0.2" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />
@@ -482,7 +482,7 @@
       <inertial>
         <mass value="0.002" />
         <origin xyz="0 0 0" />
-        <cuboid_inertia_def length="1" width="1" height="1" mass="0.002" />
+        <xacro:cuboid_inertia_def length="1" width="1" height="1" mass="0.002" />
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="0 0 0" />

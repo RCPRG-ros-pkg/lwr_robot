@@ -362,16 +362,7 @@
         <geometry name="${name}_arm_5_geom">
           <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL" />
         </geometry>
-        <material name="Green" >
-          <color rgba="1 0.5 0 1.0"/>
-        </material>
-      </visual>
-      <visual>
-        <origin xyz="0 0 -0.008" rpy="0 0 0" />
-        <geometry name="${name}_arm_5_geom">
-          <mesh filename="package://lwr_defs/meshes/lwr/link_5_simplified.STL" />
-        </geometry>
-        <material name="Blue" >
+        <material name="Orange" >
           <color rgba="1 0.5 0 1.0"/>
         </material>
       </visual>
